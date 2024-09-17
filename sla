@@ -1,0 +1,356 @@
+"{{ url ('assets/dashboard/vendor/wow/wow.min.js') }}"
+
+') }}"
+
+{{ url ('assets/dashboard/
+
+"{{ route('dashboard') }}"
+
+
+
+Route::get('/experience',[ExperienceController::class, 'index'])->name('experience.index');
+Route::get('/experience/create',[ExperienceController::class, 'create'])->name('experience.create');
+Route::post('/experience',[ExperienceController::class, 'store'])->name('experience.store');
+Route::get('/experience/{experience',[ExperienceController::class, 'show'])->name('experience.show');
+Route::get('/experience/{experience}/edit',[ExperienceController::class, 'edit'])->name('experience.edit');
+Route::put('/experience/{experience}',[ExperienceController::class, 'update'])->name('experience.update');
+Route::delete('/experience/{experience}',[ExperienceController::class, 'destroy'])->name('experience.destroy');
+
+
+<head>
+    <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet"
+        media="all">
+    <link href="{{ url ('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet"
+        media="all">
+    <link href="{{ url ('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet"
+        media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="{{ url ('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}"
+        rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet"
+        media="all">
+
+    <!-- Main CSS-->
+    <link href="{{ url ('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
+</head>
+
+<div class="page-wrapper">
+    <header class="header-desktop3 d-none d-lg-block">
+        <div class="section__content section__content--p35">
+            <div class="header3-wrap">
+                <div class="header__logo">
+                    <a href="#">
+                        <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                    </a>
+                </div>
+                <div class="header__navbar">
+                    <ul class="list-unstyled">
+                        <li class="has-sub">
+                            <a href="{{ route('dashboard') }}">
+                                <i class="fas fa-home"></i>Painel
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-address-card"></i>
+                                <span class="bot-line"></span>Experiência</a>
+                        </li>
+                        <li>
+                            <a href="table.html">
+                                <i class="fas fa-clock"></i>
+                                <span class="bot-line"></span>Horários e atestados</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#">
+                                <i class="fas fa-calendar"></i>
+                                <span class="bot-line"></span>Calendário
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header__tool">
+                    <div class="account-wrap">
+                        <div class="account-item account-item--style2 clearfix js-item-menu">
+                            <div class="content">
+                                <a class="js-acc-btn" href="#">
+                                    <i class="fas fa-user"></i>
+                                    {{ Auth::user()->name }}
+                                </a>
+                            </div>
+                            <div class="account-dropdown js-dropdown">
+                                <div class="info clearfix">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="{{ url ('assets/dashboard/images/icon/user.png') }} "
+                                                alt="John Doe" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="name">
+                                            <a href="#">{{ Auth::user()->name }}</a>
+                                        </h5>
+                                        <span class="email">{{ Auth::user()->email }}</span>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ url('/profile') }}">
+                                            <i class="zmdi zmdi-settings"></i>Configurações</a>
+                                    </div>
+                                </div>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+
+                                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                        {{ __('Log Out') }}
+                                    </x-responsive-nav-link>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
+    <!-- Bootstrap JS-->
+    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/popper.min.js"') }}"></script>
+<script src="{{ url (' assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
+    <!-- Vendor JS       -->
+    <script src="{{ url ('assets/dashboard/vendor/slick/slick.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/wow/wow.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/animsition/animsition.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.counterup.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/circle-progress/circle-progress.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
+    <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
+
+    <!-- Main JS-->
+    <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+
+    public function up(): void
+    {
+        Schema::create('experience', function (Blueprint $table) {
+            $table->id('code');
+            $table->string('name');
+            $table->string('adjuntancy');
+            $table->date('admission');
+            $table->date('contract1');
+            $table->date('contract2');
+            $table->float('salary');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('experience');
+    }
+};
+
+
+
+@if($funcionario->count() > 0)
+    @foreach($funcionario as $rs )
+        <tr>
+            <td class="align-middle">{{$loop->iteration}}</td>
+            <td class="align-middle">{{$rs->nome}}</td>
+            <td class="align-middle">{{$rs->email}}</td>
+            <td class="align-middle"> R$ {{$rs->salario}}</td>
+            <td class="align-middle">
+                <div class="btn-group" role="group" aria-label="Basic exemple">
+                    <!-- <a href="" type="button" class="btn btn-secondary">info</a> -->
+                    <div class="m-1">
+                        <a href="{{Route('funcionario.edit', $rs->id )}}"type="button" class="btn btn-warning">editar</a>
+                    </div>
+
+                    <form action="{{Route('funcionario.destroy', $rs->id)}}" method="post" onsubmit="return confirm('deletar?')">
+                    @csrf
+                    @method('delete')
+                        <Button class="btn btn-danger m-1" >delete</Button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    @endforeach
+
+
+
+
+
+
+
+
+    <!DOCTYPE html>
+<html lang="en">
+
+<?php
+use App\Models\Experience;
+$Experience = Experience::orderBy('created_at', 'DESC')->get();
+?>
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Em experiência</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="{{ url ('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/css-hamburg$experiences/hamburg$experiences.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="{{ url ('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- NAVBAR DESKTOP & MOBILE-->
+        @include('layouts.navigation')
+        <!-- END NAVBAR DESKTOP & MOBILE-->
+
+        <!-- PAGE CONTENT-->
+        <div class="page-content">
+            <section class="welcome p-t-10">
+                <div class="col-md-12 d-flex justify-content-between align-items-center">
+                    <h1 class="title-4">Cadastrar funcionário</h1>
+                </div>
+
+                <hr>
+
+                <div class="card">
+                    <div class="card-body card-block">
+                        <!-- Container Centralizado -->
+                        <div class="d-flex justify-content-center">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label for="codigo" class="form-control-label">Código</label>
+                                    <input type="text" id="codigo" placeholder="Insira o código do funcionário: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nome" class="form-control-label">Nome</label>
+                                    <input type="text" id="nome" placeholder="Digite o nome do funcionário: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cargo" class="form-control-label">Cargo</label>
+                                    <input type="text" id="cargo" placeholder="Insira o cargo do funcionário: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="admissao" class="form-control-label">Admissão</label>
+                                    <input type="text" id="admissao" placeholder="Insira a data de admissão: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="primeiro-contrato" class="form-control-label">1º Contrato</label>
+                                    <input type="text" id="primeiro-contrato" placeholder="Insira a data do 1º contrato: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="segundo-contrato" class="form-control-label">2º Contrato</label>
+                                    <input type="text" id="segundo-contrato" placeholder="Insira a data do 2º contrato: *" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="salario" class="form-control-label">Salário (R$)</label>
+                                    <input type="text" id="salario" placeholder="Insira o salário do funcionário: *" class="form-control">
+                                </div>
+
+                                <div class="d-flex">
+                                    <form action="{{ route('experience.store') }}" method="GET" class="mr-2">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fa-solid fa-plus"></i> Cadastrar
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('experience.store') }}" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fa-solid fa-ban"></i> Cancelar
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Fim do Container Centralizado -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url ('assets/login/js/jquery.min.js') }}"></script>
+    <script src="{{ url ('assets/login/js/popper.js') }}"></script>
+    <script src="{{ url ('assets/login/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url ('assets/login/js/main.js') }}"></script>
+</body>
+</html>
