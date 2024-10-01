@@ -22,29 +22,47 @@ class ExperienceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required',
-            'name' => 'required',
-            'adjuntancy' => 'required',
-            'admission' => 'required',
-            'contract1' => 'required',
-            'contract2' => 'required',
-            'salary' => 'required|max:10',
-            'situation_id' => 'required',
+            'code' => 'required|integer', // Código do funcionário
+            'name' => 'required|string|max:191',
+            'adjuntancy' => 'required|string|max:191', // Cargo
+            'admission' => 'required|date', // Data de admissão
+            'contract1' => 'required|date|after_or_equal:admission', // Data do 1º contrato
+            'contract2' => 'required|date|after_or_equal:contract1', // Data do 2º contrato deve ser posterior ou igual à do 1º
+            'salary' => 'required|max:99999999', // Salário com limite de 8 dígitos
+            'situation_id' => 'required|exists:situation,id', // ID da situação deve existir na tabela 'situations'
         ];
     }
 
     public function messages(): array
     {
-        return[
-            'code.required' => 'O campo código é obrigatório',
-            'name.required' => 'O campo nominal é obrigatório',
-            'adjuntancy.required' => 'O campo cargo é obrigatório',
-            'admission.required' => 'O campo admissão é obrigatório',
-            'contract1.required' => 'O campo 1º contrato é obrigatório',
-            'contract2.required' => 'O campo 2º contrato é obrigatório',
-            'salary' => 'O campo salarial é obrigatório',
-            'salary.max' => 'O salário só pode ter no máximo 8 números',
-            'situation_id.required' => 'O campo situacional é obrigatório',
+        return [
+            'code.required' => 'O campo código é obrigatório.',
+            'code.integer' => 'O campo código deve ser um número inteiro.',
+
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.string' => 'O nome deve ser uma string válida.',
+            'name.max' => 'O nome deve ter no máximo 191 caracteres.',
+
+            'adjuntancy.required' => 'O campo cargo é obrigatório.',
+            'adjuntancy.string' => 'O cargo deve ser uma string válida.',
+            'adjuntancy.max' => 'O cargo deve ter no máximo 191 caracteres.',
+
+            'admission.required' => 'O campo de admissão é obrigatório.',
+            'admission.date' => 'A data de admissão deve ser uma data válida.',
+
+            'contract1.required' => 'O campo 1º contrato é obrigatório.',
+            'contract1.date' => 'A data do 1º contrato deve ser uma data válida.',
+            'contract1.after_or_equal' => 'A data do 1º contrato deve ser após ou igual à data de admissão.',
+
+            'contract2.required' => 'O campo 2º contrato é obrigatório.',
+            'contract2.date' => 'A data do 2º contrato deve ser uma data válida.',
+            'contract2.after_or_equal' => 'A data do 2º contrato deve ser após ou igual à data do 1º contrato.',
+
+            'salary.required' => 'O campo salário é obrigatório.',
+            'salary.max' => 'O salário não pode exceder 8 dígitos.',
+
+            'situation_id.required' => 'O campo situação é obrigatório.',
+            'situation_id.exists' => 'A situação selecionada é inválida.',
         ];
     }
 }

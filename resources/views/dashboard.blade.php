@@ -1,49 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
     <title>Painel</title>
-
-    <!-- Fontfaces CSS-->
-    <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
-    <link href="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="{{ url ('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="{{ url ('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
-
+    <!-- Links -->
+    <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
+    <!-- CSS Principal -->
+    <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
+    <!-- Fim dos Links -->
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
-        <!-- NAVBAR DESKTOP & MOBILE-->
+        <!-- Navbar -->
         @include('layouts.navigation')
-        <!-- END NAVBAR DESKTOP & MOBILE-->
+        <!-- Fim da Navbar -->
 
-        <!-- PAGE CONTENT-->
+        <!-- Conteúdo -->
         <div class="page-content--bgf7">
-            <!-- WELCOME-->
             <section class="welcome p-t-10">
                 <div class="container">
                     <div class="row">
@@ -55,26 +45,23 @@
                     </div>
                 </div>
             </section>
-            <!-- END WELCOME-->
-
-            <!-- STATISTIC-->
+            <!-- informações -->
             <section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item">
-                                <h2 class="number">{{ $countExperience }}</h2>
+                                <h2 class="number"> {{ $countExperience }} </h2>
                                 <span class="desc">Funcionários</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-account-o"></i>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item">
-                                <h2 class="number">12</h2>
-                                <span class="desc">Esta semana</span>
+                                <h2 class="number"> {{ $countAttendance }} </h2>
+                                <span class="desc">Atrasos</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-time"></i>
                                 </div>
@@ -82,8 +69,8 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item">
-                                <h2 class="number">3</h2>
-                                <span class="desc">Esta semana</span>
+                                <h2 class="number"> {{ $countAttest }} </h2>
+                                <span class="desc">Atestados</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-hospital"></i>
                                 </div>
@@ -91,7 +78,7 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item statistic__item">
-                                <h2 class="number">R$ 172.800,86</h2>
+                                <h2 class="number"> {{ 'R$ ' . number_format($totalSalary, 2, ',', '.') }} </h2>
                                 <span class="desc">Folha salarial</span>
                                 <div class="icon">
                                     <i class="zmdi zmdi-money"></i>
@@ -101,9 +88,9 @@
                     </div>
                 </div>
             </section>
-            <!-- END STATISTIC-->
+            <!-- Fim das informações -->
 
-            <!-- STATISTIC CHART-->
+            <!-- Gráficos -->
             <section class="statistic-chart">
                 <div class="container">
                     <div class="row">
@@ -114,7 +101,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
-                            <!-- CHART-->
+                            <!-- Gráfico 1 -->
                             <div class="statistic-chart-1">
                                 <h3 class="title-3 m-b-30">chart</h3>
                                 <div class="chart-wrap">
@@ -125,10 +112,10 @@
                                     <span>/ 16220 items sold</span>
                                 </div>
                             </div>
-                            <!-- END CHART-->
+                            <!-- Fim do Gráfico 1 -->
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <!-- TOP CAMPAIGN-->
+                            <!-- Gráfico 2 -->
                             <div class="top-campaign">
                                 <h3 class="title-3 m-b-30">top campaigns</h3>
                                 <div class="table-responsive">
@@ -158,10 +145,10 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- END TOP CAMPAIGN-->
+                            <!-- Fim do Gráfico 2 -->
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <!-- CHART PERCENT-->
+                            <!-- Gráfico 3 -->
                             <div class="chart-percent-2">
                                 <h3 class="title-3 m-b-30">chart by %</h3>
                                 <div class="chart-wrap">
@@ -181,31 +168,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- END CHART PERCENT-->
+                            <!-- Fim do Gráfico 3 -->
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- END STATISTIC CHART-->
+            <!-- Fim dos Gráficos -->
 
-            <!-- COPYRIGHT-->
-            <!-- <section class="p-t-60 p-b-20">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="copyright">
-                                <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+            <!-- Copyright -->
+                <!-- <section class="p-t-60 p-b-20">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section> -->
-            <!-- END COPYRIGHT-->
+                </section> -->
+            <!-- Fim do Copyright -->
         </div>
-
+        <!-- Fim do Conteúdo -->
     </div>
-
-    <!-- Jquery JS-->
+    <!-- Scripts -->
     <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <!-- Bootstrap JS-->
     <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/popper.min.js"') }}"></script>
@@ -221,11 +207,8 @@
     <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-
     <!-- Main JS-->
     <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
-
+    <!-- Fim dos Scripts -->
 </body>
-
 </html>
-<!-- end document-->

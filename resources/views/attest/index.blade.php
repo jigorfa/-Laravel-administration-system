@@ -1,230 +1,212 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
-    <title>Em experiência</title>
-
-    <!-- Fontfaces CSS-->
-    <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
-    <link href="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="{{ url ('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="{{ url ('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
-
+    <title>Atestados</title>
+    <!-- Links -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
+    <!-- CSS Principal -->
+    <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
+    <!-- Fim dos links -->
 </head>
 
-<body class="animsition">
-    <div class="page-wrapper">
-        <!-- NAVBAR DESKTOP & MOBILE-->
-        @include('layouts.navigation')
-        <!-- END NAVBAR DESKTOP & MOBILE-->
+<body class="animsition page-wrapper">
+    <!-- Navbar -->
+    @include('layouts.navigation')
+    <!-- Fim da Navbar -->
 
-        <!-- PAGE CONTENT-->
-        <div class="page-content--bgf7">
-            <!-- WELCOME-->
-            <section class="welcome p-t-10">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h1 class="title-4">Funcionários em experiência</h1>
-                            <hr>
-                            <h3 class="title-5 m-b-35">Quadro geral</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END WELCOME-->
+    <!-- Conteúdo -->
+    <div class="page-content">
+        <section class="welcome p-t-10">
+            <h1 class="text-center">Atestados de funcionários(as)</h1>
 
-            <!-- STATISTIC-->
-            <section class="statistic statistic2">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--green">
-                                <h2 class="number">10,368</h2>
-                                <span class="desc">members online</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-account-o"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--orange">
-                                <h2 class="number">388,688</h2>
-                                <span class="desc">items sold</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-shopping-cart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--blue">
-                                <h2 class="number">1,086</h2>
-                                <span class="desc">this week</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-calendar-note"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--red">
-                                <h2 class="number">$1,060,386</h2>
-                                <span class="desc">total earnings</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-money"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- END STATISTIC-->
-
-            <!-- STATISTIC CHART-->
-            <section class="statistic-chart">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Estatísticas</h3>
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-lg-4">
-                            <!-- CHART-->
-                            <div class="statistic-chart-1">
-                                <h3 class="title-3 m-b-30">chart</h3>
-                                <div class="chart-wrap">
-                                    <canvas id="widgetChart5"></canvas>
-                                </div>
-                                <div class="statistic-chart-1-note">
-                                    <span class="big">10,368</span>
-                                    <span>/ 16220 items sold</span>
-                                </div>
-                            </div>
-                            <!-- END CHART-->
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <!-- TOP CAMPAIGN-->
-                            <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">top campaigns</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-top-campaign">
-                                        <tbody>
-                                            <tr>
-                                                <td>1. Australia</td>
-                                                <td>$70,261.65</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2. United Kingdom</td>
-                                                <td>$46,399.22</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3. Turkey</td>
-                                                <td>$35,364.90</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4. Germany</td>
-                                                <td>$20,366.96</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5. France</td>
-                                                <td>$10,366.96</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- END TOP CAMPAIGN-->
-                        </div>
-                        <div class="col-md-6 col-lg-4">
-                            <!-- CHART PERCENT-->
-                            <div class="chart-percent-2">
-                                <h3 class="title-3 m-b-30">chart by %</h3>
-                                <div class="chart-wrap">
-                                    <canvas id="percent-chart2"></canvas>
-                                    <div id="chartjs-tooltip">
-                                        <table></table>
+            <div class="col-md-12">
+                <hr>
+                <div class="col-md-9 mx-auto">
+                    <div class="card shadow">
+                        <h4 class="card-header text-center">Campo de pesquisa</h4>
+                        <div class="card-body">
+                            <!-- Formulário de pesquisa -->
+                            <form action="{{ route('attest.index') }}">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="code" class="control-label mb-1">Código</label>
+                                            <input type="number" id="code" name="code" class="form-control text-center" placeholder="Busque pelo código:">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="name" class="control-label mb-1">Nome</label>
+                                            <input type="text" id="name" name="name" class="form-control text-center" placeholder="Busque pelo nome:">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="adjuntancy" class="control-label mb-1">Cargo</label>
+                                        <div class="input-group">
+                                            <input type="text" id="adjuntancy" name="adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="chart-info">
-                                    <div class="chart-note">
-                                        <span class="dot dot--blue"></span>
-                                        <span>products</span>
-                                    </div>
-                                    <div class="chart-note">
-                                        <span class="dot dot--red"></span>
-                                        <span>Services</span>
-                                    </div>
+                                <div class="text-center">
+                                    <!-- Botões do formulário -->
+                                    <button type="submit" class="btn btn-info btn-sm text-light">
+                                        <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                                    </button>
+                                    <a class="btn btn-warning btn-sm text-dark" href="{{ route('attest.index') }}">
+                                        <i class="fa-solid fa-chevron-left"></i> Voltar
+                                    </a>
+                                    <button type="reset" class="btn btn-danger btn-sm text-light">
+                                        <i class="fa-solid fa-eraser"></i> Limpar
+                                    </button>
                                 </div>
-                            </div>
-                            <!-- END CHART PERCENT-->
+                            </form>
                         </div>
                     </div>
                 </div>
-            </section>
-            <!-- END STATISTIC CHART-->
 
-            <!-- COPYRIGHT-->
-            <!-- <section class="p-t-60 p-b-20">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="copyright">
-                                <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                            </div>
+                <!-- Início da Tabela -->
+                <div class="card mt-4 mb-4 border-light shadow">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3>Registros: {{ $count }}</h3>
+                        <span>
+                            <button type="button">
+                                <a href="{{ route('attest.create') }}" class="btn btn-success text-light">
+                                    <i class="fa-solid fa-plus"></i> Cadastrar
+                                </a>
+                            </button>
+
+                            <button type="button">
+                                <a href="{{ route('attestPdf.generate', request()->query()) }}" class="btn btn-info text-light mr-2">
+                                    <i class="fa-solid fa-print"></i> Imprimir
+                                </a>
+                            </button>
+                        </span>
+                    </div>
+
+                    <!-- Mensagens de sucesso/erro -->
+                    @if (session('success'))
+                        <div class="alert alert-success m-3" role="alert">
+                            <i class="fa-solid fa-check"></i>
+                            {{ session('success') }}
                         </div>
+                    @endif
+
+                    @if (session('warning'))
+                        <div class="alert alert-warning m-3" role="alert">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
+                    @if (session('danger'))
+                        <div class="alert alert-danger m-3" role="alert">
+                            <i class="fa-solid fa-trash"></i>
+                            {{ session('danger') }}
+                        </div>
+                    @endif
+
+                    <div class="card-body">
+                        <!-- Início da tabela de registros -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Código</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Cargo</th>
+                                    <th scope="col">Data de início</th>
+                                    <th scope="col">Data de término</th>
+                                    <th scope="col">Dias ausentes</th>
+                                    <th scope="col">Causa social</th>
+                                    <th scope="col">Arquivo</th>
+                                    <th scope="col" class="text-center">Operações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($attest as $attests)
+                                    <tr>
+                                        <th>{{ $attests->code }}</th>
+                                        <td>{{ $attests->name }}</td>
+                                        <td>{{ $attests->adjuntancy }}</td>
+                                        <td>{{ $attests->start_date }}</td>
+                                        <td>{{ $attests->end_date }}</td>
+                                        <td>{{ $attests->total_days }}</td>
+                                        <td>{{ $attests->cause }}</td>
+                                        <td>
+                                            <!-- Verifica se há anexo -->
+                                            @if ($attests->annex)
+                                                <a href="{{ asset('img/attests/' . $attests->annex) }}" class="btn btn-success btn-sm" download>
+                                                    <i class="fa-solid fa-download"></i> Baixar Arquivo
+                                                </a>
+                                            @else
+                                                <span class="text-muted">Sem arquivo</span>
+                                            @endif
+                                        </td>
+
+                                        <!-- Operações (Editar/Apagar) -->
+                                        <td class="d-md-flex justify-content-center">
+                                            <form action="{{ route('attest.edit', $attests->code) }}" method="GET" class="mr-2">
+                                                @csrf
+                                                <button type="submit" class="btn btn-warning text-dark">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                                </button>
+                                            </form>
+
+                                            <form action="{{ route('attest.destroy', $attests->code) }}" method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger text-light"
+                                                    onclick="return confirm('Tem certeza que deseja apagar este registro?')">
+                                                    <i class="fa-solid fa-trash"></i> Apagar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <div class="alert alert-secondary m-3" role="alert">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <span>Nenhum registro encontrado</span>
+                                    </div>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        <!-- Fim da tabela de registros -->
+                        {{ $attest->onEachSide(0)->links() }}
                     </div>
                 </div>
-            </section> -->
-            <!-- END COPYRIGHT-->
-        </div>
-
+                <!-- Fim da Tabela -->
+            </div>
+        </section>
     </div>
+    <!-- Fim do Conteúdo -->
 
-    <!-- Jquery JS-->
-    <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
-    <!-- Bootstrap JS-->
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/popper.min.js"') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
-    <!-- Vendor JS       -->
-    <script src="{{ url ('assets/dashboard/vendor/slick/slick.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/wow/wow.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/animsition/animsition.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.counterup.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/circle-progress/circle-progress.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-
-    <!-- Main JS-->
-    <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
-
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/slick/slick.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/wow/wow.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/animsition/animsition.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/counter-up/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/counter-up/jquery.counterup.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url('assets/dashboard/js/main.js') }}"></script>
+    <!-- Fim dos scripts -->
 </body>
-
 </html>
-<!-- end document-->

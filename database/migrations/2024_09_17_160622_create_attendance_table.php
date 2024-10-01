@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clock', function (Blueprint $table) {
+        Schema::create('attendance', function (Blueprint $table) {
             $table->id('code');
             $table->string('name');
             $table->string('adjuntancy');
-            $table->date('admission');
-            $table->date('contract1');
-            $table->date('contract2');
-            $table->float('salary');
+            $table->date('delay_date');
+            $table->time('arrival');
+            $table->time('leave');
+            $table->string('motive');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clock');
+        Schema::dropIfExists('attendance');
     }
 };

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Experience;
+use App\Models\Attendance;
+use App\Models\Attest;
 
 
 class ProfileController extends Controller
@@ -19,10 +21,19 @@ class ProfileController extends Controller
     public function index()
     {
          // Conta os itens de cada modelo
-         $countExperience = Experience::count();
+        $countExperience = Experience::count();
+        $countAttendance = Attendance::count();
+        $countAttest = Attest::count();
+
+        $totalSalary = Experience::sum('salary');
 
          // Retorna uma única view com todos os dados
-         return view('dashboard', compact('countExperience'));
+         return view('dashboard', compact(
+            'countExperience',
+            'countAttendance',
+            'countAttest',
+            'totalSalary'
+        ));
      }
 
     public function edit(Request $request): View

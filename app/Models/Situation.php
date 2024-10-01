@@ -13,7 +13,10 @@ class Situation extends Model
     protected $table = 'situation';
 
     // Indicar quais colunas podem ser cadastradas
-    protected $fillable = ['name', 'color'];
+    protected $fillable = [
+        'name',
+        'color'
+    ];
 
     public function experience()
     {

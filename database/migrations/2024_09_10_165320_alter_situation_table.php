@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('experience', function (Blueprint $table) {
             $table->foreignId('situation_id') // Nome da coluna local (chave estrangeira)
                 ->default(3)
-                ->after('name')
+                ->after('salary')
                 ->constrained('situation'); // Nome da tabela referenciada
         });
     }

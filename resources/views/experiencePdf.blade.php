@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários em Experiência</title>
+    <title>PDF funcionários</title>
     <style>
         table {
             width: 100%;
@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-    <h1>Funcionários em Experiência</h1>
+    <h1>Consulta PDF: funcionários</h1>
     <table>
         <thead>
             <tr>
@@ -34,16 +34,16 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($experiences as $experience)
+            @forelse ($experience as $experiences)
                 <tr>
-                    <td>{{ $experience->code }}</td>
-                    <td>{{ $experience->name }}</td>
-                    <td>{!! '<button class="btn btn-sm btn-'. $experience->situation->color .'"disabled>' . $experience->situation->name . '</button>' !!}</td>
-                    <td>{{ $experience->adjuntancy }}</td>
-                    <td>{{ $experience->admission }}</td>
-                    <td>{{ $experience->contract1 }}</td>
-                    <td>{{ $experience->contract2 }}</td>
-                    <td>{{ 'R$ ' . number_format($experience->salary, 2, ',', '.') }}</td>
+                    <td>{{ $experiences->code }}</td>
+                    <td>{{ $experiences->name }}</td>
+                    <td>{{ $experiences->situation->name }}</td>
+                    <td>{{ $experiences->adjuntancy }}</td>
+                    <td>{{ $experiences->admission }}</td>
+                    <td>{{ $experiences->contract1 }}</td>
+                    <td>{{ $experiences->contract2 }}</td>
+                    <td>{{ 'R$ ' . number_format($experiences->salary, 2, ',', '.') }}</td>
                 </tr>
             @empty
                 <tr>

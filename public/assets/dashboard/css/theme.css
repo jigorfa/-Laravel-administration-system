@@ -161,20 +161,17 @@ strong {
 }
 
 .title-1 {
-    text-transform: capitalize;
     font-weight: 400;
     font-size: 30px;
 }
 
 .title-2 {
-    text-transform: capitalize;
     font-weight: 400;
     font-size: 24px;
     line-height: 1;
 }
 
 .title-3 {
-    text-transform: capitalize;
     font-weight: 400;
     font-size: 24px;
     color: #333;
@@ -192,7 +189,6 @@ strong {
 }
 
 .title-5 {
-    text-transform: capitalize;
     font-size: 22px;
     font-weight: 500;
     color: #393939;

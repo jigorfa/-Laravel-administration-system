@@ -21,11 +21,12 @@ class Experience extends Model
         'contract1',
         'contract2',
         'salary',
-        'situation_id'
+        'situation_id',
     ];
 
     public function situation()
     {
         return $this->belongsTo(Situation::class);
     }
+
     }

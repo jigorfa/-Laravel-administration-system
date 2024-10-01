@@ -17,7 +17,14 @@ class ExperienceController extends Controller
     public function index(Request $request)
     {
     // Inicializa a consulta base e carrega a relação com Situation
+    $countExperience = experience::count();
+
     $search = experience::with('situation');
+
+    // Adiciona filtro por código, se fornecido
+    if ($request->filled('code')) {
+        $search->where('code', 'like', '%' . $request->code . '%');
+    }
 
     // Adiciona filtro por nome, se fornecido
     if ($request->filled('name')) {
@@ -33,7 +40,11 @@ class ExperienceController extends Controller
     $search = $search->orderBy('code', 'ASC')->paginate(10)->withQueryString();
 
     // Retorna a view com os dados filtrados e paginados
-    return view('experience.index', ['Experience' => $search]);
+    return view('experience.index',
+    [
+        'experience' => $search,
+        'count' => $countExperience
+        ]);
     }
 
 
@@ -43,7 +54,7 @@ class ExperienceController extends Controller
 
         return view('experience.create',[
             'situation'=> $situation,
-        ] );
+        ]);
     }
 
     /**
@@ -71,7 +82,7 @@ class ExperienceController extends Controller
         } catch (\Exception $e) {
             // Salvar log e redirecionar o usuário com a mensagem de erro
             Log::warning('Funcionário não cadastrado', ['error' => $e->getMessage()]);
-            return back()->withInput()->with('error', 'Funcionário não cadastrado!');
+            return back()->withInput()->with('error', 'Há algum campo duplicado e/ou inválido!');
         }
     }
 
@@ -136,6 +147,10 @@ class ExperienceController extends Controller
     // Recuperar e pesquisar os registros do banco de dados com os mesmos filtros da listagem
     $search = experience::with('Situation');
 
+    if ($request->filled('code')) {
+        $search->where('code', 'like', '%' . $request->code . '%');
+    }
+
     if ($request->filled('name')) {
         $search->where('name', 'like', '%' . $request->name . '%');
     }
@@ -147,10 +162,10 @@ class ExperienceController extends Controller
     $search = $search->orderBy('code', 'ASC')->get();
 
     // Carregar a string com o HTML/conteúdo e determinar a orientação e o tamanho do arquivo
-    $pdf = PDF::loadView('pdf', ['experiences' => $search])
+    $pdf = PDF::loadView('experiencePdf', ['experience' => $search])
         ->setPaper('a4', 'portrait');
 
     // Fazer o download do arquivo
-    return $pdf->download('experiences.pdf');
+    return $pdf->download('funcionários.pdf');
     }
     }

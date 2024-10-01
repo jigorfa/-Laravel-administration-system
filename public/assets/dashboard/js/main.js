@@ -1672,23 +1672,21 @@
 
 })(jQuery);
 
-document.getElementById('salary').addEventListener('input', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    const salaryField = document.getElementById('salary');
+    if (salaryField) {
+        salaryField.addEventListener('input', function () {
+            let valueSalary = this.value.replace(/[^\d]/g, '');
 
-    // Obter o valor atual removendo qualquer caractere que não seja número
-    let valueSalary = this.value.replace(/[^\d]/g, '');
+            if (valueSalary.length === 0) {
+                return;
+            }
 
-    // Se não houver valor, retorna
-    if (valueSalary.length === 0) {
-        return;
+            let formattedSalary = valueSalary.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            formattedSalary += ',' + valueSalary.slice(-2);
+
+            this.value = formattedSalary;
+        });
     }
-
-    // Adicionar separador de milhares
-    let formattedSalary = valueSalary.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-    // Adicionar os centavos
-    formattedSalary += ',' + valueSalary.slice(-2);
-
-    // Atualizar o valor do campo
-    this.value = formattedSalary;
 });
 
