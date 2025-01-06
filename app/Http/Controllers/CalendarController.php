@@ -62,3 +62,11 @@ class CalendarController extends Controller
         //
     }
 }
+
+    /**
+     * Remove all resources from storage.
+     */
+
+    /**
+     * Generate a PDF with the specificied resources.
+     */

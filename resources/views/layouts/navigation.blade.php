@@ -22,45 +22,77 @@
 </head>
 <body>
     <!-- navbar (Desktop) -->
-    <header class="header-desktop3 d-none d-lg-block">
+    <header class="header-desktop3 d-lg-block" style="height: 68px;">
         <div class="section__content section__content--p35">
             <div class="header3-wrap">
                 <div class="header__logo">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('assets/dashboard/images/icon/logo-white.png') }}" alt="CoolAdmin" />
+                        <img style="height: 60px;" src="{{ asset('assets/dashboard/images/icon/mt.png') }}"/>
                     </a>
                 </div>
                 <div class="header__navbar">
                     <ul class="list-unstyled">
+                        <li>
+                            <a href="{{ route('employee.index') }}">
+                                <i class="fas fa-address-card"></i>Funcionários
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+
+                        <li class="has-sub">
+                            <a href="{{ route('event.index') }}">
+                                <i class="fas fa-calendar"></i>Calendário
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+
                         <li class="has-sub">
                             <a href="{{ route('dashboard') }}">
                                 <i class="fas fa-home"></i>Painel
                                 <span class="bot-line"></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('experience.index') }}">
-                                <i class="fas fa-address-card"></i>Experiência
-                                <span class="bot-line"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('attendance.index') }}">
-                                <i class="fas fa-clock"></i>Atrasos
-                                <span class="bot-line"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('attest.index') }}">
-                                <i class="fas fa-stethoscope"></i>Atestados
-                                <span class="bot-line"></span>
-                            </a>
-                        </li>
+
                         <li class="has-sub">
-                            <a href="{{ route('calendar.index') }}">
-                                <i class="fas fa-calendar"></i>Calendário
-                                <span class="bot-line"></span>
+                            <a href="#">
+                                <i class="fas fa-copy"></i>
+                                <span class="bot-line"></span>Fichários
                             </a>
+                            <ul class="header3-sub-list list-unstyled">
+                                <li>
+                                    <a href="{{ route('binder.delay.index') }}">
+                                        <i class="fas fa-clock"></i>Atrasos
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('binder.occurrence.index') }}">
+                                        <i class="fas fa-circle-exclamation"></i>Ocorrências
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="has-sub">
+                            <a href="#">
+                                <i class="fas fa-heart-pulse"></i>
+                                <span class="bot-line"></span>Gestão SST
+                            </a>
+                            <ul class="header3-sub-list list-unstyled">
+                                <li>
+                                    <a href="{{ route('sst.attest.index') }}">
+                                        <i class="fas fa-notes-medical"></i>Atestados
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('sst.epi.index') }}">
+                                        <i class="fas fa-helmet-safety"></i>EPI's
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -69,7 +101,7 @@
                         <div class="account-item account-item--style2 clearfix js-item-menu">
                             <div class="content">
                                 <a class="js-acc-btn" href="#">
-                                    <i class="fas fa-user"></i>{{ Auth::user()->name }}
+                                    <i class="fas fa-user"></i> {{ Auth::user()->name }}
                                 </a>
                             </div>
                             <div class="account-dropdown js-dropdown">
@@ -88,17 +120,16 @@
                                 </div>
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="{{ url('/profile') }}">
+                                        <a href="{{ route('profile.edit') }}">
                                             <i class="fas fa-gear"></i>Configurações
                                         </a>
                                     </div>
                                     <div class="account-dropdown__item">
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <x-dropdown-link :href="route('logout')"
-                                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                                {{ __('Sair') }}
-                                            </x-dropdown-link>
+                                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                                <i class="fas fa-sign-out-alt"></i> Sair
+                                            </a>
                                         </form>
                                     </div>
                                 </div>
@@ -110,100 +141,6 @@
         </div>
     </header>
     <!-- Fim da navbar (Desktop) -->
-
-    <!-- navbar (Mobile) -->
-    <header class="header-mobile header-mobile-2 d-block d-lg-none">
-        <div class="header-mobile__bar">
-            <div class="container-fluid">
-                <div class="header-mobile-inner">
-                    <a class="logo" href="{{ route('dashboard') }}">
-                        <img src="{{ asset('assets/dashboard/images/icon/logo-white.png') }}" alt="CoolAdmin" />
-                    </a>
-                    <button class="hamburger hamburger--slider" type="button">
-                        <span class="hamburger-box">
-                            <span class="hamburger-inner"></span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <nav class="navbar-mobile">
-            <div class="container-fluid">
-                <ul class="navbar-mobile__list list-unstyled">
-                    <li class="has-sub">
-                        <a class="js-arrow" href="{{ route('dashboard') }}">
-                            <i class="fas fa-home"></i>Painel
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('experience.index') }}">
-                            <i class="fas fa-address-card"></i>Experiência
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('attendance.index') }}">
-                            <i class="fas fa-clock"></i>Atrasos
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('attest.index') }}">
-                            <i class="fas fa-stethoscope"></i>Atestados
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('calendar.index') }}">
-                            <i class="fas fa-calendar"></i>Calendário
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <div class="sub-header-mobile-2 d-block d-lg-none">
-        <div class="header__tool">
-            <div class="account-wrap">
-                <div class="account-item account-item--style2 clearfix js-item-menu">
-                    <div class="content">
-                        <a class="js-acc-btn" href="#">
-                            <i class="fas fa-user"></i>{{ Auth::user()->name }}
-                        </a>
-                    </div>
-                    <div class="account-dropdown js-dropdown">
-                        <div class="info clearfix">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="{{ asset('assets/dashboard/images/icon/user.png') }}" alt="User">
-                                </a>
-                            </div>
-                            <div class="content">
-                                <h5 class="name">
-                                    <a href="#">{{ Auth::user()->name }}</a>
-                                </h5>
-                                <span class="email">{{ Auth::user()->email }}</span>
-                            </div>
-                        </div>
-                        <div class="account-dropdown__body">
-                            <div class="account-dropdown__item">
-                                <a href="{{ url('/profile') }}">
-                                    <i class="fas fa-cog"></i>Configurações
-                                </a>
-                            </div>
-                            <div class="account-dropdown__item">
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                </form>
-                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="fas fa-sign-out-alt"></i> Sair
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fim da navbar (Mobile) -->
 
     <!-- Scripts -->
     <script src="{{ asset('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>

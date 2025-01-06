@@ -1,67 +1,259 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
-    <title>Calendário</title>
-    <!-- Links -->
-    <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/font-awesome-4.7/css/font-awesome.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/css-hamburgers/hamburgers.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-    <!-- CSS Principal -->
-    <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
-      });
-    </script>
-    <!-- Fim dos Links -->
+    <title>Laravel Fullcalender Tutorial Tutorial - ItSolutionStuff.com</title>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+
+  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
 </head>
 
-<body class="animsition">
-    <div class="page-wrapper">
-        <!-- Navbar -->
-        @include('layouts.navigation')
-        <!-- Fim da Navbar -->
-        <div id='calendar'></div>
-        <!-- Fim do Conteúdo -->
-    </div>
-    <!-- Scripts -->
-    <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/popper.min.js"') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/slick/slick.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/wow/wow.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/animsition/animsition.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/counter-up/jquery.counterup.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/circle-progress/circle-progress.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-    <!-- JS principal -->
-    <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
-    <!-- JS Calendar -->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-    <!-- Fim dos Scripts -->
+<body>
+
+  
+
+<div class="container">
+
+    <h1>Laravel FullCalender Tutorial Example - ItSolutionStuff.com</h1>
+
+    <div id='calendar'></div>
+
+</div>
+
+   
+
+<script>
+
+$(document).ready(function () {
+
+   
+
+var SITEURL = "{{ url('/') }}";
+
+  
+
+$.ajaxSetup({
+
+    headers: {
+
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    }
+
+});
+
+  
+
+var calendar = $('#calendar').fullCalendar({
+
+                    editable: true,
+
+                    events: SITEURL + "/calendar",
+
+                    displayEventTime: false,
+
+                    editable: true,
+
+                    eventRender: function (event, element, view) {
+
+                        if (event.allDay === 'true') {
+
+                                event.allDay = true;
+
+                        } else {
+
+                                event.allDay = false;
+
+                        }
+
+                    },
+
+                    selectable: true,
+
+                    selectHelper: true,
+
+                    select: function (start, end, allDay) {
+
+                        var title = prompt('Event Title:');
+
+                        if (title) {
+
+                            var start_date = $.fullCalendar.formatDate(start_date, "Y-MM-DD");
+
+                            var end_date = $.fullCalendar.formatDate(end_date, "Y-MM-DD");
+
+                            $.ajax({
+
+                                url: SITEURL + "/fullcalenderAjax",
+
+                                data: {
+
+                                    title: title,
+
+                                    start_date: start_date,
+
+                                    end_date: end_date,
+
+                                    description: description,
+
+                                    type: 'add'
+
+                                },
+
+                                type: "POST",
+
+                                success: function (data) {
+
+                                    displayMessage("Event Created Successfully");
+
+  
+
+                                    calendar.fullCalendar('renderEvent',
+
+                                        {
+
+                                            id: data.id,
+
+                                            title: title,
+
+                                            start_date: start_date,
+
+                                            end_date: end_date,
+
+                                            description: description,
+
+                                            allDay: allDay
+
+                                        },true);
+
+  
+
+                                    calendar.fullCalendar('unselect');
+
+                                }
+
+                            });
+
+                        }
+
+                    },
+
+                    eventDrop: function (event, delta) {
+
+                        var start = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+
+                        var end = $.fullCalendar.formatDate(event.end, "Y-MM-DD");
+
+  
+
+                        $.ajax({
+
+                            url: SITEURL + '/fullcalenderAjax',
+
+                            data: {
+
+                                title: event.title,
+
+                                start_date: start_date,
+
+                                end_date: end_date,
+
+                                description: description,
+
+                                id: event.id,
+
+                                type: 'update'
+
+                            },
+
+                            type: "POST",
+
+                            success: function (response) {
+
+                                displayMessage("Event Updated Successfully");
+
+                            }
+
+                        });
+
+                    },
+
+                    eventClick: function (event) {
+
+                        var deleteMsg = confirm("Do you really want to delete?");
+
+                        if (deleteMsg) {
+
+                            $.ajax({
+
+                                type: "POST",
+
+                                url: SITEURL + '/fullcalenderAjax',
+
+                                data: {
+
+                                        id: event.id,
+
+                                        type: 'delete'
+
+                                },
+
+                                success: function (response) {
+
+                                    calendar.fullCalendar('removeEvents', event.id);
+
+                                    displayMessage("Event Deleted Successfully");
+
+                                }
+
+                            });
+
+                        }
+
+                    }
+
+ 
+
+                });
+
+ 
+
+});
+
+ 
+
+function displayMessage(message) {
+
+    toastr.success(message, 'Event');
+
+} 
+
+  
+
+</script>
+
+  
+
 </body>
+
 </html>

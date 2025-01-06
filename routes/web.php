@@ -1,51 +1,106 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ExperienceController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\AttestController;
-use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\{
+    ProfileController,
+    EmployeeController,
+    EventController,
+    DelayController,
+    OccurrenceController,
+    AttestController,
+    EpiController,
+};
 
-Route::get('/', function () {
-    return view('auth/login');
+Route::get('/', fn () => view('auth/login'));
+
+Route::middleware(['auth', 'verified', 'verify'])->group(function () {
+    Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard', [ProfileController::class, 'index'])->name('salary.calculate');
 });
 
-Route::get('/dashboard', [ProfileController::class, 'index'])->middleware(['auth', 'verified', 'admin'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
+    Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+    Route::patch('/', [ProfileController::class, 'update'])->name('update');
+    Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('experience', [ExperienceController::class, 'index'])->name('experience.index');
-    Route::get('experience/create', [ExperienceController::class, 'create'])->name('experience.create');
-    Route::post('experience', [ExperienceController::class, 'store'])->name('experience.store');
-    Route::get('experience/{experience}/edit', [ExperienceController::class, 'edit'])->name('experience.edit');
-    Route::put('experience/{experience}', [ExperienceController::class, 'update'])->name('experience.update');
-    Route::delete('experience/{experience}', [ExperienceController::class, 'destroy'])->name('experience.destroy');
+Route::middleware(['auth', 'verify'])->group(function () {
 
-    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
-    Route::post('attendance', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
-    Route::put('attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
-    Route::delete('attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+    Route::prefix('employee')->name('employee.')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('index');
+        Route::get('/{employee}/show', [EmployeeController::class, 'show'])->name('show');
+        Route::get('/create', [EmployeeController::class, 'create'])->name('create');
+        Route::post('/', [EmployeeController::class, 'store'])->name('store');
+        Route::get('/{employee}/edit', [EmployeeController::class, 'edit'])->name('edit');
+        Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+    });
 
-    Route::get('attest', [AttestController::class, 'index'])->name('attest.index');
-    Route::get('attest/create', [AttestController::class, 'create'])->name('attest.create');
-    Route::post('attest', [AttestController::class, 'store'])->name('attest.store');
-    Route::get('attest/{attest}/edit', [AttestController::class, 'edit'])->name('attest.edit');
-    Route::put('attest/{attest}', [AttestController::class, 'update'])->name('attest.update');
-    Route::delete('attest/{attest}', [AttestController::class, 'destroy'])->name('attest.destroy');
+    Route::get('/calendar', function () {
+        return view('calendar.index');
+    });
+    
+    Route::prefix('event')->name('event.')->group(function () {
+        Route::get('/', [EventController::class, 'index'])->name('index');
+        Route::post('/', [EventController::class, 'store'])->name('ajax');
+    });
 
-    Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::prefix('delay')->name('binder.delay.')->group(function () {
+        Route::get('/', [DelayController::class, 'index'])->name('index');
+        Route::get('/{delay}/show', [DelayController::class, 'show'])->name('show');
+        Route::get('/create', [DelayController::class, 'create'])->name('create');
+        Route::post('/', [DelayController::class, 'store'])->name('store');
+        Route::get('/{delay}/edit', [DelayController::class, 'edit'])->name('edit');
+        Route::get('/employee/{code}', [DelayController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::put('/{delay}', [DelayController::class, 'update'])->name('update');
+        Route::delete('/detail/{id}', [DelayController::class, 'deleteDetail'])->name('deleteDetail');
+        Route::delete('/{delay}', [DelayController::class, 'destroy'])->name('destroy');
+    });    
 
-    Route::get('/experience/pdf', [ExperienceController::class, 'pdf'])->name('experiencePdf.generate');
-    Route::get('/attendance/pdf', [AttendanceController::class, 'pdf'])->name('attendancePdf.generate');
-    Route::get('/attest/pdf', [AttestController::class, 'pdf'])->name('attestPdf.generate');
+    Route::prefix('occurrence')->name('binder.occurrence.')->group(function () {
+        Route::get('/', [OccurrenceController::class, 'index'])->name('index');
+        Route::get('/{occurrence}/show', [OccurrenceController::class, 'show'])->name('show');
+        Route::get('/create', [OccurrenceController::class, 'create'])->name('create');
+        Route::get('/search', [OccurrenceController::class, 'search'])->name('search');
+        Route::post('/', [OccurrenceController::class, 'store'])->name('store');
+        Route::get('/{occurrence}/edit', [OccurrenceController::class, 'edit'])->name('edit');
+        Route::get('/employee/{code}', [OccurrenceController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::put('/{occurrence}', [OccurrenceController::class, 'update'])->name('update');
+        Route::delete('/detail/{id}', [OccurrenceController::class, 'deleteDetail'])->name('deleteDetail');
+        Route::delete('/{occurrence}', [OccurrenceController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('attest')->name('sst.attest.')->group(function () {
+        Route::get('/', [AttestController::class, 'index'])->name('index');
+        Route::get('/{attest}/show', [AttestController::class, 'show'])->name('show');
+        Route::get('/create', [AttestController::class, 'create'])->name('create');
+        Route::post('/', [AttestController::class, 'store'])->name('store');
+        Route::get('/employee/{code}', [AttestController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::get('/{attest}/edit', [AttestController::class, 'edit'])->name('edit');
+        Route::put('/{attest}', [AttestController::class, 'update'])->name('update');
+        Route::delete('/detail/{id}', [AttestController::class, 'deleteDetail'])->name('deleteDetail');
+        Route::delete('/{attest}', [AttestController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('epi')->name('sst.epi.')->group(function () {
+        Route::get('/', [EpiController::class, 'index'])->name('index');
+        Route::get('/{epi}/show', [EpiController::class, 'show'])->name('show');
+        Route::get('/create', [EpiController::class, 'create'])->name('create');
+        Route::post('/', [EpiController::class, 'store'])->name('store');
+        Route::get('/employee/{code}', [EpiController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::get('/{epi}/edit', [EpiController::class, 'edit'])->name('edit');
+        Route::put('/{epi}', [EpiController::class, 'update'])->name('update');
+        Route::delete('/detail/{id}', [EpiController::class, 'deleteDetail'])->name('deleteDetail');
+        Route::delete('/{epi}', [EpiController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('pdf')->name('pdf.')->group(function () {
+        Route::get('/attest/{pdf}', [AttestController::class, 'pdf'])->name('attest');
+        Route::get('/delay/{pdf}', [DelayController::class, 'pdf'])->name('delay');
+        Route::get('/employee/{code}', [EmployeeController::class, 'pdf'])->name('employee');
+        Route::get('/occurrence/{pdf}', [OccurrenceController::class, 'pdf'])->name('occurrence');
+        Route::get('/epi/{pdf}', [EpiController::class, 'pdf'])->name('epi');
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

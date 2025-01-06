@@ -1,13 +1,16 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Attest;
+use App\Models\AttestDetail;
 use Illuminate\Http\Request;
 use App\Http\Requests\AttestRequest;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 class AttestController extends Controller
 {
@@ -16,185 +19,212 @@ class AttestController extends Controller
      */
     public function index(Request $request)
     {
-        // Inicializa a consulta base
-        $countAttest = attest::count();
-        $search = attest::query();
+        $query = Attest::with(['employee'])->withCount('detail');
 
-        // Adiciona filtros se fornecidos
-        if ($request->filled('code')) {
-            $search->where('code', 'like', '%' . $request->code . '%');
+        if ($request->filled('employee_code')) {
+            $query->where('employee_code', 'like', '%' . $request->employee_code . '%');
         }
 
-        if ($request->filled('name')) {
-            $search->where('name', 'like', '%' . $request->name . '%');
+        if ($request->filled('employee_name')) {
+            $query->whereHas('employee', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->employee_name . '%');
+            });
         }
 
-        if ($request->filled('adjuntancy')) {
-            $search->where('adjuntancy', 'like', '%' . $request->adjuntancy . '%');
+        if ($request->filled('employee_adjuntancy')) {
+            $query->whereHas('employee', function ($query) use ($request) {
+                $query->where('adjuntancy', 'like', '%' . $request->employee_adjuntancy . '%');
+            });
         }
 
-        // Ordena e pagina os resultados
-        $search = $search->orderBy('code', 'ASC')->paginate(10)->withQueryString();
+        $search = $query->orderBy('employee_code', 'ASC')->paginate(10)->withQueryString();
 
-        // Retorna a view com os dados
-        return view('attest.index', [
-            'attest' => $search,
-            'count' => $countAttest
+        return view('sst.attest.index', [
+            'search' => $search,
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('attest.create');
-    }
+        $employee = Employee::orderBy('name', 'asc')->get();
 
+        return view('sst.attest.create', [
+            'employee' => $employee,
+        ]);
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(AttestRequest $request)
     {
-        $request->validated();
-
         try {
-            // Calcular o total de dias
-            $startDate = Carbon::parse($request->start_date);
-            $endDate = Carbon::parse($request->end_date);
-            $total_days = $startDate->diffInDays($endDate) + 1; // Inclui o dia inicial e final
-
-            // Preparar o nome do anexo se houver upload
-            $annexName = null;
-            if ($request->hasFile('annex') && $request->file('annex')->isValid()) {
-                $annex = $request->file('annex');
-                $annexName = md5($annex->getClientOriginalName() . strtotime("now")) . '.' . $annex->getClientOriginalExtension();
-                $annex->move(public_path('img/attestsPdf'), $annexName); // Pasta para salvar o anexo
-            }
-
-            // Criar novo registro
-            $attest = attest::create([
-                'code' => $request->code,
-                'name' => $request->name,
-                'adjuntancy' => $request->adjuntancy,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'cause' => $request->cause,
-                'total_days' => $total_days,
-                'annex' => $annexName, // Armazena o nome do arquivo do anexo
+            $attest = Attest::create([
+                'employee_code' => $request['employee_code'],
             ]);
 
-            return redirect()->route('attest.index')->with('success', 'Registro cadastrado com sucesso!');
+            foreach ($request['detail'] as $details) {
+                $annexPath = null;
+
+                if (isset($details['annex']) && $details['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                    $annexPath = $details['annex']->store('attest_annexes', 'public');
+                }
+
+                $attest->detail()->create([
+                    'start_attest' => $details['start_attest'],
+                    'end_attest' => $details['end_attest'],
+                    'cause' => $details['cause'],
+                    'annex' => $annexPath,
+                ]);
+            }
+
+            return redirect()->route('sst.attest.index')->with('success', 'Atestado criado com sucesso!');
         } catch (\Exception $e) {
-            Log::warning('Registro não cadastrado', ['error' => $e->getMessage()]);
-            return back()->withInput()->with('error', 'Registro não cadastrado');
+            return back()->withErrors('Erro ao salvar o atestado: ' . $e->getMessage());
         }
     }
-
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      */
-    public function edit($code)
+    public function show($id)
     {
-        $attest = attest::findOrFail($code);
+        $attest = Attest::with('detail')->find($id);
+        $employee = Employee::orderBy('name', 'asc')->get();
 
-        return view('attest.edit', [
-            'attest' => $attest,
+        return view('sst.attest.show', [
+            'employee' => $employee,
+            'attest' => $attest
         ]);
     }
-
+    /** 
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $attest = Attest::with('detail')->find($id);
+        
+        if (!$attest) {
+            return redirect()->route('sst.attest.index')->with('error', 'Atestado não encontrado.');
+        }
+    
+        return view('sst.attest.edit', compact('attest')); // Passa a variável attest para a view
+    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(AttestRequest $request, $code)
+    public function update(AttestRequest $request, $id)
     {
-        $request->validated();
-        $attest = attest::findOrFail($code);
-
         try {
-            // Calcular o total de dias
-            $startDate = Carbon::parse($request->start_date);
-            $endDate = Carbon::parse($request->end_date);
-            $total_days = $startDate->diffInDays($endDate) + 1; // Inclui o dia inicial e final
+            $attest = Attest::with('detail')->findOrFail($id);
 
-            // Verifica se há upload de uma nova anexo
-            $annexName = $attest->annex; // Manter a anexo atual se não for alterada
+            foreach ($request->detail as $index => $details) {
+                $annexPath = $details['annex'] ?? null;
 
-            if ($request->hasFile('annex') && $request->file('annex')->isValid()) {
-                $annex = $request->file('annex');
-                $annexName = md5($annex->getClientOriginalName() . strtotime("now")) . '.' . $annex->getClientOriginalExtension();
+                if (isset($details['annex']) && $details['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                    if (!empty($details['id'])) {
+                        $existingDetail = $attest->detail()->find($details['id']);
+                        if ($existingDetail && $existingDetail->annex) {
+                            Storage::disk('public')->delete($existingDetail->annex);
+                        }
+                    }
 
-                // Verifica se o arquivo é PDF
-                if ($annex->getClientOriginalExtension() === 'pdf') {
-                    $annex->move(public_path('img/attestsPdf'), $annexName); // Pasta para salvar o arquivo PDF
+                    $annexPath = $details['annex']->store('attest_annexes', 'public');
+                }
+
+                if (!empty($details['id'])) {
+                    $existingDetail = $attest->detail()->find($details['id']);
+                    if ($existingDetail) {
+                        $existingDetail->update([
+                            'start_attest' => $details['start_attest'] ?? null,
+                            'end_attest' => $details['end_attest'] ?? null,
+                            'cause' => $details['cause'] ?? null,
+                            'annex' => $annexPath ?? $existingDetail->annex,
+                        ]);
+                    }
                 } else {
-                    return back()->withInput()->with('error', 'Apenas arquivos PDF são permitidos.');
+                    $attest->detail()->create([
+                        'start_attest' => $details['start_attest'] ?? null,
+                        'end_attest' => $details['end_attest'] ?? null,
+                        'cause' => $details['cause'] ?? null,
+                        'annex' => $annexPath,
+                    ]);
                 }
             }
 
-            // Atualizar registro
-            $attest->update([
-                'code' => $request->code,
-                'name' => $request->name,
-                'adjuntancy' => $request->adjuntancy,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'cause' => $request->cause,
-                'total_days' => $total_days,
-                'annex' => $annexName, // Corrigido para $annexName
-            ]);
-
-            Log::info('Cadastro editado com sucesso', ['code' => $attest->code]);
-            return redirect()->route('attest.index')->with('success', 'Registro editado com sucesso!');
+            return redirect()->route('sst.attest.index')->with('success', 'Registro de atraso atualizado com sucesso!');
         } catch (\Exception $e) {
-            Log::warning('Cadastro não editado', ['error' => $e->getMessage()]);
-            return back()->withInput()->with('error', 'Cadastro não editado!');
+            Log::error('Erro ao atualizar atestado', ['error' => $e->getMessage()]);
+            return back()->withInput()->with('error', 'Erro ao atualizar atestado: ' . $e->getMessage());
         }
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($code)
+    public function deleteDetail($id)
     {
-        $attest = attest::findOrFail($code);
-
-        // Deletar o anexo associado, se houver
-        if ($attest->annex && file_exists(public_path('img/attestsPdf/' . $attest->annex))) {
-            unlink(public_path('img/attestsPdf/' . $attest->annex));
+        try {
+            $detail = AttestDetail::find($id);
+    
+            if (!$detail) {
+                return back()->with('error', 'Detalhe não encontrado.');
+            }
+    
+            $attestId = $detail->attest_id;
+    
+            $detail->delete();
+    
+            return redirect()->route('sst.attest.edit', $attestId)->with('danger', 'Detalhe excluído com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao excluir o detalhe do atestado', ['error' => $e->getMessage()]);
+            
+            return back()->with('error', 'Erro ao excluir o detalhe: ' . $e->getMessage());
         }
-
-        $attest->delete();
-
-        return redirect()->route('attest.index')->with('danger', 'Registro deletado com sucesso!');
     }
-
     /**
-     * Generate a PDF with the attest records.
+     * Remove all resources from storage.
      */
-    public function pdf(Request $request)
+    public function destroy($id)
     {
-        // Recuperar e filtrar os registros
-        $search = attest::query();
+        $attest = Attest::with('detail')->where('id', $id)->firstOrFail();
 
-        if ($request->filled('code')) {
-            $search->where('code', 'like', '%' . $request->code . '%');
+        try {
+            $attest->detail()->delete(); // Excluir os detalhes associados
+            $attest->delete(); // Excluir o registro principal
+
+            return redirect()->route('sst.index')->with('danger', 'Registro de atestado deletado com sucesso!');
+        } catch (\Exception $e) {
+            Log::warning('Erro ao deletar atestado', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Erro ao deletar atestado: ' . $e->getMessage());
+        }
+    }
+    /**
+     * Fetch employee by code.
+     */
+    public function getEmployeeByCode($code)
+    {
+        $employee = Employee::where('code', $code)->first();
+
+        if ($employee) {
+            return response()->json([
+                'name' => $employee->name,
+                'adjuntancy' => $employee->adjuntancy,
+            ]);
         }
 
-        if ($request->filled('name')) {
-            $search->where('name', 'like', '%' . $request->name . '%');
-        }
+        return response()->json(null);
+    }
+    /**
+     * Generate a PDF with the specificied resources.
+     */
+    public function pdf($id)
+    {
+        $attest = Attest::with(['employee', 'detail'])
+        ->findOrFail($id);
 
-        if ($request->filled('adjuntancy')) {
-            $search->where('adjuntancy', 'like', '%' . $request->adjuntancy . '%');
-        }
-
-        $search = $search->orderBy('code', 'ASC')->get();
-
-        // Gerar o PDF
-        $pdf = PDF::loadView('attestPdf', ['attest' => $search])
+        $pdf = PDF::loadView('pdf.attest', ['attest' => $attest])
             ->setPaper('a4', 'portrait');
 
-        return $pdf->download('atestados.pdf');
+        return $pdf->download('atestados_' . $attest->employee->code . '.pdf');
     }
 }

@@ -7,26 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attest extends Model
 {
-    use HasFactory;
-
-    // Indicar o nome da tabela
     protected $table = 'attest';
 
-    public $incrementing = false;
+    protected $primaryKey = 'id';
+    
+    protected $keyType = 'int';
 
-    protected $keyType = 'string';
+    public $incrementing = true;
 
-    protected $primaryKey = 'code';
+    use HasFactory;
 
-    // Indicar quais colunas podem ser cadastradas
     protected $fillable = [
-        'code',
-        'name',
-        'adjuntancy',
-        'start_date',
-        'end_date',
-        'total_days',
-        'cause',
-        'annex',
+        'employee_code',
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_code', 'code');
+    }
+
+    public function detail()
+    {
+        return $this->hasMany(AttestDetail::class, 'attest_id', 'id');
+    }
 }

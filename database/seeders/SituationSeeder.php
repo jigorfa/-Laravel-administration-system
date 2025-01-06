@@ -26,9 +26,16 @@ class SituationSeeder extends Seeder
             ]);
         }
 
-        if (!Situation::where('name', 'Aprovado')->first()) {
+        if (!Situation::where('name', 'Análise')->first()) {
             Situation::create([
-                'name' => 'Aprovado',
+                'name' => 'Análise',
+                'color' => 'primary',
+            ]);
+        }
+
+        if (!Situation::where('name', 'Vigente')->first()) {
+            Situation::create([
+                'name' => 'Vigente',
                 'color' => 'success',
             ]);
         }

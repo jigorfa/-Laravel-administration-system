@@ -876,112 +876,124 @@
   try {
     //bar chart
     var ctx = document.getElementById("barChart");
-    if (ctx) {
-      ctx.height = 200;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        defaultFontFamily: 'Poppins',
-        data: {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [65, 59, 80, 81, 56, 55, 40],
-              borderColor: "rgba(0, 123, 255, 0.9)",
-              borderWidth: "0",
-              backgroundColor: "rgba(0, 123, 255, 0.5)",
-              fontFamily: "Poppins"
-            },
-            {
-              label: "My Second dataset",
-              data: [28, 48, 40, 19, 86, 27, 90],
-              borderColor: "rgba(0,0,0,0.09)",
-              borderWidth: "0",
-              backgroundColor: "rgba(0,0,0,0.07)",
-              fontFamily: "Poppins"
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                fontFamily: "Poppins"
-
+    if (typeof monthlyAttendances !== 'undefined' && typeof monthlyAttests !== 'undefined') {
+      var ctx = document.getElementById("barChart");
+      if (ctx) {
+          ctx.height = 200;
+          var myChart = new Chart(ctx, {
+              type: 'bar',
+              defaultFontFamily: 'Poppins',
+              data: {
+                  labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                  datasets: [
+                      {
+                          label: "Atrasos",
+                          data: [
+                              monthlyAttendances[1], monthlyAttendances[2], monthlyAttendances[3],
+                              monthlyAttendances[4], monthlyAttendances[5], monthlyAttendances[6],
+                              monthlyAttendances[7], monthlyAttendances[8], monthlyAttendances[9],
+                              monthlyAttendances[10], monthlyAttendances[11], monthlyAttendances[12]
+                          ],
+                          borderColor: "#393939",
+                          borderWidth: "0",
+                          backgroundColor: "#393939",
+                          fontFamily: "Poppins"
+                      },
+                      {
+                          label: "Atestados",
+                          data: [
+                              monthlyAttests[1], monthlyAttests[2], monthlyAttests[3],
+                              monthlyAttests[4], monthlyAttests[5], monthlyAttests[6],
+                              monthlyAttests[7], monthlyAttests[8], monthlyAttests[9],
+                              monthlyAttests[10], monthlyAttests[11], monthlyAttests[12]
+                          ],
+                          borderColor: "#393939",
+                          borderWidth: "0",
+                          backgroundColor: "#C82333",
+                          fontFamily: "Poppins"
+                      }
+                  ]
+              },
+              options: {
+                  legend: {
+                      position: 'top',
+                      labels: {
+                          fontFamily: 'Poppins'
+                      }
+                  },
+                  scales: {
+                      xAxes: [{
+                          ticks: {
+                              fontFamily: "Poppins"
+                          }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero: true,
+                              stepSize: 10,
+                              fontFamily: "Poppins"
+                          }
+                      }]
+                  }
               }
-            }],
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                fontFamily: "Poppins"
-              }
-            }]
-          }
-        }
-      });
+          });
+      }
+    } else {
+        console.log("monthlyAttendances or monthlyAttests data not found.");
     }
-
-
   } catch (error) {
     console.log(error);
   }
 
-  try {
+    try {
 
-    //radar chart
-    var ctx = document.getElementById("radarChart");
-    if (ctx) {
-      ctx.height = 200;
-      var myChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-          labels: [["Eating", "Dinner"], ["Drinking", "Water"], "Sleeping", ["Designing", "Graphics"], "Coding", "Cycling", "Running"],
-          defaultFontFamily: 'Poppins',
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [65, 59, 66, 45, 56, 55, 40],
-              borderColor: "rgba(0, 123, 255, 0.6)",
-              borderWidth: "1",
-              backgroundColor: "rgba(0, 123, 255, 0.4)"
-            },
-            {
-              label: "My Second dataset",
-              data: [28, 12, 40, 19, 63, 27, 87],
-              borderColor: "rgba(0, 123, 255, 0.7",
-              borderWidth: "1",
-              backgroundColor: "rgba(0, 123, 255, 0.5)"
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
+      //radar chart
+      var ctx = document.getElementById("radarChart");
+      if (ctx) {
+        ctx.height = 200;
+        var myChart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: [["Eating", "Dinner"], ["Drinking", "Water"], "Sleeping", ["Designing", "Graphics"], "Coding", "Cycling", "Running"],
+            defaultFontFamily: 'Poppins',
+            datasets: [
+              {
+                label: "My First dataset",
+                data: [65, 59, 66, 45, 56, 55, 40],
+                borderColor: "rgba(0, 123, 255, 0.6)",
+                borderWidth: "1",
+                backgroundColor: "rgba(0, 123, 255, 0.4)"
+              },
+              {
+                label: "My Second dataset",
+                data: [28, 12, 40, 19, 63, 27, 87],
+                borderColor: "rgba(0, 123, 255, 0.7",
+                borderWidth: "1",
+                backgroundColor: "rgba(0, 123, 255, 0.5)"
+              }
+            ]
           },
-          scale: {
-            ticks: {
-              beginAtZero: true,
-              fontFamily: "Poppins"
+          options: {
+            legend: {
+              position: 'top',
+              labels: {
+                fontFamily: 'Poppins'
+              }
+
+            },
+            scale: {
+              ticks: {
+                beginAtZero: true,
+                fontFamily: "Poppins"
+              }
             }
           }
-        }
-      });
-    }
+        });
+      }
 
-  } catch (error) {
-    console.log(error)
-  }
+    } catch (error) {
+      console.log(error)
+    }
 
   try {
 
@@ -1055,54 +1067,50 @@
 
 
   try {
-
-    //doughut chart
-    var ctx = document.getElementById("doughutChart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            data: [45, 25, 20, 10],
-            backgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ],
-            hoverBackgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ]
-
-          }],
-          labels: [
-            "Green",
-            "Green",
-            "Green",
-            "Green"
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          responsive: true
+    // Verifica se os dados 'adjuntancyLabels' e 'adjuntancyTotals' existem
+    if (typeof adjuntancyLabels !== 'undefined' && typeof adjuntancyTotals !== 'undefined') {
+        var ctx = document.getElementById("doughutChart");
+        if (ctx) {
+            ctx.height = 150;
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: adjuntancyLabels,  // Labels dinâmicos com os nomes dos cargos
+                    datasets: [{
+                        data: adjuntancyTotals,  // Dados dinâmicos com as contagens de funcionários por cargo
+                        backgroundColor: [
+                            "#fb8500",
+                            "#FFFF3F",
+                            "#415D43",
+                            "#3D5A80",
+                            "#5A189A"
+                        ],
+                        hoverBackgroundColor: [
+                            "#353535",
+                            "#353535",
+                            "#353535",
+                            "#353535",
+                            "#353535"
+                        ]
+                    }]
+                },
+                options: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            fontFamily: 'Poppins'
+                        }
+                    },
+                    responsive: true
+                }
+            });
         }
-      });
+    } else {
+        console.log("adjuntancyLabels or adjuntancyTotals data not found.");
     }
-
-
-  } catch (error) {
+} catch (error) {
     console.log(error);
-  }
+}
 
 
   try {
@@ -1199,58 +1207,70 @@
   }
 
   try {
-
-    // single bar chart
-    var ctx = document.getElementById("singelBarChart");
-    if (ctx) {
-      ctx.height = 150;
-      var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ["Sun", "Mon", "Tu", "Wed", "Th", "Fri", "Sat"],
-          datasets: [
-            {
-              label: "My First dataset",
-              data: [40, 55, 75, 81, 56, 55, 40],
-              borderColor: "rgba(0, 123, 255, 0.9)",
-              borderWidth: "0",
-              backgroundColor: "rgba(0, 123, 255, 0.5)"
-            }
-          ]
-        },
-        options: {
-          legend: {
-            position: 'top',
-            labels: {
-              fontFamily: 'Poppins'
-            }
-
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                fontFamily: "Poppins"
-
+    // Verifica se a variável 'monthlyAdmissions' existe
+    if (typeof monthlyAdmissions !== 'undefined') {
+      var ctx = document.getElementById("singelBarChart");
+      if (ctx) {
+          ctx.height = 150;
+          var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                  datasets: [
+                      {
+                          label: "Admissões",
+                          data: [
+                              monthlyAdmissions[1],  // Jan
+                              monthlyAdmissions[2],  // Fev
+                              monthlyAdmissions[3],  // Mar
+                              monthlyAdmissions[4],  // Abr
+                              monthlyAdmissions[5],  // Mai
+                              monthlyAdmissions[6],  // Jun
+                              monthlyAdmissions[7],  // Jul
+                              monthlyAdmissions[8],  // Ago
+                              monthlyAdmissions[9],  // Set
+                              monthlyAdmissions[10], // Out
+                              monthlyAdmissions[11], // Nov
+                              monthlyAdmissions[12]  // Dez
+                          ],
+                          borderColor: "#393939",
+                          borderWidth: "0",
+                          backgroundColor: "#E9C46A"
+                      }
+                  ]
+              },
+              options: {
+                  legend: {
+                      position: 'top',
+                      labels: {
+                          fontFamily: 'Poppins'
+                      }
+                  },
+                  scales: {
+                      xAxes: [{
+                          ticks: {
+                              fontFamily: "Poppins"
+                          }
+                      }],
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero: true,
+                              stepSize: 10,
+                              fontFamily: "Poppins"
+                          }
+                      }]
+                  }
               }
-            }],
-            yAxes: [{
-              ticks: {
-                beginAtZero: true,
-                fontFamily: "Poppins"
-              }
-            }]
-          }
-        }
-      });
+          });
     }
-
+    } else {
+      console.log("monthlyAdmissions data not found.");
+    }
   } catch (error) {
     console.log(error);
   }
 
 })(jQuery);
-
-
 
 (function ($) {
     // USE STRICT
@@ -1282,167 +1302,6 @@
 
 
   })(jQuery);
-(function ($) {
-  // USE STRICT
-  "use strict";
-
-  // Map
-  try {
-
-    var vmap = $('#vmap');
-    if(vmap[0]) {
-      vmap.vectorMap( {
-        map: 'world_en',
-        backgroundColor: null,
-        color: '#ffffff',
-        hoverOpacity: 0.7,
-        selectedColor: '#1de9b6',
-        enableZoom: true,
-        showTooltip: true,
-        values: sample_data,
-        scaleColors: [ '#1de9b6', '#03a9f5'],
-        normalizeFunction: 'polynomial'
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Europe Map
-  try {
-
-    var vmap1 = $('#vmap1');
-    if(vmap1[0]) {
-      vmap1.vectorMap( {
-        map: 'europe_en',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        enableZoom: true,
-        showTooltip: true
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // USA Map
-  try {
-
-    var vmap2 = $('#vmap2');
-
-    if(vmap2[0]) {
-      vmap2.vectorMap( {
-        map: 'usa_en',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        enableZoom: true,
-        showTooltip: true,
-        selectedColor: null,
-        hoverColor: null,
-        colors: {
-            mo: '#001BFF',
-            fl: '#001BFF',
-            or: '#001BFF'
-        },
-        onRegionClick: function ( event, code, region ) {
-            event.preventDefault();
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Germany Map
-  try {
-
-    var vmap3 = $('#vmap3');
-    if(vmap3[0]) {
-      vmap3.vectorMap( {
-        map: 'germany_en',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        onRegionClick: function ( element, code, region ) {
-            var message = 'You clicked "' + region + '" which has the code: ' + code.toUpperCase();
-
-            alert( message );
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // France Map
-  try {
-
-    var vmap4 = $('#vmap4');
-    if(vmap4[0]) {
-      vmap4.vectorMap( {
-        map: 'france_fr',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        enableZoom: true,
-        showTooltip: true
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Russia Map
-  try {
-    var vmap5 = $('#vmap5');
-    if(vmap5[0]) {
-      vmap5.vectorMap( {
-        map: 'russia_en',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        hoverOpacity: 0.7,
-        selectedColor: '#999999',
-        enableZoom: true,
-        showTooltip: true,
-        scaleColors: [ '#C8EEFF', '#006491' ],
-        normalizeFunction: 'polynomial'
-      });
-    }
-
-
-  } catch (error) {
-    console.log(error);
-  }
-
-  // Brazil Map
-  try {
-
-    var vmap6 = $('#vmap6');
-    if(vmap6[0]) {
-      vmap6.vectorMap( {
-        map: 'brazil_br',
-        color: '#007BFF',
-        borderColor: '#fff',
-        backgroundColor: '#fff',
-        onRegionClick: function ( element, code, region ) {
-            var message = 'You clicked "' + region + '" which has the code: ' + code.toUpperCase();
-            alert( message );
-        }
-      });
-    }
-
-  } catch (error) {
-    console.log(error);
-  }
-})(jQuery);
 (function ($) {
   // Use Strict
   "use strict";
@@ -1673,20 +1532,68 @@
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function () {
-    const salaryField = document.getElementById('salary');
-    if (salaryField) {
-        salaryField.addEventListener('input', function () {
-            let valueSalary = this.value.replace(/[^\d]/g, '');
+  // Máscara para Salário
+  const salaryField = document.getElementById('salary');
+  if (salaryField) {
+      salaryField.addEventListener('input', function () {
+          let valueSalary = this.value.replace(/[^\d]/g, '');
 
-            if (valueSalary.length === 0) {
-                return;
-            }
+          if (valueSalary.length === 0) {
+              return;
+          }
 
-            let formattedSalary = valueSalary.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            formattedSalary += ',' + valueSalary.slice(-2);
+          let formattedSalary = valueSalary.slice(0, -2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+          formattedSalary += ',' + valueSalary.slice(-2);
 
-            this.value = formattedSalary;
-        });
-    }
+          this.value = formattedSalary;
+      });
+  }
+
+  // Máscara para CPF
+  const cpfField = document.getElementById('personal_code');
+  if (cpfField) {
+      cpfField.addEventListener('input', function () {
+          let valueCpf = this.value.replace(/[^\d]/g, '');
+
+          if (valueCpf.length === 0) {
+              return;
+          }
+
+          let formattedCpf = '';
+          if (valueCpf.length <= 3) {
+              formattedCpf = valueCpf;
+          } else if (valueCpf.length <= 6) {
+              formattedCpf = valueCpf.replace(/(\d{3})(\d+)/, '$1.$2');
+          } else if (valueCpf.length <= 9) {
+              formattedCpf = valueCpf.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+          } else {
+              formattedCpf = valueCpf.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
+          }
+          this.value = formattedCpf;
+      });
+  }
+
+  // Máscara para Telefone
+  const telephoneField = document.getElementById('telephone');
+  if (telephoneField) {
+      telephoneField.addEventListener('input', function () {
+          let valueTelephone = this.value.replace(/[^\d]/g, '');
+
+          if (valueTelephone.length === 0) {
+              return;
+          }
+
+          let formattedTelephone = '';
+          if (valueTelephone.length <= 2) {
+              formattedTelephone = '(' + valueTelephone;
+          } else if (valueTelephone.length <= 7) {
+              formattedTelephone = '(' + valueTelephone.slice(0, 2) + ') ' + valueTelephone.slice(2);
+          } else if (valueTelephone.length <= 10) {
+              formattedTelephone = '(' + valueTelephone.slice(0, 2) + ') ' + valueTelephone.slice(2, 7) + '-' + valueTelephone.slice(7);
+          } else {
+              formattedTelephone = '(' + valueTelephone.slice(0, 2) + ') ' + valueTelephone.slice(2, 7) + '-' + valueTelephone.slice(7, 11);
+          }
+          this.value = formattedTelephone;
+      });
+  }
 });
-

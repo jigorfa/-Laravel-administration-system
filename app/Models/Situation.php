@@ -9,17 +9,15 @@ class Situation extends Model
 {
     use HasFactory;
 
-    // Indicar o nome da tabela
     protected $table = 'situation';
 
-    // Indicar quais colunas podem ser cadastradas
     protected $fillable = [
         'name',
         'color'
     ];
 
-    public function experience()
+    public function employee()
     {
-        return $this->hasMany(Experience::class);
+        return $this->hasMany(Employee::class);
     }
 }

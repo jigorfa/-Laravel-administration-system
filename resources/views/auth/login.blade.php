@@ -19,11 +19,11 @@
                 <div class="col-md-12 col-lg-10">
                     <div class="wrap d-md-flex">
                         <!-- Background Image Section -->
-                        <div class="img" style="background-image: url('{{ url('assets/login/images/bg.jpeg') }}"></div>
+                        <div class="img" style="background-image: url('{{ url('assets/login/images/logo.png') }}"></div>
 
                         <!-- Login Form Section -->
                         <div class="login-wrap p-4 p-md-5">
-                            <div class="d-flex justify-content-between mb-4">
+                            <div class="text-center mb-4">
                                 <h3>Acesso</h3>
                             </div>
 
@@ -33,13 +33,13 @@
                                 @csrf
                                 <!-- Email Field -->
                                 <div class="form-group mb-3">
-                                    <label for="email">Email *</label>
+                                    <label for="email">Email</label>
                                     <input id="email" type="email" name="email" class="form-control" placeholder="Digite seu email:" required>
                                 </div>
 
                                 <!-- Password Field -->
                                 <div class="form-group mb-3">
-                                    <label for="password">Senha *</label>
+                                    <label for="password">Senha</label>
                                     <input id="password" type="password" name="password" class="form-control" placeholder="Digite sua senha:" required>
                                 </div>
 

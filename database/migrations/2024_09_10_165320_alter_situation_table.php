@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('experience', function (Blueprint $table) {
+        Schema::table('employee', function (Blueprint $table) {
             $table->foreignId('situation_id') // Nome da coluna local (chave estrangeira)
-                ->default(3)
+                ->default(4)
                 ->after('salary')
                 ->constrained('situation'); // Nome da tabela referenciada
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('experience', function (Blueprint $table) {
+        Schema::table('employee', function (Blueprint $table) {
             $table->dropForeign(['situation_id']);
             $table->dropColumn('situation_id');
         });

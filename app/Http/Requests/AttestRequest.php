@@ -6,57 +6,38 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AttestRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'code' => 'required|integer',
-            'name' => 'required|string|max:191',
-            'adjuntancy' => 'required|string|max:191',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'cause' => 'required|string|max:191',
-            'annex' => 'nullable|file|mimes:pdf|max:2048', // Regra para aceitar apenas arquivos PDF com tamanho máximo de 2MB
+            'employee_code' => 'required|exists:employee,code',
+            
+            'detail' => 'required|array|min:1',
+            'detail.*.start_attest' => 'required|date',
+            'detail.*.end_attest' => 'required|date|after_or_equal:detail.*.start_attest',
+            'detail.*.cause' => 'required|string|max:191',
+            'detail.*.annex' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
         ];
     }
-
-    public function messages(): array
+    
+    public function messages()
     {
         return [
-            'code.required' => 'O campo código é obrigatório.',
-            'code.integer' => 'O campo código deve ser um número inteiro.',
+            'employee_code.required' => 'O código do funcionário é obrigatório.',
+            'employee_code.exists' => 'O código do funcionário não foi encontrado.',
 
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.max' => 'O nome deve ter no máximo 191 caracteres.',
-
-            'adjuntancy.required' => 'O campo cargo é obrigatório.',
-            'adjuntancy.max' => 'O cargo deve ter no máximo 191 caracteres.',
-
-            'start_date.required' => 'O campo de data inicial é obrigatório.',
-            'start_date.date' => 'A data inicial deve ser uma data válida.',
-
-            'end_date.required' => 'O campo de data final é obrigatório.',
-            'end_date.date' => 'A data final deve ser uma data válida.',
-            'end_date.after' => 'A data final deve ser posterior à data de início.',
-
-            'cause.required' => 'O campo de causa social do atestado é obrigatório.',
-            'cause.max' => 'O campo de causa deve ter no máximo 191 caracteres.',
-            
-            'annex.file' => 'O anexo deve ser um arquivo válido.',
-            'annex.mimes' => 'O anexo deve ser um arquivo do tipo PDF.',
-            'annex.max' => 'O anexo deve ter no máximo 2MB.',
+            'detail.required' => 'É necessário fornecer pelo menos um detalhe de atestado.',
+            'detail.array' => 'Os detalhes do atestado devem ser um array.',
+            'detail.*.start_attest.required' => 'A data de início do atestado é obrigatória.',
+            'detail.*.start_attest.date' => 'A data de início do atestado deve ser uma data válida.',
+            'detail.*.end_attest.required' => 'A data de término do atestado é obrigatória.',
+            'detail.*.end_attest.date' => 'A data de término do atestado deve ser uma data válida.',
+            'detail.*.end_attest.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
+            'detail.*.cause.required' => 'A causa do atestado é obrigatória.',
+            'detail.*.cause.string' => 'A causa do atestado deve ser um texto válido.',
+            'detail.*.cause.max' => 'A causa do atestado pode ter no máximo 191 caracteres.',
+            'detail.*.annex.file' => 'O anexo deve ser um arquivo válido.',
+            'detail.*.annex.mimes' => 'O anexo deve ser um arquivo no formato: pdf, jpg ou png.',
+            'detail.*.annex.max' => 'O anexo pode ter no máximo 2 MB.',
         ];
     }
 }
