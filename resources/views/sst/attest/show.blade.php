@@ -4,8 +4,7 @@
     <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Visualização - Atestado</title>
-    <!-- Estilos -->
+    <title>Visualização - Atestados</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -63,7 +62,6 @@
                                         <small class="form-text text-muted">Campo inalterável *</small>
                                     </div>
                                 </div>
-                                <!-- Detalhes do Atraso -->
                                 <h4>Informações dos atestados</h4>
                                 <div id="attest_info_container">
                                     @foreach($attest->detail as $details)
@@ -87,7 +85,6 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <!-- Botões -->
                                 <div class="text-center mt-3">
                                     <button type="button">
                                         <a href="{{ route('pdf.attest',  $attest->id) }}" class="btn btn-info text-light mr-2">
@@ -109,7 +106,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/popper.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>

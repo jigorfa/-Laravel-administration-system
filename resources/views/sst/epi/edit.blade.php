@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -186,14 +186,12 @@
                 deleteForm.method = 'POST';
                 deleteForm.action = `/epi/detail/${detailId}`;
 
-                // Adiciona token CSRF
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';
                 csrfInput.name = '_token';
                 csrfInput.value = "{{ csrf_token() }}";
                 deleteForm.appendChild(csrfInput);
 
-                // Adiciona o método DELETE
                 const methodInput = document.createElement('input');
                 methodInput.type = 'hidden';
                 methodInput.name = '_method';
@@ -207,6 +205,7 @@
             }
         });
     </script>
+
     <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/popper.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>

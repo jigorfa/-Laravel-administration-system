@@ -26,6 +26,11 @@ class Attest extends Model
         return $this->belongsTo(Employee::class, 'employee_code', 'code');
     }
 
+    public function enterprise()
+    {
+        return $this->belongsTo(Enterprise::class);
+    }
+
     public function detail()
     {
         return $this->hasMany(AttestDetail::class, 'attest_id', 'id');

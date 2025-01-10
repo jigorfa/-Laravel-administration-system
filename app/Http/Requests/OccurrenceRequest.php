@@ -21,10 +21,12 @@ class OccurrenceRequest extends FormRequest
     {
         return [
             'employee_code' => 'required|exists:employee,code',
+            
             'detail' => 'required|array|min:1',
             'detail.*.occasion_id' => 'required|exists:occasion,id',
             'detail.*.occurrence_date' => 'required|date',
             'detail.*.description' => 'nullable|string|max:191',
+            'detail.*.annex' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
         ];
     }
 
@@ -36,10 +38,17 @@ class OccurrenceRequest extends FormRequest
         return [
             'employee_code.required' => 'O código de funcionário é obrigatório.',
             'employee_code.exists' => 'O código de funcionário selecionado é inválido.',
+
             'occasion_id.required' => 'O tipo de ocorrência é obrigatório.',
             'occasion_id.exists' => 'O tipo de ocorrência selecionado é inválido.',
+
             'occurrence_date.required' => 'A data da ocorrência é obrigatória.',
-            'description.required' => 'A descrição da ocorrência é obrigatória.'
+
+            'description.required' => 'A descrição da ocorrência é obrigatória.',
+
+            'detail.*.annex.file' => 'O anexo deve ser um arquivo válido.',
+            'detail.*.annex.mimes' => 'O anexo deve ser um arquivo no formato: pdf, jpg ou png.',
+            'detail.*.annex.max' => 'O anexo pode ter no máximo 2 MB.',
         ];
     }
 }

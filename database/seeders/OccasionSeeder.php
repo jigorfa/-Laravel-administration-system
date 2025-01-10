@@ -36,6 +36,12 @@ class OccasionSeeder extends Seeder
             ]);
         }
 
+        if (!Occasion::where('name', 'Afastamento')->first()) {
+            Occasion::create([
+                'name' => 'Afastamento'
+            ]);
+        }
+
         if (!Occasion::where('name', 'Suspensão')->first()) {
             Occasion::create([
                 'name' => 'Suspensão'

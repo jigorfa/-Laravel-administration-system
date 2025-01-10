@@ -33,14 +33,14 @@
     <!-- Início do Conteúdo -->
     <div class="page-content">
         <section class="welcome p-t-10">
-            <h1 class="text-center">Funcionários(as)</h1>
+            <h1 class="text-center">Funcionários</h1>
             <div class="col-md-12 mt-3">
                 <hr>
                 <!-- Tabela -->
                 <div class="card mt-4 mb-4 border-light shadow">
                     <div class="card-header d-flex justify-content-between">
                         <h3>
-                            <i class="fa-solid fa-users"></i> |
+                            <i class="fas fa-address-card"></i> |
                             {{ $countEmployee }} Fichas de funcionários
                         </h3>
                         
@@ -77,27 +77,42 @@
 
                     <div class="card-body">
                         <div class="card">
-                            <!-- Pesquisa -->
                             <h4 class="card-header text-center">Pesquisa</h4>
                             <div class="card-body">
                                 <form action="{{ route('employee.index') }}">
                                     <div class="row">
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label for="code" class="control-label mb-1">Código</label>
-                                                <input type="number" id="code" name="code" class="form-control text-center" placeholder="Busque pelo código:">
+                                                <label for="enterprise_id" class="control-label mb-1">Empresa</label>
+                                                <select name="search_enterprise" id="search_enterprise" class="form-control">
+                                                    <option value="">Selecione a empresa:</option>
+                                                    @forelse ($enterprises as $enterprise)
+                                                        <option value="{{ $enterprise->id }}" 
+                                                            {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
+                                                            {{ $enterprise->name }}
+                                                        </option>
+                                                    @empty
+                                                        <option value="">Nenhuma empresa encontrada</option>
+                                                    @endforelse
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="code" class="control-label mb-1">Código</label>
+                                                <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="name" class="control-label mb-1">Nome</label>
-                                                <input type="text" id="name" name="name" class="form-control text-center" placeholder="Busque pelo nome:">
+                                                <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
                                             </div>
                                         </div>
                                         <div class="col-3">
                                             <label for="adjuntancy" class="control-label mb-1">Cargo</label>
                                             <div class="input-group">
-                                                <input type="text" id="adjuntancy" name="adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:">
+                                                <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +131,6 @@
                                     </div>
                                 </form>
                             </div>
-                            <!-- Fim da pesquisa -->
                         </div>
 
                         <table class="table">
@@ -170,10 +184,14 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <div class="alert alert-secondary m-3" role="alert">
-                                        <i class="fa-solid fa-triangle-exclamation"></i>
-                                        <span>Nenhum registro encontrado</span>
-                                    </div>
+                                <tr>
+                                    <td colspan="9" class="text-center">
+                                        <div role="alert" class="alert alert-secondary m-3" id="alert_message">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                            <span>Nenhum registro encontrado</span>
+                                        </div>
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>

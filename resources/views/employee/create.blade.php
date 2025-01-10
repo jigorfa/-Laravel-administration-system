@@ -116,7 +116,7 @@
 
                                         <div class="form-group col-lg-3">
                                             <label for="birth_date" class="form-control-label">Data de nascimento</label>
-                                            <input type="date" id="birth_date" name="birth_date" placeholder="Insira a data de nascimento:" class="form-control" required>
+                                            <input type="date" id="birth_date" name="birth_date" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
 
@@ -212,6 +212,21 @@
                                                     <option value="{{ $situations->id }}"
                                                         {{ old('situation_id') == $situations->id}}>
                                                         {{ $situations->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhuma situação da conta encontrada</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="enterprise_id" class="form-label">Empresa</label>
+                                            <select name="enterprise_id" id="enterprise_id" class="form-control" required>
+                                                <option value="">Selecione a empresa:</option>
+                                                @forelse ($enterprise as $enterprises)
+                                                    <option value="{{ $enterprises->id }}"
+                                                        {{ old('enterprise_id') == $enterprises->id}}>
+                                                        {{ $enterprises->name }}</option>
                                                 @empty
                                                     <option value="">Nenhuma situação da conta encontrada</option>
                                                 @endforelse

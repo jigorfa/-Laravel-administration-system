@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Enterprise;
 use App\Models\Attest;
 use App\Models\AttestDetail;
 use Illuminate\Http\Request;
@@ -21,34 +22,46 @@ class AttestController extends Controller
     {
         $query = Attest::with(['employee'])->withCount('detail');
 
-        if ($request->filled('employee_code')) {
+        // Filtros de pesquisa
+        if ($request->filled('search_code')) {
             $query->where('employee_code', 'like', '%' . $request->employee_code . '%');
         }
 
-        if ($request->filled('employee_name')) {
+        if ($request->filled('search_name')) {
             $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->employee_name . '%');
             });
         }
 
-        if ($request->filled('employee_adjuntancy')) {
+        if ($request->filled('search_adjuntancy')) {
             $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('adjuntancy', 'like', '%' . $request->employee_adjuntancy . '%');
             });
         }
 
+        if ($request->filled('search_enterprise')) {
+            $query->whereHas('employee.enterprise', function ($query) use ($request) {
+                $query->where('id', $request->search_enterprise);
+            });
+        }
+
         $search = $query->orderBy('employee_code', 'ASC')->paginate(10)->withQueryString();
+
+        // Obter todas as empresas para o filtro
+        $enterprises = Enterprise::all();
 
         return view('sst.attest.index', [
             'search' => $search,
+            'enterprises' => $enterprises,
         ]);
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $employee = Employee::orderBy('name', 'asc')->get();
+        $employee = Employee::orderBy('code', 'asc')->get();
 
         return view('sst.attest.create', [
             'employee' => $employee,
@@ -117,45 +130,43 @@ class AttestController extends Controller
     {
         try {
             $attest = Attest::with('detail')->findOrFail($id);
-
-            foreach ($request->detail as $index => $details) {
-                $annexPath = $details['annex'] ?? null;
-
-                if (isset($details['annex']) && $details['annex'] instanceof \Illuminate\Http\UploadedFile) {
-                    if (!empty($details['id'])) {
-                        $existingDetail = $attest->detail()->find($details['id']);
-                        if ($existingDetail && $existingDetail->annex) {
-                            Storage::disk('public')->delete($existingDetail->annex);
-                        }
-                    }
-
-                    $annexPath = $details['annex']->store('attest_annexes', 'public');
-                }
-
-                if (!empty($details['id'])) {
-                    $existingDetail = $attest->detail()->find($details['id']);
-                    if ($existingDetail) {
-                        $existingDetail->update([
-                            'start_attest' => $details['start_attest'] ?? null,
-                            'end_attest' => $details['end_attest'] ?? null,
-                            'cause' => $details['cause'] ?? null,
-                            'annex' => $annexPath ?? $existingDetail->annex,
-                        ]);
-                    }
+            
+            $attest->update([
+                'employee_code' => $request['employee_code'],
+            ]);
+    
+            // Atualize ou crie os detalhes do atestado
+            foreach ($request['detail'] as $detail) {
+                // Se o ID do detalhe existe, é uma atualização, caso contrário, uma criação
+                if (isset($detail['id']) && $detail['id']) {
+                    // Encontre o detalhe correspondente e atualize
+                    $attestDetail = AttestDetail::find($detail['id']);
+                    $attestDetail->update([
+                        'start_attest' => $detail['start_attest'],
+                        'end_attest' => $detail['end_attest'],
+                        'cause' => $detail['cause'],
+                        'annex' => isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
+                            ? $detail['annex']->store('attest_annexes', 'public')
+                            : $attestDetail->annex,  // Mantém o anexo atual se nenhum novo for enviado
+                    ]);
                 } else {
+                    // Se o ID não existe, cria um novo detalhe de atestado
+                    $annexPath = isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
+                        ? $detail['annex']->store('attest_annexes', 'public')
+                        : null;
+    
                     $attest->detail()->create([
-                        'start_attest' => $details['start_attest'] ?? null,
-                        'end_attest' => $details['end_attest'] ?? null,
-                        'cause' => $details['cause'] ?? null,
+                        'start_attest' => $detail['start_attest'],
+                        'end_attest' => $detail['end_attest'],
+                        'cause' => $detail['cause'],
                         'annex' => $annexPath,
                     ]);
                 }
             }
-
-            return redirect()->route('sst.attest.index')->with('success', 'Registro de atraso atualizado com sucesso!');
+    
+            return redirect()->route('sst.attest.index')->with('success', 'Atestado atualizado com sucesso!');
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar atestado', ['error' => $e->getMessage()]);
-            return back()->withInput()->with('error', 'Erro ao atualizar atestado: ' . $e->getMessage());
+            return back()->withErrors('Erro ao atualizar o atestado: ' . $e->getMessage());
         }
     }
     /**

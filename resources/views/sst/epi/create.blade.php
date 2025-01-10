@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cadastro - EPI's</title>
-    <!-- Estilos -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -44,13 +42,11 @@
                             <div class="col-lg-9">
                                 <form action="{{ route('sst.epi.store') }}" method="POST">
                                     @csrf
-
-                                    <!-- Informações de Identificação -->
                                     <h4>Informações de identificação</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4">
                                             <label for="employee_code">Código</label>
-                                            <select class="form-control" id="employee_code" name="employee_code">
+                                            <select id="employee_code" name="employee_code" class="form-control">
                                                 <option value="" selected>Selecione um código:</option>
                                                 @foreach($employee as $employees)
                                                     <option value="{{ $employees->code }}">{{ $employees->code }}</option>
@@ -60,17 +56,15 @@
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label>Cargo</label>
-                                            <input type="text" name="adjuntancy" id="employee_adjuntancy" class="form-control" readonly>
+                                            <input type="text" id="employee_adjuntancy" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label>Nome</label>
-                                            <input type="text" name="name" id="employee_name" class="form-control" readonly>
+                                            <input type="text" id="employee_name" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                     </div>
-
-                                    <!-- Detalhes do Atraso -->
                                     <h4>Informações dos EPI's</h4>
                                     <div id="epi_info_container">
                                         <div class="row mt-3 epi-group">
@@ -96,8 +90,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Botões -->
                                     <div class="text-center mt-3">
                                         <button type="submit" class="btn btn-success">
                                             <i class="fa-solid fa-check"></i> Cadastrar
@@ -118,10 +110,9 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
         $('#employee_code').on('change', function() {
-            var code = $(this).val(); // Obtém o valor do campo Código
+            var code = $(this).val();
             var url = '{{ route("sst.epi.getEmployeeByCode", ":code") }}';
             url = url.replace(':code', code);
 
@@ -131,7 +122,6 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response) {
-                        // Preenche os campos automaticamente
                         $('#employee_name').val(response.name);
                         $('#employee_adjuntancy').val(response.adjuntancy);
                     } else {
@@ -150,29 +140,25 @@
     </script>
 
     <script>
-        let rowIdx = 0; // Inicializa o índice das linhas
+        let rowIdx = 0;
 
         $('#add_epi').click(function () {
-            rowIdx++; // Incrementa o índice para cada novo campo
+            rowIdx++;
 
             const template = $('.epi-group').first().clone();
             
-            // Limpa os campos do template clonado
             template.find('input').val('');
-            template.find('.remove-epi').remove(); // Remove o botão existente, se houver
+            template.find('.remove-epi').remove();
 
-            // Atualiza os índices dos campos input
             template.find('input, select').each(function () {
                 const input = $(this);
                 const nameAttr = input.attr('name');
                 const idAttr = input.attr('id');
 
-                // Atualiza o atributo name com o novo índice
                 if (nameAttr) {
                     input.attr('name', nameAttr.replace(/\[\d+\]/, `[${rowIdx}]`));
                 }
 
-                // Atualiza o atributo id com o novo índice
                 if (idAttr) {
                     input.attr('id', idAttr.replace(/_\d+$/, `_${rowIdx}`));
                 }
@@ -181,17 +167,13 @@
             const buttonGroup = $('<div class="form-group col-lg-1 text-center d-flex align-items-center"></div>');
             const button = $('<button type="button" class="btn btn-danger btn-sm remove-epi"><i class="fa fa-trash-alt"></i></button>');
             
-            // Adiciona o botão ao novo form-group
             buttonGroup.append(button);
 
-            // Adiciona a nova div ao final da div .occurrence-group
-            template.append(buttonGroup); // Adiciona o grupo do botão fora do form-group
+            template.append(buttonGroup);
             
-            // Adiciona o template clonado ao container
             $('#epi_info_container').append(template);
         });
 
-        // Função para remover a div quando o botão de remoção for clicado
         $(document).on('click', '.remove-epi', function () {
             $(this).closest('.epi-group').remove();
         });

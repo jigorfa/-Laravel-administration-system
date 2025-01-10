@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Enterprise;
 use App\Models\Occurrence;
 use App\Models\OccurrenceDetail;
 use App\Models\Occasion;
@@ -18,31 +19,39 @@ class OccurrenceController extends Controller
      */
     public function index(Request $request)
     {
-        $occasion = Occasion::orderBy('name', 'asc')->get();
+        $query = Occurrence::with(['employee'])->withCount('detail');
 
-        $search = Occurrence::with(['employee']);
-
-        if ($request->filled('employee_code')) {
-            $search->where('employee_code', 'like', '%' . $request->employee_code . '%');
+        // Filtros de pesquisa
+        if ($request->filled('search_code')) {
+            $query->where('employee_code', 'like', '%' . $request->employee_code . '%');
         }
 
-        if ($request->filled('employee_name')) {
-            $search->whereHas('employee', function ($query) use ($request) {
+        if ($request->filled('search_name')) {
+            $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->employee_name . '%');
             });
         }
 
-        if ($request->filled('employee_adjuntancy')) {
-            $search->whereHas('employee', function ($query) use ($request) {
+        if ($request->filled('search_adjuntancy')) {
+            $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('adjuntancy', 'like', '%' . $request->employee_adjuntancy . '%');
             });
         }
 
-        $search = $search->orderBy('employee_code', 'ASC')->paginate(10)->withQueryString();
+        if ($request->filled('search_enterprise')) {
+            $query->whereHas('employee.enterprise', function ($query) use ($request) {
+                $query->where('id', $request->search_enterprise);
+            });
+        }
+
+        $search = $query->orderBy('employee_code', 'ASC')->paginate(10)->withQueryString();
+
+        // Obter todas as empresas para o filtro
+        $enterprises = Enterprise::all();
 
         return view('binder.occurrence.index', [
             'search' => $search,
-            'occasion' => $occasion,
+            'enterprises' => $enterprises,
         ]);
     }
     /**
@@ -51,7 +60,7 @@ class OccurrenceController extends Controller
     public function create()
     {
         $occasion = Occasion::orderBy('name', 'asc')->get();
-        $employee = Employee::orderBy('name', 'asc')->get();
+        $employee = Employee::orderBy('code', 'asc')->get();
 
         return view('binder.occurrence.create', [
             'occasion' => $occasion,
@@ -63,28 +72,29 @@ class OccurrenceController extends Controller
      */
     public function store(OccurrenceRequest $request)
     {
-        $validated = $request->validated();
-
-        if (!isset($validated['detail']) || empty($validated['detail'])) {
-            return back()->withInput()->with('error', 'Nenhum detalhe de atraso foi fornecido.');
-        }
-
         try {
             $occurrence = Occurrence::create([
-                'employee_code' => $validated['employee_code'],
+                'employee_code' => $request['employee_code'],
             ]);
 
-            foreach ($validated['detail'] as $details) {
+            foreach ($request['detail'] as $details) {
+                $annexPath = null;
+
+                if (isset($details['annex']) && $details['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                    $annexPath = $details['annex']->store('occurrence_annexes', 'public');
+                }
+
                 $occurrence->detail()->create([
                     'occurrence_date' => $details['occurrence_date'],
-                    'description' => $details['description'],
                     'occasion_id' => $details['occasion_id'],
+                    'description' => $details['description'],
+                    'annex' => $annexPath,
                 ]);
             }
 
-            return redirect()->route('binder.occurrence.index')->with('success', 'Registro de atraso cadastrado com sucesso!');
+            return redirect()->route('binder.occurrence.index')->with('success', 'Ocorrência criada com sucesso!');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Erro ao cadastrar atraso: ' . $e->getMessage());
+            return back()->withErrors('Erro ao salvar a ocorrência: ' . $e->getMessage());
         }
     }
     /**
@@ -108,7 +118,7 @@ class OccurrenceController extends Controller
     public function edit($id)
     {
         $occurrence = Occurrence::with('detail')->findOrFail($id);
-        $occasion = Occasion::all();
+        $occasion = Occasion::orderBy('name', 'asc')->get();
 
         return view('binder.occurrence.edit', compact('occurrence', 'occasion'));
     }
@@ -117,33 +127,38 @@ class OccurrenceController extends Controller
      */
     public function update(OccurrenceRequest $request, $id)
     {
-        $occurrence = Occurrence::with('detail')->where('id', $id)->firstOrFail();
-        $validated = $request->validated();
-
         try {
+            $occurrence = Occurrence::with('detail')->findOrFail($id);
+            
             $occurrence->update([
-                'employee_code' => $validated['employee_code'],
+                'employee_code' => $request['employee_code'],
             ]);
-
-            $updatedIds = collect($validated['detail'])->pluck('id')->filter();
-
-            $occurrence->detail()->whereNotIn('id', $updatedIds)->delete();
-
-            foreach ($validated['detail'] as $details) {
-                if (!empty($details['id'])) {
-                    $existingDetail = $occurrence->detail()->find($details['id']);
-                    if ($existingDetail) {
-                        $existingDetail->update([
-                            'occasion_id' => $details['occasion_id'],
-                            'occurrence_date' => $details['occurrence_date'],
-                            'description' => $details['description'],
-                        ]);
-                    }
+    
+            // Atualize ou crie os detalhes do atestado
+            foreach ($request['detail'] as $detail) {
+                // Se o ID do detalhe existe, é uma atualização, caso contrário, uma criação
+                if (isset($detail['id']) && $detail['id']) {
+                    // Encontre o detalhe correspondente e atualize
+                    $occurrenceDetail = OccurrenceDetail::find($detail['id']);
+                    $occurrenceDetail->update([
+                        'occurrence_date' => $detail['occurrence_date'],
+                        'description' => $detail['description'],
+                        'occasion_id' => $detail['occasion_id'],
+                        'annex' => isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
+                            ? $detail['annex']->store('occurrence_annexes', 'public')
+                            : $occurrenceDetail->annex,  // Mantém o anexo atual se nenhum novo for enviado
+                    ]);
                 } else {
+                    // Se o ID não existe, cria um novo detalhe de atestado
+                    $annexPath = isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
+                        ? $detail['annex']->store('occurrence_annexes', 'public')
+                        : null;
+    
                     $occurrence->detail()->create([
-                        'occasion_id' => $details['occasion_id'],
-                        'occurrence_date' => $details['occurrence_date'],
-                        'description' => $details['description'],
+                        'occurrence_date' => $detail['occurrence_date'],
+                        'description' => $detail['description'],
+                        'occasion_id' => $detail['occasion_id'],
+                        'annex' => $annexPath,
                     ]);
                 }
             }

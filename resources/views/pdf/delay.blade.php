@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha de atrasos: {{ $delay->employee->name }} </title>
+    <title>Ficha de atrasos: {{ $delay->employee->name }}</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -31,8 +31,8 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 15px;
+            padding: 10px;
+            margin-bottom: 20px;
         }
         .label {
             font-weight: bold;
@@ -41,10 +41,7 @@
     </style>
 </head>
 <body>
-    <h1>
-        Ficha de atrasos: 
-        {{ $delay->employee->name }}
-    </h1>
+    <h1>Ficha de atrasos: {{ $delay->employee->name }}</h1>
     <div class="section">
         <h2>Informações de identificação</h2>
         <div class="info-grid">
@@ -60,12 +57,10 @@
             @foreach($delay->detail as $details)
                 <div class="col-md-6">
                     <div class="info-grid">
-                        <div>
-                            <span class="label">Data do atraso:</span> {{ $details->delay_date }}<br>
-                            <span class="label">Chegada:</span> {{ $details->arrival }}<br>
-                            <span class="label">Saída:</span> {{ $details->leave }}<br>
-                            <span class="label">Motivo:</span> {{ $details->description }}
-                        </div>
+                        <div><span class="label">Data do atraso:</span> {{ $details->delay_date }}</div>
+                        <div><span class="label">Chegada:</span> {{ $details->arrival }}</div>
+                        <div><span class="label">Saída:</span> {{ $details->leave }}</div>
+                        <div><span class="label">Motivo:</span> {{ $details->description }}</div>
                     </div>
                 </div>
             @endforeach

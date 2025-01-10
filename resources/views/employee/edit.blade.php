@@ -210,6 +210,12 @@
                                         </div>
 
                                         <div class="form-group col-lg-3">
+                                            <label for="demission" class="form-control-label">Demissão/Encerramento</label>
+                                            <input type="date" id="demission" name="demission" value="{{ old('demission', $employee->demission) }}" class="form-control">
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
                                             <label for="situation_id" class="form-label">Situação</label>
                                             <select name="situation_id" id="situation_id" class="form-control">
                                                 <option value="">Selecione o grau:</option>
@@ -217,6 +223,22 @@
                                                     <option value="{{ $situations->id }}"
                                                         {{ old('situation_id', $employee->situation_id) == $situations->id ? 'selected' : '' }}>
                                                         {{ $situations->name }}
+                                                    </option>
+                                                @empty
+                                                    <option value="">Nenhuma situação da conta encontrada</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="enterprise_id" class="form-control-label">Empresa</label>
+                                            <select name="enterprise_id" class="form-control" id="enterprise_id" required>
+                                                <option value="">Selecione a empresa:</option>
+                                                @forelse ($enterprise as $enterprises)
+                                                    <option value="{{ $enterprises->id }}"
+                                                        {{ old('enterprise_id', $employee->enterprise_id) == $enterprises->id ? 'selected' : '' }}>
+                                                        {{ $enterprises->name }}
                                                     </option>
                                                 @empty
                                                     <option value="">Nenhuma situação da conta encontrada</option>

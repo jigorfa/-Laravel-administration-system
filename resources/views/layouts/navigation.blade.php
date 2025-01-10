@@ -40,16 +40,30 @@
                         </li>
 
                         <li class="has-sub">
-                            <a href="{{ route('event.index') }}">
-                                <i class="fas fa-calendar"></i>Calendário
-                                <span class="bot-line"></span>
+                            <a href="#">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                <span class="bot-line"></span>Serviços
                             </a>
+                            <ul class="header3-sub-list list-unstyled">
+                                <li>
+                                    <a href="{{ route('services.event.index') }}">
+                                        <i class="fas fa-calendar"></i>Calendário
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('services.calculator.index') }}">
+                                        <i class="fas fa-calculator"></i>Cálculos
+                                        <span class="bot-line"></span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="has-sub">
                             <a href="{{ route('dashboard') }}">
-                                <i class="fas fa-home"></i>Painel
-                                <span class="bot-line"></span>
+                                <i class="fas fa-home"></i>
+                                <span class="bot-line"></span>Painel
                             </a>
                         </li>
 
@@ -61,7 +75,7 @@
                             <ul class="header3-sub-list list-unstyled">
                                 <li>
                                     <a href="{{ route('binder.delay.index') }}">
-                                        <i class="fas fa-clock"></i>Atrasos
+                                        <i class="fas fa-user-clock"></i>Atrasos
                                         <span class="bot-line"></span>
                                     </a>
                                 </li>
@@ -121,14 +135,14 @@
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
                                         <a href="{{ route('profile.edit') }}">
-                                            <i class="fas fa-gear"></i>Configurações
+                                            <i class="fas fa-gear"></i>Configurações e Suporte
                                         </a>
                                     </div>
                                     <div class="account-dropdown__item">
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
                                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
-                                                <i class="fas fa-sign-out-alt"></i> Sair
+                                                <i class="fas fa-sign-out-alt"></i> Encerrar sessão
                                             </a>
                                         </form>
                                     </div>

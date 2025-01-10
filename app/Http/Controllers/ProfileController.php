@@ -30,87 +30,47 @@ class ProfileController extends Controller
         $countOccurrence = OccurrenceDetail::count();
         $countSalary = Employee::sum('salary');
 
-    
-        // Inicializa os dados do cálculo salarial com valores padrão (0)
-        $grossSalary = 0; 
-        $monthlyWorkload = 0; 
-        $hourlyRate = 0; 
-        $extraHourPercentage = 0; 
-        $extraHours = 0; 
-        $extraHourRate = 0; 
-        $totalExtraPay = 0; 
-    
-        // Verifica se é uma requisição POST para cálculo salarial
-        if ($request->isMethod('post')) {
-            $validatedData = $request->validate([
-                'gross_salary' => 'required|numeric',
-                'extra_hour_percentage' => 'required|numeric',
-                'monthly_workload' => 'required|numeric',
-                'extra_hours' => 'required|regex:/^\d{1,2}:\d{2}$/'
-            ]);
-    
-            $grossSalary = $validatedData['gross_salary'];
-            $extraHourPercentage = $validatedData['extra_hour_percentage'];
-            $monthlyWorkload = $validatedData['monthly_workload'];
-            $extraHoursInput = $validatedData['extra_hours'];
-    
-            // Processa as horas extras
-            list($hours, $minutes) = explode(':', $extraHoursInput);
-            $extraHours = (int) $hours + ((int) $minutes / 60);
-    
-            // Cálculos das horas extras
-            $hourlyRate = $grossSalary / $monthlyWorkload;
-            $extraHourRate = $hourlyRate * (1 + ($extraHourPercentage / 100));
-            $totalExtraPay = $extraHourRate * $extraHours;
-        }
-
         $topSalaries = Employee::select('adjuntancy', DB::raw('SUM(salary) as total_salary'))
         ->groupBy('adjuntancy')
-        ->orderBy('total_salary', 'desc') // Ordena pelos salários totais em ordem decrescente
-        ->take(5) // Limita aos 5 maiores
+        ->orderBy('total_salary', 'desc')
+        ->take(5)
         ->get();
 
-        // Consulta para contar a quantidade de funcionários por cargo
         $topAdjuntancys = Employee::select('adjuntancy', DB::raw('count(*) as total'))
         ->groupBy('adjuntancy')
-        ->take(5) // Limita aos 5 principais cargos
+        ->take(5)
         ->get();
 
-        // Converter os dados para arrays separadamente (labels e totais)
         $adjuntancyLabels = $topAdjuntancys->pluck('adjuntancy')->toArray();
         $adjuntancyTotals = $topAdjuntancys->pluck('total')->toArray();
 
-        // Consulta para contar as admissões por mês
         $admissions = Employee::select(DB::raw('MONTH(admission) as month'), DB::raw('count(*) as total'))
+        ->whereYear('admission', '=', now()->year)
         ->groupBy(DB::raw('MONTH(admission)'))
         ->pluck('total', 'month')->toArray();
 
-        // Consulta para contar os atrasos no mês
         $delays = DelayDetail::select(DB::raw('MONTH(delay_date) as month'), DB::raw('count(*) as total'))
+        ->whereYear('delay_date', '=', now()->year)
         ->groupBy(DB::raw('MONTH(delay_date)'))
         ->pluck('total', 'month')->toArray();
 
-        // Consulta para contar os atestados no mês
         $attests = AttestDetail::select(DB::raw('MONTH(start_attest) as month'), DB::raw('count(*) as total'))
+        ->whereYear('start_attest', '=', now()->year)
         ->groupBy(DB::raw('MONTH(start_attest)'))
         ->pluck('total', 'month')->toArray();
-        
-        // Criar um array com 12 posições para representar cada mês (inicializa com 0)
+
         $monthlyAdmissions = array_fill(1, 12, 0);
         $monthlyOccurrences = array_fill(1, 12, 0);
         $monthlyAttests = array_fill(1, 12, 0);
 
-        // Substituir os valores dos meses com os dados de admissões
         foreach ($admissions as $month => $total) {
             $monthlyAdmissions[$month] = $total;
         }
 
-        // Preencher os meses corretos com os dados de atrasos
         foreach ($delays as $month => $total) {
             $monthlyOccurrences[$month] = $total;
         }
 
-        // Preencher os meses corretos com os dados de atestados
         foreach ($attests as $month => $total) {
             $monthlyAttests[$month] = $total;
         }
@@ -123,13 +83,6 @@ class ProfileController extends Controller
             'countEpi',
             'countOccurrence',
             'countSalary',
-            'grossSalary', 
-            'monthlyWorkload', 
-            'hourlyRate', 
-            'extraHourPercentage', 
-            'extraHours', 
-            'extraHourRate', 
-            'totalExtraPay',
             'topSalaries',
             'adjuntancyLabels',
             'adjuntancyTotals',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Enterprise;
 use App\Models\Epi;
 use App\Models\EpiDetail;
 use Illuminate\Http\Request;
@@ -19,26 +20,37 @@ class EpiController extends Controller
     {
         $query = Epi::with(['employee'])->withCount('detail');
 
-        if ($request->filled('employee_code')) {
+        // Filtros de pesquisa
+        if ($request->filled('search_code')) {
             $query->where('employee_code', 'like', '%' . $request->employee_code . '%');
         }
 
-        if ($request->filled('employee_name')) {
+        if ($request->filled('search_name')) {
             $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->employee_name . '%');
             });
         }
 
-        if ($request->filled('employee_adjuntancy')) {
+        if ($request->filled('search_adjuntancy')) {
             $query->whereHas('employee', function ($query) use ($request) {
                 $query->where('adjuntancy', 'like', '%' . $request->employee_adjuntancy . '%');
             });
         }
 
+        if ($request->filled('search_enterprise')) {
+            $query->whereHas('employee.enterprise', function ($query) use ($request) {
+                $query->where('id', $request->search_enterprise);
+            });
+        }
+
         $search = $query->orderBy('employee_code', 'ASC')->paginate(10)->withQueryString();
+
+        // Obter todas as empresas para o filtro
+        $enterprises = Enterprise::all();
 
         return view('sst.epi.index', [
             'search' => $search,
+            'enterprises' => $enterprises,
         ]);
     }
     /**
@@ -46,7 +58,7 @@ class EpiController extends Controller
      */
     public function create()
     {
-        $employee = Employee::orderBy('name', 'asc')->get();
+        $employee = Employee::orderBy('code', 'asc')->get();
 
         return view('sst.epi.create', [
             'employee' => $employee,

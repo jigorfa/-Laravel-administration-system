@@ -2,122 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Employee;
 use Illuminate\Http\Request;
-use App\Models\Event;
 
 class EventController extends Controller
 {
-    public function index(Request $request)
-
+    public function index()
     {
-
-  
-
-        if($request->ajax()) {
-
-       
-
-             $data = Event::whereDate('start_date', '>=', $request->start_date)
-
-                       ->whereDate('end_date',   '<=', $request->end_date)
-
-                       ->get(['id', 'title', 'start_date', 'end_date', 'description']);
-
-  
-
-             return response()->json($data);
-
-        }
-
-  
-
-        return view('calendar.index');
-
+        return view('services.event.index');
     }
 
- 
-
-    /**
-
-     * Write code on Method
-
-     *
-
-     * @return response()
-
-     */
-
-    public function ajax(Request $request)
-
+    public function getEvents()
     {
+        // Carregar todos os funcionários
+        $employees = Employee::all();
 
- 
+        // Mapear os dados dos aniversários dos funcionários ajustando o ano
+        $birthdaysData = $employees->map(function ($employee) {
+            $currentYear = Carbon::now()->year;
 
-        switch ($request->type) {
+            // Ajustar a data de nascimento para o ano atual
+            $birthdayThisYear = Carbon::parse($employee->birth_date)->year($currentYear);
 
-           case 'add':
+            return [
+                'title' => $employee->name,
+                'start' => $birthdayThisYear->toDateString(),
+                'end' => $birthdayThisYear->toDateString(),
+                'comments' => 'Data de nascimento do funcionário',
+            ];
+        });
 
-              $event = Event::create([
+        // Mesclar os dados dos eventos e aniversários
+        $allData = $birthdaysData;
 
-                  'title' => $request->title,
-
-                  'start_date' => $request->start_date,
-
-                  'end_date' => $request->end_date,
-
-                  'description' => $request->description,
-
-              ]);
-
- 
-
-              return response()->json($event);
-
-             break;
-
-  
-
-           case 'update':
-
-              $event = Event::find($request->id)->update([
-
-                  'title' => $request->title,
-
-                  'start_date' => $request->start_date,
-
-                  'end_date' => $request->end_date,
-
-                  'description' => $request->description,
-
-              ]);
-
- 
-
-              return response()->json($event);
-
-             break;
-
-  
-
-           case 'delete':
-
-              $event = Event::find($request->id)->delete();
-
-  
-
-              return response()->json($event);
-
-             break;
-
-             
-
-           default:
-
-             # code...
-
-             break;
-
-        }
-
+        return response()->json($allData);
     }
 }

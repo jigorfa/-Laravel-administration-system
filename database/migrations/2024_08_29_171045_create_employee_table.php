@@ -29,6 +29,7 @@ return new class extends Migration
             $table->date('contract1');
             $table->date('contract2');
             $table->float('salary');
+            $table->date('demission')->nullable();
             $table->timestamps();
         });
     }

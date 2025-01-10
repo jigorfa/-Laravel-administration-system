@@ -31,7 +31,7 @@
     }
 
     .section {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .info-grid {
@@ -63,6 +63,7 @@
             <div><span class="label">Código:</span> {{ $employee->code }}</div>
             <div><span class="label">CTPS:</span> {{ $employee->ctps_code }}</div>
             <div><span class="label">PIS:</span> {{ $employee->pis_code }}</div>
+            <div><span class="label">Situação:</span> {{ $employee->instruction->name }}</div>
             <div><span class="label">CPF:</span> {{ $employee->personal_code }}</div>
             <div><span class="label">Título de Eleitor:</span> {{ $employee->vote_code }}</div>
             <div><span class="label">Data de Nascimento:</span> {{ $employee->birth_date }}</div>

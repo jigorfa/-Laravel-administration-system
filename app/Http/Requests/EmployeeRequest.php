@@ -16,91 +16,98 @@ class EmployeeRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'code' => 'required|integer|max:999',
-            'ctps_code' => 'required|string|max:20', // Alterado para string
-            'pis_code' => 'required|string|max:20', // Alterado para string
+            'code' => 'required|max:999',
+            'ctps_code' => 'required|string|max:20',
+            'pis_code' => 'required|string|max:20',
             'instruction_id' => 'required|exists:instruction,id',
             'personal_code' => 'required|string|max:191',
-            'vote_code' => 'required|string|max:20', // Alterado para string
+            'vote_code' => 'required|string|max:20',
             'birth_date' => 'required|date',
-            'telephone' => 'required|string|max:191',
+            'telephone' => 'required|string|max:15',
             'name' => 'required|string|max:191',
             'adjuntancy' => 'required|string|max:191',
-            'state' => 'required|string|max:191',
-            'city' => 'required|string|max:191',
-            'neighborhood' => 'required|string|max:191',
-            'number' => 'required|integer|max:999999999',
-            'postal_code' => 'required|string|max:20', // Alterado para string
-            'street' => 'required|string|max:191',
+            'state' => 'required|string|max:100',
+            'city' => 'required|string|max:100',
+            'neighborhood' => 'required|string|max:100',
+            'number' => 'required|max:999999999',
+            'postal_code' => 'required|string|max:15',
+            'street' => 'required|string|max:255',
             'admission' => 'required|date',
             'contract1' => 'required|date|after_or_equal:admission',
             'contract2' => 'required|date|after_or_equal:contract1',
             'salary' => 'required|max:99999999',
             'situation_id' => 'required|exists:situation,id',
+            'enterprise_id' => 'required|exists:enterprise,id',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['demission'] = 'nullable|date|after_or_equal:admission';
+        }
     }
 
+    /**
+     * Get custom messages for validation errors.
+     */
     public function messages(): array
     {
         return [
             'code.required' => 'O campo código é obrigatório.',
-            'code.max' => 'O limite de caracteres foi ultrapassado',
+            'code.max' => 'O limite de caracteres foi ultrapassado.',
 
             'ctps_code.required' => 'O campo CTPS é obrigatório.',
-            'ctps_code.max' => 'O limite de caracteres foi ultrapassado',
+            'ctps_code.max' => 'O campo CTPS deve ter no máximo 20 caracteres.',
 
             'pis_code.required' => 'O campo PIS é obrigatório.',
-            'pis_code.max' => 'O limite de caracteres foi ultrapassado',
+            'pis_code.max' => 'O campo PIS deve ter no máximo 20 caracteres.',
 
             'instruction_id.required' => 'O campo instrução é obrigatório.',
+            'instruction_id.exists' => 'O campo instrução deve ser válido.',
 
             'personal_code.required' => 'O campo código pessoal é obrigatório.',
 
-            'vote_code.required' => 'O campo código de voto é obrigatório.',
-            'vote_code.max' => 'O campo O limite de caracteres foi ultrapassado',
+            'vote_code.required' => 'O campo título de eleitor é obrigatório.',
+            'vote_code.max' => 'O campo título de eleitor excedeu o limite de caracteres.',
 
-            'birth_date.required' => 'O campo data de nascimento é obrigatório.',
+            'birth_date.required' => 'A data de nascimento é obrigatória.',
             'birth_date.date' => 'A data de nascimento deve ser uma data válida.',
 
             'telephone.required' => 'O campo telefone é obrigatório.',
-            'telephone.string' => 'O telefone deve deve ter somente texto.',
+            'telephone.string' => 'O telefone deve conter somente texto.',
             'telephone.max' => 'O telefone deve ter no máximo 15 caracteres.',
 
             'name.required' => 'O campo nome é obrigatório.',
-            'name.string' => 'O nome deve deve ter somente texto.',
+            'name.string' => 'O nome deve conter somente texto.',
             'name.max' => 'O nome deve ter no máximo 191 caracteres.',
 
             'adjuntancy.required' => 'O campo cargo é obrigatório.',
-            'adjuntancy.string' => 'O cargo deve ter somente texto.',
+            'adjuntancy.string' => 'O cargo deve conter somente texto.',
             'adjuntancy.max' => 'O cargo deve ter no máximo 191 caracteres.',
 
             'state.required' => 'O campo estado é obrigatório.',
-            'state.string' => 'O estado deve deve ter somente texto.',
+            'state.string' => 'O estado deve conter somente texto.',
             'state.max' => 'O estado deve ter no máximo 100 caracteres.',
 
             'city.required' => 'O campo cidade é obrigatório.',
-            'city.string' => 'A cidade deve deve ter somente texto.',
+            'city.string' => 'A cidade deve conter somente texto.',
             'city.max' => 'A cidade deve ter no máximo 100 caracteres.',
 
             'neighborhood.required' => 'O campo bairro é obrigatório.',
-            'neighborhood.string' => 'O bairro deve deve ter somente texto.',
+            'neighborhood.string' => 'O bairro deve conter somente texto.',
             'neighborhood.max' => 'O bairro deve ter no máximo 100 caracteres.',
 
             'number.required' => 'O campo número é obrigatório.',
-            'number.max' => 'O limite de caracteres foi ultrapassado',
+            'number.max' => 'O limite de caracteres foi ultrapassado.',
 
             'postal_code.required' => 'O campo código postal é obrigatório.',
-            'postal_code.string' => 'O código postal deve deve ter somente texto.',
+            'postal_code.string' => 'O código postal deve conter somente texto.',
             'postal_code.max' => 'O código postal deve ter no máximo 15 caracteres.',
 
             'street.required' => 'O campo rua é obrigatório.',
-            'street.string' => 'A rua deve deve ter somente texto.',
+            'street.string' => 'A rua deve conter somente texto.',
             'street.max' => 'A rua deve ter no máximo 255 caracteres.',
 
             'admission.required' => 'O campo de admissão é obrigatório.',
@@ -118,7 +125,13 @@ class EmployeeRequest extends FormRequest
             'salary.max' => 'O salário não pode exceder 8 dígitos.',
 
             'situation_id.required' => 'O campo situação é obrigatório.',
+            'situation_id.exists' => 'O campo situação deve ser válido.',
+
+            'enterprise_id.required' => 'O campo empresa é obrigatório.',
+            'enterprise_id.exists' => 'O campo empresa deve ser válido.',
+
+            'demission.date' => 'A data de demissão deve ser uma data válida.',
+            'demission.after_or_equal' => 'A data de demissão deve ser posterior ou igual à data de admissão.',
         ];
     }
-
 }

@@ -29,7 +29,7 @@ class SituationSeeder extends Seeder
         if (!Situation::where('name', 'Análise')->first()) {
             Situation::create([
                 'name' => 'Análise',
-                'color' => 'primary',
+                'color' => 'secondary',
             ]);
         }
 

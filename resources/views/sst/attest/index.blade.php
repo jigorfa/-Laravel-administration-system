@@ -1,26 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
-
-    <!-- Title Page-->
     <title>Atestados</title>
-
-    <!-- Fontfaces CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
     <link href="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
     <link href="{{ url('assets/dashboard/vendor/animsition/animsition.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/wow/animate.css') }}" rel="stylesheet" media="all">
@@ -28,20 +19,14 @@
     <link href="{{ url('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
     <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
 
 </head>
 
 <body class="animsition page-wrapper">
-    <!-- NAVBAR DESKTOP & MOBILE-->
     @include('layouts.navigation')
-    <!-- END NAVBAR DESKTOP & MOBILE-->
 
-    <!-- PAGE CONTENT-->
     <div class="page-content">
-        <!-- WELCOME-->
         <section class="welcome p-t-10">
             <h1 class="text-center">Atestados</h1>
             <div class="col-md-12 mt-3">
@@ -64,7 +49,6 @@
                         </div>
                     </div>
                     
-                    <!-- Mensagens de feedback -->
                     @if (session('success'))
                         <div class="alert alert-success m-3" role="alert">
                             <i class="fa-solid fa-check"></i>
@@ -75,27 +59,42 @@
                     <div class="card-body">
                         <div class="card-body">
                             <div class="card">
-                                <!-- Pesquisa -->
                                 <h4 class="card-header text-center">Pesquisa</h4>
                                 <div class="card-body">
                                     <form action="{{ route('sst.attest.index') }}">
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">
-                                                    <label for="code" class="control-label mb-1">Código</label>
-                                                    <input type="number" id="code" name="employee_code" class="form-control text-center" placeholder="Busque pelo código:">
+                                                    <label for="search_enterprise" class="control-label mb-1">Empresa</label>
+                                                    <select name="search_enterprise" id="search_enterprise" class="form-control">
+                                                        <option value="">Selecione a empresa:</option>
+                                                        @forelse ($enterprises as $enterprise)
+                                                            <option value="{{ $enterprise->id }}" 
+                                                                {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
+                                                                {{ $enterprise->name }}
+                                                            </option>
+                                                        @empty
+                                                            <option value="">Nenhuma empresa encontrada</option>
+                                                        @endforelse
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="code" class="control-label mb-1">Código</label>
+                                                    <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="name" class="control-label mb-1">Nome</label>
-                                                    <input type="text" id="name" name="employee_name" class="form-control text-center" placeholder="Busque pelo nome:">
+                                                    <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <label for="adjuntancy" class="control-label mb-1">Cargo</label>
                                                 <div class="input-group">
-                                                    <input type="text" id="adjuntancy" name="employee_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:">
+                                                    <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -114,7 +113,6 @@
                                         </div>
                                     </form>
                                 </div>
-                                <!-- Fim da pesquisa -->
                             </div>
                         </div>
 

@@ -22,6 +22,7 @@ class OccurrenceDetail extends Model
         'occasion_id',
         'occurrence_date',
         'description',
+        'annex',
     ];
 
     public function occurrence()

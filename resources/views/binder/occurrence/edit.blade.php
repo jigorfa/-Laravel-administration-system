@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edição - Ocorrência</title>
-    <!-- Estilos -->
+    <title>Edição - Ocorrências</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -61,45 +59,43 @@
 
                                 @if (session('danger'))
                                     <div class="alert alert-danger m-2" role="alert">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i class="fa-solid fa-trash"></i>k
                                         {{ session('danger') }}
                                     </div>
                                 @endif
-                                <form action="{{ route('binder.occurrence.update', $occurrence->id) }}" method="POST">
+                                <form action="{{ route('binder.occurrence.update', $occurrence->id) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
-                                    <!-- Informações de Identificação -->
                                     <h4>Informações de identificação</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4">
-                                            <label>Código</label>
-                                            <input type="number" name="employee_code" value="{{ $occurrence->employee->code }}" class="form-control" readonly>
+                                            <label for="employee_code">Código</label>
+                                            <input type="number" id="employee_code" name="employee_code" value="{{ $occurrence->employee->code }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label>Cargo</label>
-                                            <input type="text" name="adjuntancy" value="{{ $occurrence->employee->adjuntancy }}" class="form-control" readonly>
+                                            <label for="adjuntancy">Cargo</label>
+                                            <input type="text" id="adjuntancy" name="adjuntancy" value="{{ $occurrence->employee->adjuntancy }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label>Nome</label>
-                                            <input type="text" name="name" value="{{ $occurrence->employee->name }}" class="form-control" readonly>
+                                            <label for="name">Nome</label>
+                                            <input type="text" id="name" name="name" value="{{ $occurrence->employee->name }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                     </div>
-                                    <!-- Detalhes do Atraso -->
                                     <h4>Informações das ocorrências</h4>
                                     <div id="occurrence_info_container">
                                         @foreach($occurrence->detail as $details)
-                                            <div class="row mt-3 occurrence-group">
+                                            <div class="row mt-3 occurrence-group" id="occurrence-group-{{ $details->id }}">
                                                 <input type="hidden" name="detail[{{ $loop->index }}][id]" value="{{ $details->id }}">
-                                                <div class="form-group col-lg-3">
-                                                    <label>Data da ocorrência</label>
+                                                <div class="form-group col-lg-2">
+                                                    <label>Data</label>
                                                     <input type="date" name="detail[{{ $loop->index }}][occurrence_date]" value="{{ $details->occurrence_date }}" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
-                                                <div class="form-group col-lg-3">
-                                                    <label for="occasion_id_{{ $loop->index }}">Tipo da ocorrência</label>
+                                                <div class="form-group col-lg-2">
+                                                    <label>Tipo da ocorrência</label>
                                                     <select id="occasion_id_{{ $loop->index }}" name="detail[{{ $loop->index }}][occasion_id]" class="form-control">
                                                         <option value="" disabled>Selecione...</option>
                                                         @foreach ($occasion as $occasions)
@@ -111,10 +107,22 @@
                                                     </select>
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
-                                                <div class="form-group col-lg-5">
-                                                    <label>Descrição</label>
-                                                    <input type="text" name="detail[{{ $loop->index }}][description]" value="{{ $details->description }}" placeholder="Insira uma descrição sobre a ocorrência" class="form-control">
+                                                <div class="form-group col-lg-3">
+                                                    <label for="description">Descrição</label>
+                                                    <input type="text" name="detail[{{ $loop->index }}][description]" value="{{ $details->description }}" placeholder="Insira uma descrição" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    <label>Arquivo</label>
+                                                    @if ($details->annex)
+                                                        <!-- Link de download se houver anexo -->
+                                                        <a href="{{ asset('storage/'.$details->annex) }}" class="btn btn-info btn-md form-group" target="_blank">
+                                                            <i class="fa fa-download"></i> Baixar Anexo
+                                                        </a>
+                                                    @else
+                                                        <input type="file" name="detail[{{ $loop->index }}][annex]" class="form-control mb-2">
+                                                    @endif
+                                                    <small class="form-text text-muted">Campo inalterável *</small>
                                                 </div>
                                                 <div class="form-group text-center d-flex align-items-center col-lg-1">
                                                     <button type="button" class="btn btn-danger btn-sm remove-occurrence" data-id="{{ $details->id }}">
@@ -124,14 +132,12 @@
                                             </div>
                                         @endforeach
                                     </div>
-
-                                    <!-- Botões -->
                                     <div class="text-center mt-3">
                                         <button type="submit" class="btn btn-success">
                                             <i class="fa-solid fa-check"></i> Atualizar
                                         </button>
                                         <button type="button" id="add_occurrence" class="btn btn-secondary">
-                                            <i class="fa-solid fa-plus"></i> Ocorrência
+                                            <i class="fa-solid fa-plus"></i> Atestado
                                         </button>
                                         <a href="{{ route('binder.occurrence.index') }}" class="btn btn-danger">
                                             <i class="fa-solid fa-times"></i> Cancelar
@@ -146,89 +152,57 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
-        let rowIdx = document.querySelectorAll('.occurrence-group').length; 
+        let rowIdx = 0;
 
-        // Função para adicionar uma nova ocorrência
         $('#add_occurrence').click(function () {
-            rowIdx++; // Incrementa o índice para cada novo campo
+            rowIdx++;
 
-            // Clona o primeiro grupo de ocorrência
-            const template = $('.occurrence-group').first().clone();
-
-            // Limpa os valores do template clonado
-            template.find('input, select').each(function () {
-                if (this.tagName === 'SELECT') {
-                    this.selectedIndex = 0; // Reseta o select para a primeira opção
-                } else {
-                    $(this).val(''); // Limpa o valor dos inputs
-                }
-
-                // Atualiza os atributos 'name' e 'id' para refletir o novo índice
-                const nameAttr = $(this).attr('name');
-                const idAttr = $(this).attr('id');
-                if (nameAttr) {
-                    $(this).attr('name', nameAttr.replace(/\[\d+\]/, `[${rowIdx}]`));
-                }
-                if (idAttr) {
-                    $(this).attr('id', idAttr.replace(/_\d+$/, `_${rowIdx}`));
-                }
-            });
-
-            // Marca como registro clonado
-            template.addClass('cloned');
-
-            // Ajusta o comportamento do botão de exclusão
-            template.find('.remove-occurrence').off('click').on('click', function () {
-                const group = $(this).closest('.occurrence-group');
-                if (group.hasClass('cloned')) {
-                    // Remove apenas no frontend
-                    group.remove();
-                }
-            });
-
-            $('#occurrence_info_container').append(template);
+            const newOccurrenceGroup = `
+                <div class="row mt-3 occurrence-group" id="occurrence-group-${rowIdx}">
+                    <div class="form-group col-lg-2">
+                        <label>Data</label>
+                        <input type="date" name="detail[${rowIdx}][occurrence_date]" class="form-control">
+                        <small class="form-text text-muted">Campo obrigatório *</small>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        <label>Tipo da ocorrência</label>
+                        <select name="detail[${rowIdx}][occasion_id]" class="form-control" required>
+                            <option value="" selected>Selecione um tipo:</option>
+                            @foreach ($occasion as $occasions)
+                                <option value="{{ $occasions->id }}">{{ $occasions->name }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">Campo obrigatório *</small>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label>Descrição</label>
+                        <input type="text" name="detail[${rowIdx}][description]" placeholder="Insira uma descrição" class="form-control">
+                        <small class="form-text text-muted">Campo obrigatório *</small>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Arquivo</label>
+                        <input type="file" name="detail[${rowIdx}][annex]" class="form-control mb-2">
+                        <small class="form-text text-muted">Campo inalterável *</small>
+                    </div>
+                    <div class="form-group text-center d-flex align-items-center col-lg-1">
+                        <button type="button" class="btn btn-danger btn-sm remove-occurrence" data-id="${rowIdx}">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            $('#occurrence_info_container').append(newOccurrenceGroup);
         });
 
-        // Adiciona comportamento ao botão de exclusão nos registros existentes
         $(document).on('click', '.remove-occurrence', function () {
-            const detailId = $(this).data('id'); // Obtém o ID do detalhe do botão
-            const group = $(this).closest('.occurrence-group'); // Seleciona o grupo correspondente
-
-            if (group.hasClass('cloned')) {
-                // Apenas remove o grupo do DOM para campos clonados
-                group.remove();
-            } else if (detailId) {
-                // Para registros existentes, cria um formulário para enviar a requisição DELETE
-                const deleteForm = document.createElement('form');
-                deleteForm.method = 'POST'; // O método deve ser POST
-                deleteForm.action = `/occurrence/detail/${detailId}`; // Define a rota correta
-
-                // Adiciona token CSRF
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = '_token';
-                csrfInput.value = "{{ csrf_token() }}"; // Token CSRF do Laravel
-                deleteForm.appendChild(csrfInput);
-
-                // Adiciona o método DELETE
-                const methodInput = document.createElement('input');
-                methodInput.type = 'hidden';
-                methodInput.name = '_method';
-                methodInput.value = 'DELETE';
-                deleteForm.appendChild(methodInput);
-
-                // Adiciona o formulário ao body e submete
-                document.body.appendChild(deleteForm);
-                deleteForm.submit();
-            } else {
-                alert('Erro: ID do detalhe não encontrado.');
-            }
+            const groupId = $(this).data('id');
+            $('#occurrence-group-' + groupId).remove();
         });
     </script>
-    <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
-    <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/popper.min.js') }}"></script>
+    <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
 </body>
 </html>

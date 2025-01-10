@@ -115,7 +115,7 @@
 
             <section class="statistic-chart">
                 <div class="container">
-                    <h3 class="title-5 m-b-35 text-center">Estatísticas gráficas</h3>
+                    <h3 class="title-5 m-b-35 text-center">Estatísticas</h3>
                     <hr>
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
@@ -165,135 +165,17 @@
                     </div>
                 </div>
             </section>
-
-            <section class="mt-3">
-                <div class="container">
-                    <h3 class="title-5 m-b-35 text-center">Cálculo de horas extras</h3>
-                    <hr>
-                    <div class="row col-lg-12">
-                        <div class="col-md-6">
-                            <h4 class="text-center">Inserção de dados:</h4>
-                            <div class="card mt-3">
-                                <form class="m-3" id="salaryForm" action="{{ route('salary.calculate') }}" method="POST"
-                                    onsubmit="return validateForm()">
-                                    @csrf
-
-                                    <div class="form-group">
-                                        <label for="gross_salary" class="form-control-label">Salário bruto</label>
-                                        <input type="text" class="form-control" id="gross_salary" name="gross_salary"
-                                            required placeholder="R$ 0,00">
-                                        <small class="form-text text-muted">Campo obrigatório *</small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="monthly_workload" class="form-control-label">Carga horária
-                                            mensal</label>
-                                        <input type="number" class="form-control" id="monthly_workload"
-                                            name="monthly_workload" required placeholder="Exemplo: 220 horas">
-                                        <small class="form-text text-muted">Campo obrigatório *</small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="extra_hour_percentage" class="form-control-label">Porcentagem das
-                                            horas extras:</label>
-                                        <input type="number" class="form-control" id="extra_hour_percentage"
-                                            name="extra_hour_percentage" required placeholder="Exemplo: 50%">
-                                        <small class="form-text text-muted">Campo obrigatório *</small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="extra_hours" class="form-control-label">Quantidade de horas extras
-                                            (HH:MM)</label>
-                                        <input type="text" class="form-control" id="extra_hours" name="extra_hours"
-                                            required placeholder="Exemplo: 10:30">
-                                        <small class="form-text text-muted">Campo obrigatório *</small>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="fas fa-calculator"></i> Calcular
-                                        </button>
-
-                                        <button type="reset" class="btn btn-warning text-light">
-                                            <i class="fa-solid fa-eraser"></i> Limpar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="result-card">
-                                <h4 class="text-center">Exibição de resultados:</h4>
-                                <ul class="list-group mt-3 mb-3">
-
-                                    <li class="list-group-item text-center">Jornada prevista</li>
-
-                                    <li class="list-group-item">
-                                        <strong>Salário bruto:</strong>
-                                        R$ {{ number_format($grossSalary, 2, ',', '.') }}
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <strong>Carga horária mensal:</strong>
-                                        {{ $monthlyWorkload }} horas
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <strong>Salário por hora:</strong>
-                                        R$ {{ number_format($hourlyRate, 2, ',', '.') }}
-                                    </li>
-
-                                    <li class="list-group-item text-center">Jornada extra</li>
-
-                                    <li class="list-group-item">
-                                        <strong>Porcentagem das horas extras:</strong>
-                                        {{ $extraHourPercentage }}%
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <strong>Valor total das horas:</strong>
-                                        R$ {{ number_format($totalExtraPay, 2, ',', '.') }}
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <strong>Carga horária extra:</strong>
-                                        {{ floor($extraHours) }} horas e {{ ($extraHours - floor($extraHours)) * 60 }}
-                                        minutos
-                                    </li>
-
-                                    <li class="list-group-item">
-                                        <strong>Valor por hora:</strong>
-                                        R$ {{ number_format($extraHourRate, 2, ',', '.') }}
-                                    </li>
-
-                                    <button type="button" class="mt-3">
-                                        <a href="{{ route('dashboard') }}" class="btn btn-danger">
-                                            <i class="fas fa-undo"></i> Novo cálculo
-                                        </a>
-                                    </button>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Copyright -->
-            <!-- <section class="p-t-60 p-b-20">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section> -->
-            <!-- Fim do Copyright -->
         </div>
     </div>
+
+    <script>
+        var monthlyAdmissions = @json($monthlyAdmissions);
+        var monthlyAttendances = @json($monthlyOccurrences);
+        var monthlyAttests = @json($monthlyAttests);
+        var adjuntancyLabels = @json($adjuntancyLabels);
+        var adjuntancyTotals = @json($adjuntancyTotals);
+    </script>
+    
     <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/popper.min.js"') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
@@ -307,13 +189,6 @@
     <script src="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-    <script>
-    var monthlyAdmissions = @json($monthlyAdmissions);
-    var monthlyAttendances = @json($monthlyOccurrences);
-    var monthlyAttests = @json($monthlyAttests);
-    var adjuntancyLabels = @json($adjuntancyLabels);
-    var adjuntancyTotals = @json($adjuntancyTotals);
-    </script>
     <script src="{{ url('assets/dashboard/js/main.js') }}"></script>
     <script src="{{ url('assets/dashboard/js/calculator.js') }}"></script>
 </body>

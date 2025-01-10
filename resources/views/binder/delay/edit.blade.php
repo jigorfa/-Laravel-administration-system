@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edição - Atraso</title>
-    <!-- Estilos -->
+    <title>Edição - Atrasos</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -68,7 +66,6 @@
                                 <form action="{{ route('binder.delay.update', $delay->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <!-- Informações de Identificação -->
                                     <h4>Informações de identificação</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4">
@@ -87,7 +84,6 @@
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                     </div>
-                                    <!-- Detalhes do Atraso -->
                                     <h4>Informações dos atrasos</h4>
                                     <div id="delay_info_container">
                                         @foreach($delay->detail as $details)
@@ -121,7 +117,6 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <!-- Botões -->
                                     <div class="text-center mt-3">
                                         <button type="submit" class="btn btn-success">
                                             <i class="fa-solid fa-check"></i> Atualizar
@@ -142,26 +137,21 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
         let rowIdx = document.querySelectorAll('.delay-group').length; 
 
-        // Função para adicionar uma nova ocorrência
         $('#add_delay').click(function () {
-            rowIdx++; // Incrementa o índice para cada novo campo
+            rowIdx++;
 
-            // Clona o primeiro grupo de ocorrência
             const template = $('.delay-group').first().clone();
 
-            // Limpa os valores do template clonado
             template.find('input, select').each(function () {
                 if (this.tagName === 'SELECT') {
-                    this.selectedIndex = 0; // Reseta o select para a primeira opção
+                    this.selectedIndex = 0;
                 } else {
-                    $(this).val(''); // Limpa o valor dos inputs
+                    $(this).val('');
                 }
 
-                // Atualiza os atributos 'name' e 'id' para refletir o novo índice
                 const nameAttr = $(this).attr('name');
                 const idAttr = $(this).attr('id');
                 if (nameAttr) {
@@ -172,14 +162,11 @@
                 }
             });
 
-            // Marca como registro clonado
             template.addClass('cloned');
 
-            // Ajusta o comportamento do botão de exclusão
             template.find('.remove-delay').off('click').on('click', function () {
                 const group = $(this).closest('.delay-group');
                 if (group.hasClass('cloned')) {
-                    // Remove apenas no frontend
                     group.remove();
                 }
             });
@@ -187,35 +174,29 @@
             $('#delay_info_container').append(template);
         });
 
-        // Adiciona comportamento ao botão de exclusão nos registros existentes
         $(document).on('click', '.remove-delay', function () {
-            const detailId = $(this).data('id'); // Obtém o ID do detalhe do botão
-            const group = $(this).closest('.delay-group'); // Seleciona o grupo correspondente
+            const detailId = $(this).data('id');
+            const group = $(this).closest('.delay-group');
 
             if (group.hasClass('cloned')) {
-                // Apenas remove o grupo do DOM para campos clonados
                 group.remove();
             } else if (detailId) {
-                // Para registros existentes, cria um formulário para enviar a requisição DELETE
                 const deleteForm = document.createElement('form');
-                deleteForm.method = 'POST'; // O método deve ser POST
-                deleteForm.action = `/delay/detail/${detailId}`; // Define a rota correta
+                deleteForm.method = 'POST';
+                deleteForm.action = `/delay/detail/${detailId}`;
 
-                // Adiciona token CSRF
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';
                 csrfInput.name = '_token';
-                csrfInput.value = "{{ csrf_token() }}"; // Token CSRF do Laravel
+                csrfInput.value = "{{ csrf_token() }}";
                 deleteForm.appendChild(csrfInput);
 
-                // Adiciona o método DELETE
                 const methodInput = document.createElement('input');
                 methodInput.type = 'hidden';
                 methodInput.name = '_method';
                 methodInput.value = 'DELETE';
                 deleteForm.appendChild(methodInput);
 
-                // Adiciona o formulário ao body e submete
                 document.body.appendChild(deleteForm);
                 deleteForm.submit();
             } else {

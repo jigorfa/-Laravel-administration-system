@@ -4,9 +4,9 @@
     <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Visualização - Atraso</title>
+    <title>Visualização - Atrasos</title>
     <!-- Estilos -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https:
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/mdi-font/css/material-design-iconic-font.min.css') }}" rel="stylesheet">
@@ -64,7 +64,6 @@
                                         <small class="form-text text-muted">Campo inalterável*</small>
                                     </div>
                                 </div>
-                                <!-- Detalhes do Atraso -->
                                 <h4>Informações dos atrasos</h4>
                                 <div id="delay_details_container">
                                     @foreach($delay->detail as $details)

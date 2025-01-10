@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('occurrence_id')->references('id')->on('occurrence')->onDelete('cascade');
             $table->date('occurrence_date')->nullable();
             $table->text('description')->nullable();
+            $table->string('annex')->nullable();
             $table->timestamps();
         });
     }

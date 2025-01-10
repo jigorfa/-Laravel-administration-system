@@ -207,6 +207,12 @@
                                     </div>
 
                                     <div class="form-group col-lg-3">
+                                        <label for="demission" class="form-control-label">Demissão</label>
+                                        <input type="date" id="demission" name="demission" value="{{ $employee->demission }}" class="form-control" disabled>
+                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
                                         <label for="situation_id" class="form-label">Situação</label>
                                         <select name="situation_id" id="situation_id" class="form-control" disabled>
                                             <option value="">Selecione o grau:</option>
@@ -221,6 +227,23 @@
                                         </select>
                                         <small class="form-text text-muted">Campo inalterável *</small>
                                     </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="instruction_id" class="form-control-label">Grau de instrução</label>
+                                        <select name="instruction_id" id="instruction_id" class="form-control" disabled>
+                                            <option value="">Selecione o grau:</option>
+                                            @forelse ($enterprise as $enterprises)
+                                                <option value="{{ $enterprises->id }}"
+                                                    {{ old('enterprise_id', $employee->enterprise_id) == $enterprises->id ? 'selected' : '' }}>
+                                                    {{ $enterprises->name }}
+                                                </option>
+                                            @empty
+                                                <option value="">Nenhuma situação da conta encontrada</option>
+                                            @endforelse
+                                        </select>
+                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                    </div>
+
                                 </div>
 
                                 <div class="text-center mt-3">

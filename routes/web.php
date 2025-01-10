@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     ProfileController,
     EmployeeController,
     EventController,
+    CalculatorController,
     DelayController,
     OccurrenceController,
     AttestController,
@@ -15,7 +16,6 @@ Route::get('/', fn () => view('auth/login'));
 
 Route::middleware(['auth', 'verified', 'verify'])->group(function () {
     Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [ProfileController::class, 'index'])->name('salary.calculate');
 });
 
 Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
@@ -35,39 +35,47 @@ Route::middleware(['auth', 'verify'])->group(function () {
         Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
         Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
     });
+    
+    Route::prefix('services')->name('services.')->group(function () {
 
-    Route::get('/calendar', function () {
-        return view('calendar.index');
+        Route::prefix('calendar')->name('event.')->group(function () {
+            Route::get('/', [EventController::class, 'index'])->name('index');
+            Route::get('/events', [EventController::class, 'getEvents'])->name('getEvents');
+        });
+    
+        Route::prefix('calculator')->name('calculator.')->group(function () {
+            Route::get('/', [CalculatorController::class, 'index'])->name('index');
+            Route::post('/extra', [CalculatorController::class, 'calculateExtra'])->name('extra');
+            Route::post('/vacation', [CalculatorController::class, 'calculateVacation'])->name('vacation');
+        });
     });
     
-    Route::prefix('event')->name('event.')->group(function () {
-        Route::get('/', [EventController::class, 'index'])->name('index');
-        Route::post('/', [EventController::class, 'store'])->name('ajax');
-    });
+    Route::prefix('binder')->name('binder.')->group(function () {
 
-    Route::prefix('delay')->name('binder.delay.')->group(function () {
-        Route::get('/', [DelayController::class, 'index'])->name('index');
-        Route::get('/{delay}/show', [DelayController::class, 'show'])->name('show');
-        Route::get('/create', [DelayController::class, 'create'])->name('create');
-        Route::post('/', [DelayController::class, 'store'])->name('store');
-        Route::get('/{delay}/edit', [DelayController::class, 'edit'])->name('edit');
-        Route::get('/employee/{code}', [DelayController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
-        Route::put('/{delay}', [DelayController::class, 'update'])->name('update');
-        Route::delete('/detail/{id}', [DelayController::class, 'deleteDetail'])->name('deleteDetail');
-        Route::delete('/{delay}', [DelayController::class, 'destroy'])->name('destroy');
-    });    
-
-    Route::prefix('occurrence')->name('binder.occurrence.')->group(function () {
-        Route::get('/', [OccurrenceController::class, 'index'])->name('index');
-        Route::get('/{occurrence}/show', [OccurrenceController::class, 'show'])->name('show');
-        Route::get('/create', [OccurrenceController::class, 'create'])->name('create');
-        Route::get('/search', [OccurrenceController::class, 'search'])->name('search');
-        Route::post('/', [OccurrenceController::class, 'store'])->name('store');
-        Route::get('/{occurrence}/edit', [OccurrenceController::class, 'edit'])->name('edit');
-        Route::get('/employee/{code}', [OccurrenceController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
-        Route::put('/{occurrence}', [OccurrenceController::class, 'update'])->name('update');
-        Route::delete('/detail/{id}', [OccurrenceController::class, 'deleteDetail'])->name('deleteDetail');
-        Route::delete('/{occurrence}', [OccurrenceController::class, 'destroy'])->name('destroy');
+        Route::prefix('delay')->name('delay.')->group(function () {
+            Route::get('/', [DelayController::class, 'index'])->name('index');
+            Route::get('/{delay}/show', [DelayController::class, 'show'])->name('show');
+            Route::get('/create', [DelayController::class, 'create'])->name('create');
+            Route::post('/', [DelayController::class, 'store'])->name('store');
+            Route::get('/{delay}/edit', [DelayController::class, 'edit'])->name('edit');
+            Route::get('/employee/{code}', [DelayController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+            Route::put('/{delay}', [DelayController::class, 'update'])->name('update');
+            Route::delete('/detail/{id}', [DelayController::class, 'deleteDetail'])->name('deleteDetail');
+            Route::delete('/{delay}', [DelayController::class, 'destroy'])->name('destroy');
+        });
+    
+        Route::prefix('occurrence')->name('occurrence.')->group(function () {
+            Route::get('/', [OccurrenceController::class, 'index'])->name('index');
+            Route::get('/{occurrence}/show', [OccurrenceController::class, 'show'])->name('show');
+            Route::get('/create', [OccurrenceController::class, 'create'])->name('create');
+            Route::get('/search', [OccurrenceController::class, 'search'])->name('search');
+            Route::post('/', [OccurrenceController::class, 'store'])->name('store');
+            Route::get('/{occurrence}/edit', [OccurrenceController::class, 'edit'])->name('edit');
+            Route::get('/employee/{code}', [OccurrenceController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+            Route::put('/{occurrence}', [OccurrenceController::class, 'update'])->name('update');
+            Route::delete('/detail/{id}', [OccurrenceController::class, 'deleteDetail'])->name('deleteDetail');
+            Route::delete('/{occurrence}', [OccurrenceController::class, 'destroy'])->name('destroy');
+        });
     });
 
     Route::prefix('attest')->name('sst.attest.')->group(function () {

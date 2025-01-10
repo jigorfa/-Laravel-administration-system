@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Cadastro de Ocorrências">
     <meta name="author" content="Hau Nguyen">
-    <title>Cadastro - Ocorrência</title>
-    <!-- Links -->
+    <title>Cadastro - Ocorrências</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.css') }}" rel="stylesheet" media="all">
@@ -44,13 +43,13 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center">
                             <div class="col-lg-9">
-                                <form action="{{ route('binder.occurrence.store') }}" method="POST">
+                                <form action="{{ route('binder.occurrence.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <h4>Informações de identificação</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4">
                                             <label for="employee_code">Código</label>
-                                            <select class="form-control" id="employee_code" name="employee_code">
+                                            <select id="employee_code" name="employee_code" class="form-control">
                                                 <option value="" selected>Selecione um código:</option>
                                                 @foreach($employee as $employees)
                                                     <option value="{{ $employees->code }}">{{ $employees->code }}</option>
@@ -61,13 +60,13 @@
 
                                         <div class="form-group col-lg-4">
                                             <label for="employee_adjuntancy">Cargo</label>
-                                            <input type="text" class="form-control" id="employee_adjuntancy" name="employee_adjuntancy" readonly>
+                                            <input type="text" id="employee_adjuntancy" class="form-control" readonly>
                                             <small>Campo automático *</small>
                                         </div>
 
                                         <div class="form-group col-lg-4">
                                             <label for="employee_name">Nome</label>
-                                            <input type="text" class="form-control" id="employee_name" name="employee_name" readonly>
+                                            <input type="text" id="employee_name" class="form-control" readonly>
                                             <small>Campo automático *</small>
                                         </div>
                                     </div>
@@ -75,12 +74,12 @@
                                     <h4>Informações das ocorrências</h4>
                                     <div id="occurrence_info_container">    
                                         <div class="occurrence-group row mt-3">
-                                            <div class="form-group col-lg-3">
-                                                <label>Data da ocorrência</label>
-                                                <input type="date" class="form-control" name="detail[0][occurrence_date]" required>
+                                            <div class="form-group col-lg-2">
+                                                <label>Data</label>
+                                                <input type="date" name="detail[0][occurrence_date]" class="form-control" required>
                                                 <small class="form-text text-muted">Campo obrigatório *</small>
                                             </div>
-                                            <div class="form-group col-lg-3">
+                                            <div class="form-group col-lg-2">
                                                 <label>Tipo da ocorrência</label>
                                                 <select name="detail[0][occasion_id]" class="form-control" required>
                                                     <option value="">Selecione um tipo:</option>
@@ -90,9 +89,14 @@
                                                 </select>
                                                 <small class="form-text text-muted">Campo obrigatório *</small>
                                             </div>
-                                            <div class="form-group col-lg-5">
+                                            <div class="form-group col-lg-3">
                                                 <label>Descrição</label>
-                                                <input type="text" class="form-control" name="detail[0][description]" placeholder="Insira uma descrição breve:" required>
+                                                <input type="text" name="detail[0][description]" class="form-control" placeholder="Insira uma descrição" required>
+                                                <small class="form-text text-muted">Campo obrigatório *</small>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Anexo</label>
+                                                <input type="file" name="detail[0][annex]" class="form-control" required>
                                                 <small class="form-text text-muted">Campo obrigatório *</small>
                                             </div>
                                         </div>
@@ -122,7 +126,7 @@
 
     <script>
         $('#employee_code').on('change', function() {
-            var code = $(this).val(); // Obtém o valor do campo Código
+            var code = $(this).val();
             var url = '{{ route("binder.occurrence.getEmployeeByCode", ":code") }}';
             url = url.replace(':code', code);
 
@@ -132,7 +136,6 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response) {
-                        // Preenche os campos automaticamente
                         $('#employee_name').val(response.name);
                         $('#employee_adjuntancy').val(response.adjuntancy);
                     } else {
@@ -151,29 +154,25 @@
     </script>
 
     <script>
-        let rowIdx = 0; // Inicializa o índice das linhas
+        let rowIdx = 0;
 
         $('#add_occurrence').click(function () {
-            rowIdx++; // Incrementa o índice para cada novo campo
+            rowIdx++;
 
             const template = $('.occurrence-group').first().clone();
             
-            // Limpa os campos do template clonado
             template.find('input').val('');
-            template.find('.remove-occurrence').remove(); // Remove o botão existente, se houver
+            template.find('.remove-occurrence').remove();
 
-            // Atualiza os índices dos campos input
             template.find('input, select').each(function () {
                 const input = $(this);
                 const nameAttr = input.attr('name');
                 const idAttr = input.attr('id');
 
-                // Atualiza o atributo name com o novo índice
                 if (nameAttr) {
                     input.attr('name', nameAttr.replace(/\[\d+\]/, `[${rowIdx}]`));
                 }
 
-                // Atualiza o atributo id com o novo índice
                 if (idAttr) {
                     input.attr('id', idAttr.replace(/_\d+$/, `_${rowIdx}`));
                 }
@@ -182,27 +181,21 @@
             const buttonGroup = $('<div class="form-group col-lg-1 text-center d-flex align-items-center"></div>');
             const button = $('<button type="button" class="btn btn-danger btn-sm remove-occurrence"><i class="fa fa-trash-alt"></i></button>');
             
-            // Adiciona o botão ao novo form-group
             buttonGroup.append(button);
 
-            // Adiciona a nova div ao final da div .occurrence-group
-            template.append(buttonGroup); // Adiciona o grupo do botão fora do form-group
+            template.append(buttonGroup);
             
-            // Adiciona o template clonado ao container
             $('#occurrence_info_container').append(template);
         });
 
-        // Função para remover a div quando o botão de remoção for clicado
         $(document).on('click', '.remove-occurrence', function () {
             $(this).closest('.occurrence-group').remove();
         });
     </script>
 
     <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
-    <!-- Bootstrap JS-->
     <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/popper.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
-    <!-- Vendor JS       -->
     <script src="{{ url ('assets/dashboard/vendor/slick/slick.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/wow/wow.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/animsition/animsition.min.js') }}"></script>
@@ -213,8 +206,6 @@
     <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-
-    <!-- Main JS-->
     <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
     <script src="{{ url ('assets/dashboard/js/autofill.js') }}"></script>
 </body>

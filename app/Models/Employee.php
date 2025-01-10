@@ -11,6 +11,7 @@ class Employee extends Model
     
     protected $primaryKey = 'code';
     
+    protected $dates = ['birth_date'];
     protected $keyType = 'int';
     
     public $incrementing = false;
@@ -39,6 +40,8 @@ class Employee extends Model
         'salary',
         'instruction_id',
         'situation_id',
+        'enterprise_id',
+        'demission'
     ];
 
     public function situation()
@@ -51,8 +54,8 @@ class Employee extends Model
         return $this->belongsTo(Instruction::class);
     }
 
-    public function occurrences()
+    public function enterprise()
     {
-        return $this->hasMany(Occurrence::class);
+        return $this->belongsTo(Enterprise::class);
     }
 }

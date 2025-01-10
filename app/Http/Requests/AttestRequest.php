@@ -27,14 +27,18 @@ class AttestRequest extends FormRequest
 
             'detail.required' => 'É necessário fornecer pelo menos um detalhe de atestado.',
             'detail.array' => 'Os detalhes do atestado devem ser um array.',
+            
             'detail.*.start_attest.required' => 'A data de início do atestado é obrigatória.',
             'detail.*.start_attest.date' => 'A data de início do atestado deve ser uma data válida.',
+
             'detail.*.end_attest.required' => 'A data de término do atestado é obrigatória.',
             'detail.*.end_attest.date' => 'A data de término do atestado deve ser uma data válida.',
             'detail.*.end_attest.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
+
             'detail.*.cause.required' => 'A causa do atestado é obrigatória.',
             'detail.*.cause.string' => 'A causa do atestado deve ser um texto válido.',
             'detail.*.cause.max' => 'A causa do atestado pode ter no máximo 191 caracteres.',
+
             'detail.*.annex.file' => 'O anexo deve ser um arquivo válido.',
             'detail.*.annex.mimes' => 'O anexo deve ser um arquivo no formato: pdf, jpg ou png.',
             'detail.*.annex.max' => 'O anexo pode ter no máximo 2 MB.',

@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Visualização - Ocorrência</title>
-    <!-- Estilos -->
+    <title>Visualização - Ocorrências</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -45,7 +43,6 @@
                     <div class="card-body card-block">
                         <div class="d-flex justify-content-center">
                             <div class="col-lg-9">
-                                <!-- Informações de Identificação -->
                                 <h4>Informações de identificação</h4>
                                 <div class="row mt-3">
                                     <div class="form-group col-lg-4">
@@ -64,7 +61,6 @@
                                         <small class="form-text text-muted">Campo inalterável *</small>
                                     </div>
                                 </div>
-                                <!-- Detalhes do Atraso -->
                                 <h4>Informações das ocorrências</h4>
                                 <div id="occurrence_info_container">
                                     @foreach($occurrence->detail as $details)
@@ -97,7 +93,6 @@
                                     @endforeach
                                 </div>
 
-                                <!-- Botões -->
                                 <div class="text-center mt-3">
                                     <button type="button">
                                         <a href="{{ route('pdf.occurrence',  $occurrence->id) }}" class="btn btn-info text-light mr-2">
@@ -119,7 +114,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="{{ url ('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>

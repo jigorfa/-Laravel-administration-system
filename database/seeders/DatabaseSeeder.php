@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             InstructionSeeder::class,
             SituationSeeder::class,
             OccasionSeeder::class,
+            EnterpriseSeeder::class,
         ]);
     }
 }
