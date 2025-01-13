@@ -166,6 +166,28 @@ class DelayController extends Controller
         }
     }
     /**
+     * Remove the specified resource from storage.
+     */
+    public function deleteDetail($id)
+    {
+        try {
+            $detail = DelayDetail::find($id);
+
+            if (!$detail) {
+                return back()->with('error', 'Detalhe não encontrado.');
+            }
+
+            $delayId = $detail->delay_id;
+
+            $detail->delete();
+
+            return redirect()->route('binder.delay.edit', $delayId)->with('danger', 'Detalhe excluído com sucesso!');
+        } catch (\Exception $e) {
+            Log::error('Erro ao excluir o registro detalhado da ficha', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Erro ao excluir o detalhe: ' . $e->getMessage());
+        }
+    }
+    /**
      * Remove all resources from storage.
      */
     public function destroy($id)

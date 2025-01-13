@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edição - Atrasos/Saídas</title>
+    <title>Edição - Atrasos</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -18,7 +18,7 @@
             <section class="welcome p-t-10 col-md-12">
                 <div>
                     <div class="text-center">
-                        <h1>Edição de atrasos e/ou saídas</h1>
+                        <h1>Edição de atrasos</h1>
                         <h4 class="mt-2">Registro: {{ $delay->employee->name }} </h4>
                     </div>
                     @if (session('error'))
@@ -84,7 +84,7 @@
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                     </div>
-                                    <h4>Informações dos atrasos e/ou saídas</h4>
+                                    <h4>Informações dos atrasos</h4>
                                     <div id="delay_info_container">
                                         @foreach($delay->detail as $details)
                                             <div class="row mt-3 delay-group">

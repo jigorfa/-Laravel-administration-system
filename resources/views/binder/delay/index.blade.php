@@ -54,6 +54,20 @@
                         </div>
                     @endif
 
+                    @if (session('warning'))
+                        <div class="alert alert-warning m-3" role="alert">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
+                    @if (session('danger'))
+                        <div class="alert alert-danger m-3" role="alert">
+                            <i class="fa-solid fa-trash"></i>
+                            {{ session('danger') }}
+                        </div>
+                    @endif
+
                     <div class="card-body">
                         <div class="card">
                             <h4 class="card-header text-center">Pesquisa</h4>

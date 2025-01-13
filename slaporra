@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edição - EPI's</title>
+    <title>Edição - delay's</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -18,8 +18,8 @@
             <section class="welcome p-t-10 col-md-12">
                 <div>
                     <div class="text-center">
-                        <h1>Edição dos EPI's entregues</h1>
-                        <h4 class="mt-2">Registro: {{ $epi->employee->name }} </h4>
+                        <h1>Edição dos delay's entregues</h1>
+                        <h4 class="mt-2">Registro: {{ $delay->employee->name }} </h4>
                     </div>
                     @if (session('error'))
                         <div class="alert alert-danger" role="alert">
@@ -63,55 +63,54 @@
                                         {{ session('danger') }}
                                     </div>
                                 @endif
-                                
-                                <form action="{{ route('sst.epi.update', $epi->id) }}" method="POST">
+                                <form action="{{ route('binder.delay.update', $delay->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <h4>Informações de identificação</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-4">
                                             <label>Código</label>
-                                            <input type="number" name="employee_code" value="{{ $epi->employee->code }}" class="form-control" readonly>
+                                            <input type="number" name="employee_code" value="{{ $delay->employee->code }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label>Cargo</label>
-                                            <input type="text" name="adjuntancy" value="{{ $epi->employee->adjuntancy }}" class="form-control" readonly>
+                                            <input type="text" name="adjuntancy" value="{{ $delay->employee->adjuntancy }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label>Nome</label>
-                                            <input type="text" name="name" value="{{ $epi->employee->name }}" class="form-control" readonly>
+                                            <input type="text" name="name" value="{{ $delay->employee->name }}" class="form-control" readonly>
                                             <small class="form-text text-muted">Campo automático *</small>
                                         </div>
                                     </div>
-                                    <h4>Informações dos EPI's</h4>
-                                    <div id="epi_info_container">
-                                        @foreach($epi->detail as $details)
-                                            <div class="row mt-3 epi-group">
+                                    <h4>Informações dos delay's</h4>
+                                    <div id="delay_info_container">
+                                        @foreach($delay->detail as $details)
+                                            <div class="row mt-3 delay-group">
                                                 <input type="hidden" name="detail[{{ $loop->index }}][id]" value="{{ $details->id }}">
                                                 <div class="form-group col-lg-3">
-                                                    <label>Data de entrega</label>
-                                                    <input type="date" name="detail[{{ $loop->index }}][expedition_date]" value="{{ $details->expedition_date }}" class="form-control">
-                                                    <small class="form-text text-muted">Campo obrigatório *</small>
-                                                </div>
-                                                <div class="form-group col-lg-3">
-                                                    <label>Nome do EPI</label>
-                                                    <input type="text" name="detail[{{ $loop->index }}][name]" placeholder="Insira o nome" value="{{ $details->name }}" class="form-control">
+                                                    <label>Data do atraso</label>
+                                                    <input type="date" name="detail[{{ $loop->index }}][delay_date]" value="{{ $details->delay_date }}" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
                                                 <div class="form-group col-lg-2">
-                                                    <label>Quantidade</label>
-                                                    <input type="number" name="detail[{{ $loop->index }}][quantity]" placeholder="Ex: 1,2,3..." value="{{ $details->quantity }}" class="form-control">
+                                                    <label>Chegada</label>
+                                                    <input type="time" name="detail[{{ $loop->index }}][arrival]" value="{{ $details->arrival }}" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
-                                                <div class="form-group col-lg-3">
-                                                    <label>Descrição</label>
-                                                    <input type="text" name="detail[{{ $loop->index }}][description]" placeholder="Insira uma descrição" value="{{ $details->description }}" class="form-control">
+                                                <div class="form-group col-lg-2">
+                                                    <label>Saída</label>
+                                                    <input type="time" name="detail[{{ $loop->index }}][leave]" value="{{ $details->leave }}" class="form-control">
+                                                    <small class="form-text text-muted">Campo obrigatório *</small>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label>Motivo</label>
+                                                    <input type="text" name="detail[{{ $loop->index }}][description]" value="{{ $details->description }}" class="form-control" placeholder="Insira uma descrição do atraso">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
                                                 <div class="form-group text-center d-flex align-items-center col-lg-1">
-                                                    <button type="button" class="btn btn-danger btn-sm remove-epi" data-id="{{ $details->id }}">
+                                                    <button type="button" class="btn btn-danger btn-sm remove-delay" data-id="{{ $details->id }}">
                                                         <i class="fa fa-trash-alt"></i>
                                                     </button>
                                                 </div>
@@ -122,10 +121,10 @@
                                         <button type="submit" class="btn btn-success">
                                             <i class="fa-solid fa-check"></i> Atualizar
                                         </button>
-                                        <button type="button" id="add_epi" class="btn btn-secondary">
-                                            <i class="fa-solid fa-plus"></i> Documento EPI
+                                        <button type="button" id="add_delay" class="btn btn-secondary">
+                                            <i class="fa-solid fa-plus"></i> Documento
                                         </button>
-                                        <a href="{{ route('sst.epi.index') }}" class="btn btn-danger">
+                                        <a href="{{ route('binder.delay.index') }}" class="btn btn-danger">
                                             <i class="fa-solid fa-times"></i> Cancelar
                                         </a>
                                     </div>
@@ -139,12 +138,12 @@
     </div>
 
     <script>
-        let rowIdx = document.querySelectorAll('.epi-group').length; 
+        let rowIdx = document.querySelectorAll('.delay-group').length; 
 
-        $('#add_epi').click(function () {
+        $('#add_delay').click(function () {
             rowIdx++;
 
-            const template = $('.epi-group').first().clone();
+            const template = $('.delay-group').first().clone();
 
             // Limpa os valores do template clonado
             template.find('input, select').each(function () {
@@ -166,26 +165,26 @@
 
             template.addClass('cloned');
 
-            template.find('.remove-epi').off('click').on('click', function () {
-                const group = $(this).closest('.epi-group');
+            template.find('.remove-delay').off('click').on('click', function () {
+                const group = $(this).closest('.delay-group');
                 if (group.hasClass('cloned')) {
                     group.remove();
                 }
             });
 
-            $('#epi_info_container').append(template);
+            $('#delay_info_container').append(template);
         });
 
-        $(document).on('click', '.remove-epi', function () {
+        $(document).on('click', '.remove-delay', function () {
             const detailId = $(this).data('id');
-            const group = $(this).closest('.epi-group');
+            const group = $(this).closest('.delay-group');
 
             if (group.hasClass('cloned')) {
                 group.remove();
             } else if (detailId) {
                 const deleteForm = document.createElement('form');
                 deleteForm.method = 'POST';
-                deleteForm.action = `/epi/detail/${detailId}`;
+                deleteForm.action = `/delay/detail/${detailId}`;
 
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';

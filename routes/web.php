@@ -49,33 +49,29 @@ Route::middleware(['auth', 'verify'])->group(function () {
             Route::post('/vacation', [CalculatorController::class, 'calculateVacation'])->name('vacation');
         });
     });
-    
-    Route::prefix('binder')->name('binder.')->group(function () {
 
-        Route::prefix('delay')->name('delay.')->group(function () {
-            Route::get('/', [DelayController::class, 'index'])->name('index');
-            Route::get('/{delay}/show', [DelayController::class, 'show'])->name('show');
-            Route::get('/create', [DelayController::class, 'create'])->name('create');
-            Route::post('/', [DelayController::class, 'store'])->name('store');
-            Route::get('/{delay}/edit', [DelayController::class, 'edit'])->name('edit');
-            Route::get('/employee/{code}', [DelayController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
-            Route::put('/{delay}', [DelayController::class, 'update'])->name('update');
-            Route::delete('/detail/{id}', [DelayController::class, 'deleteDetail'])->name('deleteDetail');
-            Route::delete('/{delay}', [DelayController::class, 'destroy'])->name('destroy');
-        });
+    Route::prefix('delay')->name('binder.delay.')->group(function () {
+        Route::get('/', [DelayController::class, 'index'])->name('index');
+        Route::get('/{delay}/show', [DelayController::class, 'show'])->name('show');
+        Route::get('/create', [DelayController::class, 'create'])->name('create');
+        Route::post('/', [DelayController::class, 'store'])->name('store');
+        Route::get('/{delay}/edit', [DelayController::class, 'edit'])->name('edit');
+        Route::get('/employee/{code}', [DelayController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::put('/{delay}', [DelayController::class, 'update'])->name('update');
+        Route::delete('/detail/{id}', [DelayController::class, 'deleteDetail'])->name('deleteDetail');
+        Route::delete('/{delay}', [DelayController::class, 'destroy'])->name('destroy');
+    });
     
-        Route::prefix('occurrence')->name('occurrence.')->group(function () {
-            Route::get('/', [OccurrenceController::class, 'index'])->name('index');
-            Route::get('/{occurrence}/show', [OccurrenceController::class, 'show'])->name('show');
-            Route::get('/create', [OccurrenceController::class, 'create'])->name('create');
-            Route::get('/search', [OccurrenceController::class, 'search'])->name('search');
-            Route::post('/', [OccurrenceController::class, 'store'])->name('store');
-            Route::get('/{occurrence}/edit', [OccurrenceController::class, 'edit'])->name('edit');
-            Route::get('/employee/{code}', [OccurrenceController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
-            Route::put('/{occurrence}', [OccurrenceController::class, 'update'])->name('update');
-            Route::delete('/detail/{id}', [OccurrenceController::class, 'deleteDetail'])->name('deleteDetail');
-            Route::delete('/{occurrence}', [OccurrenceController::class, 'destroy'])->name('destroy');
-        });
+    Route::prefix('occurrence')->name('binder.occurrence.')->group(function () {
+        Route::get('/', [OccurrenceController::class, 'index'])->name('index');
+        Route::get('/{occurrence}/show', [OccurrenceController::class, 'show'])->name('show');
+        Route::get('/create', [OccurrenceController::class, 'create'])->name('create');
+        Route::get('/search', [OccurrenceController::class, 'search'])->name('search');
+        Route::post('/', [OccurrenceController::class, 'store'])->name('store');
+        Route::get('/{occurrence}/edit', [OccurrenceController::class, 'edit'])->name('edit');
+        Route::get('/employee/{code}', [OccurrenceController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
+        Route::put('/{occurrence}', [OccurrenceController::class, 'update'])->name('update');
+        Route::delete('/{occurrence}', [OccurrenceController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('attest')->name('sst.attest.')->group(function () {
@@ -86,7 +82,6 @@ Route::middleware(['auth', 'verify'])->group(function () {
         Route::get('/employee/{code}', [AttestController::class, 'getEmployeeByCode'])->name('getEmployeeByCode');
         Route::get('/{attest}/edit', [AttestController::class, 'edit'])->name('edit');
         Route::put('/{attest}', [AttestController::class, 'update'])->name('update');
-        Route::delete('/detail/{id}', [AttestController::class, 'deleteDetail'])->name('deleteDetail');
         Route::delete('/{attest}', [AttestController::class, 'destroy'])->name('destroy');
     });
 
