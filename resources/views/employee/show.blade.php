@@ -7,7 +7,6 @@
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
     <title>Visualização - Funcionário</title>
-    <!-- links -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url ('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ url ('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
@@ -20,18 +19,14 @@
     <link href="{{ url ('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
     <link href="{{ url ('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-    <!-- CSS Principal -->
     <link href="{{ url ('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
-    <!-- fim dos links -->
 </head>
 
 <body class="animsition">
     <div class="page-wrapper">
-        <!-- Navbar -->
-        @include('layouts.navigation')
-        <!-- Fim da navbar -->
 
-        <!-- Conteúdo -->
+        @include('layouts.navigation')
+
         <div class="page-content">
             <section class="welcome p-t-10 col-md-12">
                 <div>
@@ -40,7 +35,6 @@
                         <h4 class="mt-2">Registro: {{ old('name', $employee->name) }} </h4>
                     </div>
 
-                    <!-- Verificação de erros -->
                     @if (session('error'))
                         <div class="alert alert-danger d-flex align-items-center" role="alert" style="background-color: #f8d7da; color: #842029; border-color: #f5c2c7;">
                             <i class="fa fa-exclamation-triangle mr-2"></i>
@@ -59,33 +53,104 @@
                             </ul>
                         </div>
                     @endif
-                    <!-- Fim da verificação de erros -->
                 </div>
                 
                 <div class="card bg-light text-dark mt-3">
                     <div class="card-body card-block">
-                        <!-- Container -->
                         <div class="d-flex justify-content-center">
                             <div class="col-lg-9">
-        
                                 <h4>Informações documentais:</h4>
                                 <div class="row mt-3">
+                                    <div class="form-group col-lg-9">
+                                        <label for="name" class="form-control-label">Nome</label>
+                                        <input type="text" id="name" name="name" placeholder="Insira o nome completo do(a) funcionário(a):" class="form-control" value="{{ old('name', $employee->name) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
                                     <div class="form-group col-lg-3">
-                                        <label for="code" class="form-control-label">Código</label>
-                                        <input type="number" id="code" name="code" value="{{ $employee->code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="birth_date" class="form-control-label">Data de nascimento</label>
+                                        <input type="date" id="birth_date" name="birth_date" class="form-control" value="{{ old('birth_date', $employee->birth_date) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="nationality" class="form-control-label">Nacionalidade</label>
+                                        <input type="text" id="nationality" name="nationality" placeholder="Insira a nacionalidade" class="form-control" value="{{ old('nationality', $employee->nationality) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="naturalness" class="form-control-label">Naturalidade</label>
+                                        <input type="text" id="naturalness" name="naturalness" placeholder="Insira a naturalidade" class="form-control" value="{{ old('naturalness', $employee->naturalness) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="color_id" class="form-control-label">Cor/Raça</label>
+                                        <select name="color_id" id="color_id" class="form-control" disabled>
+                                            <option value="">Selecione a cor/raça:</option>
+                                            @forelse ($color as $colors)
+                                                <option value="{{ $colors->id }}"
+                                                    {{ old('gender_id', $employee->color_id) == $colors->id ? 'selected' : '' }}>
+                                                    {{ $colors->name }}
+                                                </option>
+                                            @empty
+                                                <option value="">Nenhum tipo de cor/raça encontrada</option>
+                                            @endforelse
+                                        </select>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="gender_id" class="form-control-label">Sexo</label>
+                                        <select name="gender_id" id="gender_id" class="form-control" disabled>
+                                            <option value="">Selecione o sexo:</option>
+                                            @forelse ($gender as $genders)
+                                                <option value="{{ $genders->id }}"
+                                                    {{ old('gender_id', $employee->gender_id) == $genders->id ? 'selected' : '' }}>
+                                                    {{ $genders->name }}
+                                                </option>
+                                            @empty
+                                                <option value="">Nenhum tipo de sexo encontrado</option>
+                                            @endforelse
+                                        </select>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="cpf_code" class="form-control-label">CPF</label>
+                                        <input type="text" id="cpf_code" name="cpf_code" placeholder="Insira o CPF:" class="form-control" value="{{ old('cpf_code', $employee->cpf_code) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
                                         <label for="ctps_code" class="form-control-label">CTPS</label>
-                                        <input type="number" id="ctps_code" name="ctps_code"  value="{{ $employee->ctps_code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <input type="number" id="ctps_code" name="ctps_code" placeholder="Insira a CTPS:" class="form-control" value="{{ old('ctps_code', $employee->ctps_code) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
-                                        <label for="pis_code" class="form-control-label">PIS</label>
-                                        <input type="number" id="pis_code" name="pis_code" value="{{ $employee->pis_code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="pis_code" class="form-control-label">PIS/PASEP</label>
+                                        <input type="number" id="pis_code" name="pis_code" placeholder="Insira o PIS/PASEP:" class="form-control" value="{{ old('pis_code', $employee->pis_code) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="vote_code" class="form-control-label">Título de eleitor</label>
+                                        <input type="text" id="vote_code" name="vote_code" placeholder="Insira o título de eleitor:" class="form-control" value="{{ old('vote_code', $employee->vote_code) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="license" class="form-control-label">CNH</label>
+                                        <input type="text" id="license" name="license" placeholder="Insira o número da CNH:" class="form-control" value="{{ old('license', $employee->license) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="telephone" class="form-control-label">Telefone</label>
+                                        <input type="text" id="telephone" name="telephone" placeholder="Exemplo: (85) 9 1111-2222" class="form-control" value="{{ old('telephone', $employee->telephone) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
@@ -94,122 +159,65 @@
                                             <option value="">Selecione o grau:</option>
                                             @forelse ($instruction as $instructions)
                                                 <option value="{{ $instructions->id }}"
-                                                    {{ old('situation_id', $employee->instruction_id) == $instructions->id ? 'selected' : '' }}>
+                                                    {{ old('instruction_id', $employee->instruction_id) == $instructions->id ? 'selected' : '' }}>
                                                     {{ $instructions->name }}
                                                 </option>
                                             @empty
-                                                <option value="">Nenhuma situação da conta encontrada</option>
+                                                <option value="">Nenhum grau de instrução encontrado</option>
                                             @endforelse
                                         </select>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
-                                        <label for="personal_code" class="form-control-label">CPF</label>
-                                        <input type="text" id="personal_code" name="personal_code"  value="{{ $employee->personal_code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="civil_state_id" class="form-control-label">Estado Civil</label>
+                                        <select name="civil_state_id" id="civil_state_id" class="form-control" disabled>
+                                            <option value="">Selecione o estado civil:</option>
+                                            @forelse ($civilState as $civilStates)
+                                                <option value="{{ $civilStates->id }}"
+                                                    {{ old('civil_state_id', $employee->civil_state_id) == $civilStates->id ? 'selected' : '' }}>
+                                                    {{ $civilStates->name }}
+                                                </option>
+                                            @empty
+                                                <option value="">Nenhum tipo de estado civil</option>
+                                            @endforelse
+                                        </select>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
-                                    <div class="form-group col-lg-3">
-                                        <label for="vote_code" class="form-control-label">Título de eleitor</label>
-                                        <input type="number" id="vote_code" name="vote_code" value="{{ $employee->vote_code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="birth_date" class="form-control-label">Data de nascimento</label>
-                                        <input type="date" id="birth_date" name="birth_date"  value="{{ $employee->birth_date }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="telephone" class="form-control-label">Telefone</label>
-                                        <input type="text" id="telephone" name="telephone" value="{{ $employee->telephone }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-6">
-                                        <label for="name" class="form-control-label">Nome</label>
-                                        <input type="text" id="name" name="name" name="name" value="{{ $employee->name }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-6">
-                                        <label for="adjuntancy" class="form-control-label">Cargo</label>
-                                        <input type="text" id="adjuntancy" name="adjuntancy" value="{{ $employee->adjuntancy }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
                                 </div>
 
                                 <h4>Informações residenciais:</h4>
                                 <div class="row mt-3">
                                     <div class="form-group col-lg-3">
-                                        <label for="state" class="form-control-label">Estado</label>
-                                        <input type="text" id="state" name="state" value="{{ $employee->state }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="city" class="form-control-label">Cidade</label>
-                                        <input type="text" id="city" name="city" value="{{ $employee->city }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="neighborhood" class="form-control-label">Bairro</label>
-                                        <input type="text" id="neighborhood" name="neighborhood" value="{{ $employee->neighborhood }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="number" class="form-control-label">Número</label>
-                                        <input type="number" id="number" name="number" value="{{ $employee->number }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
                                         <label for="postal_code" class="form-control-label">CEP</label>
-                                        <input type="number" id="postal_code" name="postal_code" value="{{  $employee->postal_code }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <input type="text" class="form-control" id="postal_code" name="postal_code" value="{{ old('postal_code', $employee->postal_code) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-9">
-                                        <label for="street" class="form-control-label">Logradouro</label>
-                                        <input type="text" id="street" name="street" value="{{ $employee->street }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="address" class="form-control-label">Logradouro</label>
+                                        <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $employee->address) }}" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
                                 </div>
 
                                 <h4>Informações contratuais:</h4>
                                 <div class="row mt-3">
                                     <div class="form-group col-lg-3">
-                                        <label for="admission" class="form-control-label">Admissão</label>
-                                        <input type="date" id="admission" name="admission" value="{{ $employee->admission }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="contract1" class="form-control-label">1º Contrato</label>
-                                        <input type="date" id="contract1" name="contract1" value="{{ $employee->contract1 }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="contract2" class="form-control-label">2º Contrato</label>
-                                        <input type="date" id="contract2" name="contract2" value="{{ $employee->contract2 }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="salary" class="form-control-label">Salário (R$)</label>
-                                        <input type="text" id="salary" name="salary" value="{{ $employee->salary }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label for="demission" class="form-control-label">Demissão</label>
-                                        <input type="date" id="demission" name="demission" value="{{ $employee->demission }}" class="form-control" disabled>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="enterprise_id" class="form-control-label">Empresa</label>
+                                        <select name="enterprise_id" class="form-control" id="enterprise_id" disabled>
+                                            <option value="">Selecione a empresa:</option>
+                                            @forelse ($enterprise as $enterprises)
+                                                <option value="{{ $enterprises->id }}"
+                                                    {{ old('enterprise_id', $employee->enterprise_id) == $enterprises->id ? 'selected' : '' }}>
+                                                    {{ $enterprises->name }}
+                                                </option>
+                                            @empty
+                                                <option value="">Nenhuma situação da conta encontrada</option>
+                                            @endforelse
+                                        </select>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
@@ -225,25 +233,70 @@
                                                 <option value="">Nenhuma situação da conta encontrada</option>
                                             @endforelse
                                         </select>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
                                     <div class="form-group col-lg-3">
-                                        <label for="instruction_id" class="form-control-label">Grau de instrução</label>
-                                        <select name="instruction_id" id="instruction_id" class="form-control" disabled>
-                                            <option value="">Selecione o grau:</option>
-                                            @forelse ($enterprise as $enterprises)
-                                                <option value="{{ $enterprises->id }}"
-                                                    {{ old('enterprise_id', $employee->enterprise_id) == $enterprises->id ? 'selected' : '' }}>
-                                                    {{ $enterprises->name }}
-                                                </option>
-                                            @empty
-                                                <option value="">Nenhuma situação da conta encontrada</option>
-                                            @endforelse
-                                        </select>
-                                        <small class="form-text text-muted">Campo inalterável *</small>
+                                        <label for="code" class="form-control-label">Código</label>
+                                        <input type="number" id="code" name="code" placeholder="Insira o código:" value="{{ old('code', $employee->code) }}" class="form-control" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
                                     </div>
 
+                                    <div class="form-group col-lg-3">
+                                        <label for="adjuntancy" class="form-control-label">Cargo</label>
+                                        <input type="text" id="adjuntancy" name="adjuntancy" placeholder="Insira o cargo:" value="{{ old('code', $employee->adjuntancy) }}" class="form-control" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="admission" class="form-control-label">Admissão</label>
+                                        <input type="date" id="admission" name="admission" value="{{ old('admission', $employee->admission) }}" class="form-control" disabled>
+                                        <small class="form-text text-muted">Campo obrigatório *</small>
+                                    </div>
+
+                                    @if (!empty($employee->demission))
+                                        <div class="form-group col-lg-2">
+                                            <label for="contract1" class="form-control-label">1º Contrato</label>
+                                            <input type="date" id="contract1" name="contract1" value="{{ old('contract1', $employee->contract1) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-2">
+                                            <label for="contract2" class="form-control-label">2º Contrato</label>
+                                            <input type="date" id="contract2" name="contract2" value="{{ old('contract2', $employee->contract2) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="demission" class="form-control-label">Demissão/Encerramento</label>
+                                            <input type="date" id="demission" name="demission" value="{{ old('demission', $employee->demission) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-2">
+                                            <label for="salary" class="form-control-label">Salário (R$)</label>
+                                            <input type="text" id="salary" name="salary" value="{{ old('salary', $employee->salary) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+                                    @else
+                                        <div class="form-group col-lg-3">
+                                            <label for="contract1" class="form-control-label">1º Contrato</label>
+                                            <input type="date" id="contract1" name="contract1" value="{{ old('contract1', $employee->contract1) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="contract2" class="form-control-label">2º Contrato</label>
+                                            <input type="date" id="contract2" name="contract2" value="{{ old('contract2', $employee->contract2) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="salary" class="form-control-label">Salário (R$)</label>
+                                            <input type="text" id="salary" name="salary" value="{{ old('salary', $employee->salary) }}" class="form-control" disabled>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="text-center mt-3">
@@ -254,21 +307,19 @@
                                     </button>
 
                                     <button type="button">
-                                        <a href="{{ route('employee.index') }}" class="btn btn-warning text-dark">
-                                            <i class="fa-solid fa-chevron-left"></i> Voltar
+                                        <a href="{{ route('employee.index') }}" class="btn btn-danger text-light">
+                                            <i class="fa-solid fa-x"></i> Cancelar
                                         </a>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Fim do Container -->
                     </div>
                 </div>
             </section>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="{{ url ('assets/login/js/jquery.min.js') }}"></script>
     <script src="{{ url ('assets/login/js/popper.js') }}"></script>
     <script src="{{ url ('assets/login/js/bootstrap.min.js') }}"></script>
@@ -286,8 +337,6 @@
     <script src="{{ url ('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/chartjs/Chart.bundle.min.js') }}"></script>
     <script src="{{ url ('assets/dashboard/vendor/select2/select2.min.js') }}"></script>
-    <!-- JS Principal -->
     <script src="{{ url ('assets/dashboard/js/main.js') }}"></script>
-    <!-- Fim dos scripts -->
 </body>
 </html>

@@ -21,8 +21,8 @@
     <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
 </head>
-
 <body class="animsition page-wrapper">
+
     @include('layouts.navigation')
 
     <div class="page-content">
@@ -31,21 +31,19 @@
             <div class="col-md-12 mt-3">
                 <hr>
                 <div class="card mt-4 mb-4 border-light shadow">
-                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="card-header d-flex justify-content-between">
                         <h3>
                             <i class="fa-solid fa-circle-exclamation"></i> |
                             {{ $search->total() }} Fichas de ocorrências
                         </h3>
                         
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <button type="button">
-                                    <a href="{{ route('binder.occurrence.create') }}" class="btn btn-success text-light">
-                                        <i class="fa-solid fa-plus"></i> Cadastrar
-                                    </a>
-                                </button>
-                            </div>
-                        </div>
+                        <span>
+                            <button type="button">
+                                <a href="{{ route('binder.occurrence.create') }}" class="btn btn-success text-light">
+                                    <i class="fa-solid fa-plus"></i> Cadastrar
+                                </a>
+                            </button>
+                        </span>
                     </div>
 
                     @if (session('success'))
@@ -70,65 +68,63 @@
                     @endif
 
                     <div class="card-body">
-                        <div class="card-body">
-                            <div class="card">
-                                <h4 class="card-header text-center">Pesquisa</h4>
-                                <div class="card-body">
-                                    <form action="{{ route('binder.occurrence.index') }}">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="search_enterprise" class="control-label mb-1">Empresa</label>
-                                                    <select name="search_enterprise" id="search_enterprise" class="form-control">
-                                                        <option value="">Selecione a empresa:</option>
-                                                        @forelse ($enterprises as $enterprise)
-                                                            <option value="{{ $enterprise->id }}" 
-                                                                {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
-                                                                {{ $enterprise->name }}
-                                                            </option>
-                                                        @empty
-                                                            <option value="">Nenhuma empresa encontrada</option>
-                                                        @endforelse
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="code" class="control-label mb-1">Código</label>
-                                                    <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="name" class="control-label mb-1">Nome</label>
-                                                    <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <label for="adjuntancy" class="control-label mb-1">Cargo</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
-                                                </div>
+                        <div class="card">
+                            <h4 class="card-header text-center">Pesquisa</h4>
+                            <div class="card-body">
+                                <form action="{{ route('binder.occurrence.index') }}">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="enterprise_id" class="control-label mb-1">Empresa</label>
+                                                <select name="search_enterprise" id="search_enterprise" class="form-control">
+                                                    <option value="" class="text-center">Busque pela empresa:</option>
+                                                    @forelse ($enterprises as $enterprise)
+                                                        <option value="{{ $enterprise->id }}" class="text-center" 
+                                                            {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
+                                                            {{ $enterprise->name }} 
+                                                        </option>
+                                                    @empty
+                                                        <option value="">Nenhuma empresa encontrada</option>
+                                                    @endforelse
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <button type="button">
-                                                <a href="{{ route('binder.occurrence.index') }}" class="btn btn-warning btn-sm text-dark">
-                                                    <i class="fa-solid fa-chevron-left"></i> Voltar
-                                                </a>
-                                            </button>
-                                            <button type="submit" class="btn btn-info btn-sm text-light">
-                                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
-                                            </button>
-                                            <button type="reset" class="btn btn-danger btn-sm text-light">
-                                                <i class="fa-solid fa-eraser"></i> Limpar
-                                            </button>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="code" class="control-label mb-1">Código</label>
+                                                <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
+                                            </div>
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label mb-1">Nome</label>
+                                                <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="adjuntancy" class="control-label mb-1">Cargo</label>
+                                            <div class="input-group">
+                                                <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button">
+                                            <a href="{{ route('binder.occurrence.index') }}" class="btn btn-warning btn-sm text-dark">
+                                                <i class="fa-solid fa-chevron-left"></i> Voltar
+                                            </a>
+                                        </button>
+                                        <button type="submit" class="btn btn-info btn-sm text-light">
+                                            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                                        </button>
+                                        <button type="reset" class="btn btn-danger btn-sm text-light">
+                                            <i class="fa-solid fa-eraser"></i> Limpar
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-
+                    
                         <table class="table text-center">
                             <thead>
                                 <tr>

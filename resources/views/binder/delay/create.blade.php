@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Cadastro - Atrasos</title>
+    <title>Cadastro - Atrasos/Saídas</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
         <div class="page-content">
             <section class="welcome p-t-10 col-md-12">
                 <div>
-                    <h1 class="text-center">Cadastro de atrasos</h1>
+                    <h1 class="text-center">Cadastro de atrasos/saídas</h1>
                     @if (session('error'))
                         <div class="alert alert-danger" role="alert">
                             <i class="fa fa-exclamation-triangle"></i>
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
 
-                                    <h4>Informações dos atrasos</h4>
+                                    <h4>Informações dos atrasos/saídas</h4>
                                     <div id="delay_info_container">
                                         <div class="row mt-3 delay-group">
                                             <div class="form-group col-lg-3">

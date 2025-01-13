@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             SituationSeeder::class,
             OccasionSeeder::class,
             EnterpriseSeeder::class,
+            CivilStateSeeder::class,
+            GenderSeeder::class,
+            ColorSeeder::class,
         ]);
     }
 }

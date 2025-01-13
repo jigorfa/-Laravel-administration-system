@@ -1532,7 +1532,7 @@
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Máscara para Salário
+
   const salaryField = document.getElementById('salary');
   if (salaryField) {
       salaryField.addEventListener('input', function () {
@@ -1549,14 +1549,14 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  // Máscara para CPF
-  const cpfField = document.getElementById('personal_code');
+  const cpfField = document.getElementById('cpf_code');
   if (cpfField) {
       cpfField.addEventListener('input', function () {
-          let valueCpf = this.value.replace(/[^\d]/g, '');
+          let valueCpf = this.value.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
 
-          if (valueCpf.length === 0) {
-              return;
+          // Limita o número de dígitos a 11
+          if (valueCpf.length > 11) {
+              valueCpf = valueCpf.substring(0, 11);
           }
 
           let formattedCpf = '';
@@ -1569,11 +1569,66 @@ document.addEventListener('DOMContentLoaded', function () {
           } else {
               formattedCpf = valueCpf.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, '$1.$2.$3-$4');
           }
+
           this.value = formattedCpf;
       });
   }
 
-  // Máscara para Telefone
+  const ctpsField = document.getElementById('ctps_code');
+  if (ctpsField) {
+      ctpsField.addEventListener('input', function () {
+          let valueCtps = this.value.replace(/[^\d]/g, '');
+
+          if (valueCtps.length > 11) {
+              valueCtps = valueCtps.substring(0, 11);
+          }
+
+          this.value = valueCtps;
+      });
+  }
+
+  const pisField = document.getElementById('pis_code');
+  if (pisField) {
+      pisField.addEventListener('input', function () {
+          let valuePis = this.value.replace(/[^\d]/g, '');
+
+          if (valuePis.length > 11) {
+              valuePis = valuePis.substring(0, 11);
+          }
+
+          this.value = valuePis;
+      });
+  }
+
+  const voteField = document.getElementById('vote_code');
+  if (voteField) {
+      voteField.addEventListener('input', function () {
+          let valueVote = this.value.replace(/[^\d]/g, '');
+
+          if (valueVote.length > 12) {
+              valueVote = valueVote.substring(0, 12);
+          }
+
+          // Adiciona os espaços em 3 intervalos
+          let formattedVote = valueVote.replace(/(\d{4})(\d{4})(\d{1,4})/, '$1 $2 $3');
+
+          this.value = formattedVote.trim();
+      });
+  }
+
+  const cnhField = document.getElementById('cnh_code');
+  if (cnhField) {
+      cnhField.addEventListener('input', function () {
+          let valueCnh = this.value.replace(/[^\d]/g, '');
+
+          if (valueCnh.length > 11) {
+              valueCnh = valueCnh.substring(0, 11);
+          }
+
+          this.value = valueCnh;
+      });
+  }
+
   const telephoneField = document.getElementById('telephone');
   if (telephoneField) {
       telephoneField.addEventListener('input', function () {
@@ -1595,5 +1650,46 @@ document.addEventListener('DOMContentLoaded', function () {
           }
           this.value = formattedTelephone;
       });
+
+      const numberField = document.getElementById('number');
+      if (numberField) {
+          numberField.addEventListener('input', function () {
+              let valueNumber = this.value.replace(/[^\d]/g, '');
+
+              if (valueNumber.length > 6) {
+                  valueNumber = valueNumber.substring(0, 5);
+              }
+
+              this.value = valueNumber;
+          });
+      }
+
+      const cepField = document.getElementById('postal_code');
+      if (cepField) {
+          cepField.addEventListener('input', function () {
+              let valueCep = this.value.replace(/[^\d]/g, '');
+
+              valueCep = valueCep.substring(0, 8);
+
+              if (valueCep.length > 5) {
+                  valueCep = valueCep.replace(/(\d{5})(\d+)/, '$1-$2');
+              }
+
+              this.value = valueCep;
+          });
+      }
+
+      const codeField = document.getElementById('code');
+      if (codeField) {
+          codeField.addEventListener('input', function () {
+              let valueCode = this.value.replace(/[^\d]/g, '');
+
+              if (valueCode.length > 6) {
+                  valueCode = valueCode.substring(0, 5);
+              }
+
+              this.value = valueCode;
+          });
+      }
   }
 });

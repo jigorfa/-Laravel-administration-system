@@ -69,27 +69,99 @@
 
                                     <h4>Informações documentais:</h4>
                                     <div class="row mt-3">
+                                        <div class="form-group col-lg-9">
+                                            <label for="name" class="form-control-label">Nome completo</label>
+                                            <input type="text" id="name" name="name" placeholder="Insira o nome completo do funcionário:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
                                         <div class="form-group col-lg-3">
-                                            <label for="code" class="form-control-label">Código</label>
-                                            <input type="number" id="code" name="code" placeholder="Insira o código:" class="form-control" required>
+                                            <label for="birth_date" class="form-control-label">Data de nascimento</label>
+                                            <input type="date" id="birth_date" name="birth_date" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="nationality" class="form-control-label">Nacionalidade</label>
+                                            <input type="text" id="nationality" name="nationality" placeholder="Insira a nacionalidade:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="naturalness" class="form-control-label">Naturalidade</label>
+                                            <input type="text" id="naturalness" name="naturalness" placeholder="Insira a naturalidade:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="color_id" class="form-control-label">Cor/Raça</label>
+                                            <select id="color_id" name="color_id" class="form-control" required>
+                                                <option value="">Selecione a cor/raça:</option>
+                                                @forelse ($color as $colors)
+                                                    <option value="{{ $colors->id }}"
+                                                        {{ old('color_id') == $colors->id}}>
+                                                        {{ $colors->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhum tipo de cor/raça encontrada</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="gender_id" class="form-control-label">Sexo</label>
+                                            <select id="gender_id" name="gender_id" class="form-control" required>
+                                                <option value="">Selecione o sexo:</option>
+                                                @forelse ($gender as $genders)
+                                                    <option value="{{ $genders->id }}"
+                                                        {{ old('gender_id') == $genders->id}}>
+                                                        {{ $genders->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhum tipo de sexo encontrado</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="cpf_code" class="form-control-label">CPF</label>
+                                            <input type="text" id="cpf_code" name="cpf_code" placeholder="Insira o CPF:" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
 
                                         <div class="form-group col-lg-3">
                                             <label for="ctps_code" class="form-control-label">CTPS</label>
-                                            <input type="number" id="ctps_code" name="ctps_code" placeholder="Insira a CTPS:" class="form-control" required>
+                                            <input type="text" id="ctps_code" name="ctps_code" placeholder="Insira a CTPS:" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
 
                                         <div class="form-group col-lg-3">
-                                            <label for="pis_code" class="form-control-label">PIS</label>
-                                            <input type="number" id="pis_code" name="pis_code" placeholder="Insira o PIS:" class="form-control" required>
+                                            <label for="pis_code" class="form-control-label">PIS/PASEP</label>
+                                            <input type="text" id="pis_code" name="pis_code" placeholder="Insira o PIS/PASEP:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+                                        
+                                        <div class="form-group col-lg-3">
+                                            <label for="vote_code" class="form-control-label">Título de eleitor</label>
+                                            <input type="text" id="vote_code" name="vote_code" placeholder="Insira o título de eleitor:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="cnh_code" class="form-control-label">CNH</label>
+                                            <input type="text" id="cnh_code" name="cnh_code" placeholder="Insira o número da CNH:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="telephone" class="form-control-label">Telefone</label>
+                                            <input type="text" id="telephone" name="telephone" placeholder="Exemplo: (85) 9 1111-2222" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
 
                                         <div class="form-group col-lg-3">
                                             <label for="instruction_id" class="form-control-label">Grau de instrução</label>
-                                            <select name="instruction_id" id="instruction_id" class="form-control" required>
+                                            <select id="instruction_id" name="instruction_id" class="form-control" required>
                                                 <option value="">Selecione o grau:</option>
                                                 @forelse ($instruction as $instructions)
                                                     <option value="{{ $instructions->id }}"
@@ -103,38 +175,17 @@
                                         </div>
 
                                         <div class="form-group col-lg-3">
-                                            <label for="personal_code" class="form-control-label">CPF</label>
-                                            <input type="text" id="personal_code" name="personal_code" placeholder="Insira o CPF:" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="vote_code" class="form-control-label">Título de eleitor</label>
-                                            <input type="number" id="vote_code" name="vote_code" placeholder="Insira o título de eleitor:" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="birth_date" class="form-control-label">Data de nascimento</label>
-                                            <input type="date" id="birth_date" name="birth_date" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="telephone" class="form-control-label">Telefone</label>
-                                            <input type="text" id="telephone" name="telephone" placeholder="Exemplo: (85) 9 1111-2222" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-6">
-                                            <label for="name" class="form-control-label">Nome</label>
-                                            <input type="text" id="name" name="name" placeholder="Insira o nome do(a) funcionário(a):" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-6">
-                                            <label for="adjuntancy" class="form-control-label">Cargo</label>
-                                            <input type="text" id="adjuntancy" name="adjuntancy" placeholder="Insira o cargo do(a) funcionário(a):" class="form-control" required>
+                                            <label for="civil_state_id" class="form-control-label">Estado Civil</label>
+                                            <select id="civil_state_id" name="civil_state_id" class="form-control" required>
+                                                <option value="">Selecione o estado civil:</option>
+                                                @forelse ($civilState as $civilStates)
+                                                    <option value="{{ $civilStates->id }}"
+                                                        {{ old('instruction_id') == $civilStates->id}}>
+                                                        {{ $civilStates->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhum tipo de estado civil encontrado</option>
+                                                @endforelse
+                                            </select>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
                                     </div>
@@ -142,44 +193,62 @@
                                     <h4>Informações residenciais:</h4>
                                     <div class="row mt-3">
                                         <div class="form-group col-lg-3">
-                                            <label for="state" class="form-control-label">Estado</label>
-                                            <input type="text" id="state" name="state" placeholder="Exemplo: Ceará" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="city" class="form-control-label">Cidade</label>
-                                            <input type="text" id="city" name="city" placeholder="Exemplo: Fortaleza" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="neighborhood" class="form-control-label">Bairro</label>
-                                            <input type="text" id="neighborhood" name="neighborhood" placeholder="Exemplo: Aldeota" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="number" class="form-control-label">Número</label>
-                                            <input type="number" id="number" name="number" placeholder="Exemplo: 225" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
                                             <label for="postal_code" class="form-control-label">CEP</label>
-                                            <input type="number" id="postal_code" name="postal_code" placeholder="Exemplo: 60175-084" class="form-control" required>
+                                            <input type="text" id="postal_code" name="postal_code" placeholder="Exemplo: 60150-161" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
 
                                         <div class="form-group col-lg-9">
-                                            <label for="street" class="form-control-label">Logradouro</label>
-                                            <input type="text" id="street" name="street" placeholder="Exemplo: Rua Fonseca Lobo" class="form-control" required>
+                                            <label for="address" class="form-control-label">Endereço</label>
+                                            <input type="text" id="address" name="address" placeholder="Exemplo: Alto do Velame, Rua Doutor Raimundo Xavier de Araújo, 380, Casa" class="form-control" required>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
                                     </div>
 
                                     <h4>Informações contratuais:</h4>
                                     <div class="row mt-3">
+                                        <div class="form-group col-lg-3">
+                                            <label for="enterprise_id" class="form-label">Empresa</label>
+                                            <select id="enterprise_id" name="enterprise_id" class="form-control" required>
+                                                <option value="">Selecione a empresa:</option>
+                                                @forelse ($enterprise as $enterprises)
+                                                    <option value="{{ $enterprises->id }}"
+                                                        {{ old('enterprise_id') == $enterprises->id}}>
+                                                        {{ $enterprises->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhuma empresa encontrada</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="situation_id" class="form-label">Situação</label>
+                                            <select id="situation_id" name="situation_id" class="form-control" required>
+                                                <option value="">Selecione a situação:</option>
+                                                @forelse ($situation as $situations)
+                                                    <option value="{{ $situations->id }}"
+                                                        {{ old('situation_id') == $situations->id}}>
+                                                        {{ $situations->name }}</option>
+                                                @empty
+                                                    <option value="">Nenhuma situação da conta encontrada</option>
+                                                @endforelse
+                                            </select>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="code" class="form-control-label">Código</label>
+                                            <input type="number" id="code" name="code" placeholder="Insira o código:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="adjuntancy" class="form-control-label">Cargo</label>
+                                            <input type="text" id="adjuntancy" name="adjuntancy" placeholder="Insira o cargo:" class="form-control" required>
+                                            <small class="form-text text-muted">Campo obrigatório *</small>
+                                        </div>
+
                                         <div class="form-group col-lg-3">
                                             <label for="admission" class="form-control-label">Admissão</label>
                                             <input type="date" id="admission" name="admission" class="form-control" required>
@@ -201,36 +270,6 @@
                                         <div class="form-group col-lg-3">
                                             <label for="salary" class="form-control-label">Salário (R$)</label>
                                             <input type="text" id="salary" name="salary" placeholder="Insira o salário:" class="form-control" required>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="situation_id" class="form-label">Situação</label>
-                                            <select name="situation_id" id="situation_id" class="form-control" required>
-                                                <option value="">Selecione a situação:</option>
-                                                @forelse ($situation as $situations)
-                                                    <option value="{{ $situations->id }}"
-                                                        {{ old('situation_id') == $situations->id}}>
-                                                        {{ $situations->name }}</option>
-                                                @empty
-                                                    <option value="">Nenhuma situação da conta encontrada</option>
-                                                @endforelse
-                                            </select>
-                                            <small class="form-text text-muted">Campo obrigatório *</small>
-                                        </div>
-
-                                        <div class="form-group col-lg-3">
-                                            <label for="enterprise_id" class="form-label">Empresa</label>
-                                            <select name="enterprise_id" id="enterprise_id" class="form-control" required>
-                                                <option value="">Selecione a empresa:</option>
-                                                @forelse ($enterprise as $enterprises)
-                                                    <option value="{{ $enterprises->id }}"
-                                                        {{ old('enterprise_id') == $enterprises->id}}>
-                                                        {{ $enterprises->name }}</option>
-                                                @empty
-                                                    <option value="">Nenhuma situação da conta encontrada</option>
-                                                @endforelse
-                                            </select>
                                             <small class="form-text text-muted">Campo obrigatório *</small>
                                         </div>
                                     </div>

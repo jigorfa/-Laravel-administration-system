@@ -125,72 +125,62 @@ class OccurrenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OccurrenceRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $occurrence = Occurrence::with('detail')->findOrFail($id);
-            
-            $occurrence->update([
-                'employee_code' => $request['employee_code'],
-            ]);
-    
-            // Atualize ou crie os detalhes do atestado
-            foreach ($request['detail'] as $detail) {
-                // Se o ID do detalhe existe, é uma atualização, caso contrário, uma criação
-                if (isset($detail['id']) && $detail['id']) {
-                    // Encontre o detalhe correspondente e atualize
-                    $occurrenceDetail = OccurrenceDetail::find($detail['id']);
-                    $occurrenceDetail->update([
-                        'occurrence_date' => $detail['occurrence_date'],
-                        'description' => $detail['description'],
-                        'occasion_id' => $detail['occasion_id'],
-                        'annex' => isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
-                            ? $detail['annex']->store('occurrence_annexes', 'public')
-                            : $occurrenceDetail->annex,  // Mantém o anexo atual se nenhum novo for enviado
-                    ]);
-                } else {
-                    // Se o ID não existe, cria um novo detalhe de atestado
-                    $annexPath = isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
-                        ? $detail['annex']->store('occurrence_annexes', 'public')
-                        : null;
-    
-                    $occurrence->detail()->create([
-                        'occurrence_date' => $detail['occurrence_date'],
-                        'description' => $detail['description'],
-                        'occasion_id' => $detail['occasion_id'],
-                        'annex' => $annexPath,
-                    ]);
+        $occurrence = Occurrence::findOrFail($id);
+
+        if ($request->has('delete_existing')) {
+            foreach ($request->delete_existing as $detailId) {
+                $detail = OccurrenceDetail::find($detailId);
+                if ($detail) {
+                    $detail->delete();
                 }
             }
+        }
 
-            return redirect()->route('binder.occurrence.index')->with('success', 'Registro de atraso atualizado com sucesso!');
-        } catch (\Exception $e) {
-            Log::error('Erro ao atualizar atraso', ['error' => $e->getMessage()]);
-            return back()->withInput()->with('error', 'Erro ao atualizar atraso: ' . $e->getMessage());
-        }
-    }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function deleteDetail($id)
-    {
-        try {
-            $detail = OccurrenceDetail::find($id);
-    
-            if (!$detail) {
-                return back()->with('error', 'Detalhe não encontrado.');
+        if ($request->has('detail')) {
+            foreach ($request->detail as $key => $detailData) {
+                if (strpos($key, 'new-') === 0) {
+                    // Novo registro
+                    $annexPath = $detailData['annex'] ?? null;
+
+                    // Verificar se anexou um arquivo
+                    if (isset($detailData['annex']) && $detailData['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                        $annexPath = $detailData['annex']->store('occurrence_annexes', 'public');
+                    }
+
+                    OccurrenceDetail::create([
+                        'occurrence_id' => $occurrence->id,
+                        'occurrence_date' => $detailData['occurrence_date'],
+                        'occasion_id' => $detailData['occasion_id'],
+                        'description' => $detailData['description'],
+                        'annex' => $annexPath,
+                    ]);
+                } else {
+                    // Atualizar registro existente
+                    $detail = OccurrenceDetail::find($key);
+                    if ($detail) {
+                        // Verificar se o campo 'annex' existe em 'detailData' antes de acessá-lo
+                        $annexPath = $detail->annex; // Se não for um arquivo novo, mantém o valor original
+
+                        // Verificar se anexou um arquivo novo
+                        if (isset($detailData['annex']) && $detailData['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                            // Se anexou um arquivo novo, faz o upload
+                            $annexPath = $detailData['annex']->store('occurrence_annexes', 'public');
+                        }
+
+                        $detail->update([
+                            'occurrence_date' => $detailData['occurrence_date'],
+                            'occasion_id' => $detailData['occasion_id'],
+                            'description' => $detailData['description'],
+                            'annex' => $annexPath,
+                        ]);
+                    }
+                }
             }
-    
-            $occurrenceId = $detail->occurrence_id;
-    
-            $detail->delete();
-    
-            return redirect()->route('binder.occurrence.edit', $occurrenceId)->with('danger', 'Detalhe excluído com sucesso!');
-        } catch (\Exception $e) {
-            Log::error('Erro ao excluir o registro detalhado da ficha', ['error' => $e->getMessage()]);
-            
-            return back()->with('error', 'Erro ao excluir o detalhe: ' . $e->getMessage());
         }
+
+        return redirect()->route('binder.occurrence.index')->with('warning', 'Registro de ocorrência editado com sucesso!');
     }
     /**
      * Remove all resources from storage.
@@ -203,7 +193,7 @@ class OccurrenceController extends Controller
             $occurrence->detail()->delete();
             $occurrence->delete();
 
-            return redirect()->route('binder.occurrence.index')->with('danger', 'Registro de atraso deletado com sucesso!');
+            return redirect()->route('binder.occurrence.index')->with('danger', 'Registro de ocorrência deletado com sucesso!');
         } catch (\Exception $e) {
             Log::warning('Erro ao deletar atraso', ['error' => $e->getMessage()]);
             return back()->with('error', 'Erro ao deletar atraso: ' . $e->getMessage());

@@ -6,7 +6,7 @@
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
-    <title>Atrasos</title>
+    <title>Atrasos/Saídas</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
@@ -26,14 +26,14 @@
     @include('layouts.navigation')
     <div class="page-content">
         <section class="welcome p-t-10">
-            <h1 class="text-center">Atrasos</h1>
+            <h1 class="text-center">Atrasos e/ou Saídas</h1>
             <div class="col-md-12 mt-3">
                 <hr>
                 <div class="card mt-4 mb-4 border-light shadow">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3>
                             <i class="fas fa-user-clock"></i> |
-                            {{ $search->total() }} Fichas de atrasos
+                            {{ $search->total() }} Fichas de atrasos e/ou saídas
                         </h3>
 
                         <div class="d-flex align-items-center">
@@ -55,62 +55,60 @@
                     @endif
 
                     <div class="card-body">
-                        <div class="card-body">
-                            <div class="card">
-                                <h4 class="card-header text-center">Pesquisa</h4>
-                                <div class="card-body">
-                                    <form action="{{ route('binder.delay.index') }}">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="search_enterprise" class="control-label mb-1">Empresa</label>
-                                                    <select name="search_enterprise" id="search_enterprise" class="form-control">
-                                                        <option value="">Selecione a empresa:</option>
-                                                        @forelse ($enterprises as $enterprise)
-                                                            <option value="{{ $enterprise->id }}" 
-                                                                {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
-                                                                {{ $enterprise->name }}
-                                                            </option>
-                                                        @empty
-                                                            <option value="">Nenhuma empresa encontrada</option>
-                                                        @endforelse
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="code" class="control-label mb-1">Código</label>
-                                                    <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="form-group">
-                                                    <label for="name" class="control-label mb-1">Nome</label>
-                                                    <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <label for="adjuntancy" class="control-label mb-1">Cargo</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
-                                                </div>
+                        <div class="card">
+                            <h4 class="card-header text-center">Pesquisa</h4>
+                            <div class="card-body">
+                                <form action="{{ route('binder.delay.index') }}">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="enterprise_id" class="control-label mb-1">Empresa</label>
+                                                <select name="search_enterprise" id="search_enterprise" class="form-control">
+                                                    <option value="" class="text-center">Busque pela empresa:</option>
+                                                    @forelse ($enterprises as $enterprise)
+                                                        <option value="{{ $enterprise->id }}" class="text-center" 
+                                                            {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
+                                                            {{ $enterprise->name }} 
+                                                        </option>
+                                                    @empty
+                                                        <option value="">Nenhuma empresa encontrada</option>
+                                                    @endforelse
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <button type="button">
-                                                <a href="{{ route('binder.delay.index') }}" class="btn btn-warning btn-sm text-dark">
-                                                    <i class="fa-solid fa-chevron-left"></i> Voltar
-                                                </a>
-                                            </button>
-                                            <button type="submit" class="btn btn-info btn-sm text-light">
-                                                <i class="fa-solid fa-magnifying-glass"></i> Buscar
-                                            </button>
-                                            <button type="reset" class="btn btn-danger btn-sm text-light">
-                                                <i class="fa-solid fa-eraser"></i> Limpar
-                                            </button>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="code" class="control-label mb-1">Código</label>
+                                                <input type="number" id="code" name="search_code" class="form-control text-center" placeholder="Busque pelo código:" value="{{ request('code') }}">
+                                            </div>
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="name" class="control-label mb-1">Nome</label>
+                                                <input type="text" id="name" name="search_name" class="form-control text-center" placeholder="Busque pelo nome:" value="{{ request('name') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="adjuntancy" class="control-label mb-1">Cargo</label>
+                                            <div class="input-group">
+                                                <input type="text" id="adjuntancy" name="search_adjuntancy" class="form-control text-center" placeholder="Busque pelo cargo:" value="{{ request('adjuntancy') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button">
+                                            <a href="{{ route('binder.delay.index') }}" class="btn btn-warning btn-sm text-dark">
+                                                <i class="fa-solid fa-chevron-left"></i> Voltar
+                                            </a>
+                                        </button>
+                                        <button type="submit" class="btn btn-info btn-sm text-light">
+                                            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                                        </button>
+                                        <button type="reset" class="btn btn-danger btn-sm text-light">
+                                            <i class="fa-solid fa-eraser"></i> Limpar
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
 

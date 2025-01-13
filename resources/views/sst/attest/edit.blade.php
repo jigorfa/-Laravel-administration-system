@@ -87,21 +87,20 @@
                                     <h4>Informações dos atestados</h4>
                                     <div id="attest_info_container">
                                         @foreach($attest->detail as $details)
-                                            <div class="row mt-3 attest-group" id="attest-group-{{ $details->id }}">
-                                                <input type="hidden" name="detail[{{ $loop->index }}][id]" value="{{ $details->id }}">
+                                            <div class="row mt-3 attest-group" id="attest-group-{{ $details->id ?? 'new-' . $rowIdx }}">
                                                 <div class="form-group col-lg-3">
                                                     <label for="start_attest">Início do atestado</label>
-                                                    <input type="date" id="start_attest" name="detail[{{ $loop->index }}][start_attest]" value="{{ $details->start_attest }}" class="form-control">
+                                                    <input type="date" id="start_attest" name="detail[{{ $details->id ?? 'new-' . $rowIdx }}][start_attest]" value="{{ $details->start_attest }}" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
                                                 <div class="form-group col-lg-3">
                                                     <label for="end_attest">Fim do atestado</label>
-                                                    <input type="date" id="end_attest" name="detail[{{ $loop->index }}][end_attest]" value="{{ $details->end_attest }}" class="form-control">
+                                                    <input type="date" id="end_attest" name="detail[{{ $details->id ?? 'new-' . $rowIdx }}][end_attest]" value="{{ $details->end_attest }}" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
                                                 <div class="form-group col-lg-3">
                                                     <label for="cause">Causa social</label>
-                                                    <input type="text" id="cause" name="detail[{{ $loop->index }}][cause]" value="{{ $details->cause }}" placeholder="Insira a causa social" class="form-control">
+                                                    <input type="text" id="cause" name="detail[{{ $details->id ?? 'new-' . $rowIdx }}][cause]" value="{{ $details->cause }}" placeholder="Insira a causa social" class="form-control">
                                                     <small class="form-text text-muted">Campo obrigatório *</small>
                                                 </div>
                                                 <div class="form-group col-lg-2">
@@ -112,12 +111,17 @@
                                                             <i class="fa fa-download"></i> Baixar Anexo
                                                         </a>
                                                     @else
-                                                        <input type="file" id="annex" name="detail[{{ $loop->index }}][annex]" class="form-control mb-2">
+                                                        <input type="file" id="annex" name="detail[{{ $details->id ?? 'new-' . $rowIdx }}][annex]" class="form-control mb-2">
                                                     @endif
                                                     <small class="form-text text-muted">Campo inalterável *</small>
                                                 </div>
                                                 <div class="form-group text-center d-flex align-items-center col-lg-1">
-                                                    <button type="button" class="btn btn-danger btn-sm remove-attest" data-id="{{ $details->id }}">
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-danger btn-sm remove-attest" 
+                                                        data-id="{{ $details->id ?? '' }}" 
+                                                        data-row-id="{{ $rowIdx ?? '' }}" 
+                                                        data-type="{{ isset($details->id) ? 'existing' : 'new' }}">
                                                         <i class="fa fa-trash-alt"></i>
                                                     </button>
                                                 </div>
@@ -149,43 +153,60 @@
 
         $('#add_attest').click(function () {
             rowIdx++;
-
             const newAttestGroup = `
-                <div class="row mt-3 attest-group" id="attest-group-${rowIdx}">
+                <div class="row mt-3 attest-group" id="attest-group-new-${rowIdx}">
                     <div class="form-group col-lg-3">
                         <label>Início do atestado</label>
-                        <input type="date" name="detail[${rowIdx}][start_attest]" class="form-control">
+                        <input type="date" name="detail[new-${rowIdx}][start_attest]" class="form-control">
                         <small class="form-text text-muted">Campo obrigatório *</small>
                     </div>
                     <div class="form-group col-lg-3">
                         <label>Fim do atestado</label>
-                        <input type="date" name="detail[${rowIdx}][end_attest]" class="form-control">
+                        <input type="date" name="detail[new-${rowIdx}][end_attest]" class="form-control">
                         <small class="form-text text-muted">Campo obrigatório *</small>
                     </div>
                     <div class="form-group col-lg-3">
                         <label>Causa social</label>
-                        <input type="text" name="detail[${rowIdx}][cause]" placeholder="Insira a causa social" class="form-control">
+                        <input type="text" name="detail[new-${rowIdx}][cause]" placeholder="Insira uma causa" class="form-control">
                         <small class="form-text text-muted">Campo obrigatório *</small>
                     </div>
                     <div class="form-group col-lg-2">
                         <label>Arquivo</label>
-                        <input type="file" name="detail[${rowIdx}][annex]" class="form-control mb-2">
+                        <input type="file" name="detail[new-${rowIdx}][annex]" class="form-control">
                         <small class="form-text text-muted">Campo inalterável *</small>
                     </div>
                     <div class="form-group text-center d-flex align-items-center col-lg-1">
-                        <button type="button" class="btn btn-danger btn-sm remove-attest" data-id="${rowIdx}">
+                        <button type="button" class="btn btn-danger btn-sm remove-attest" data-type="new" data-row-id="new-${rowIdx}">
                             <i class="fa fa-trash-alt"></i>
                         </button>
                     </div>
                 </div>
             `;
-            
             $('#attest_info_container').append(newAttestGroup);
         });
 
+
         $(document).on('click', '.remove-attest', function () {
-            const groupId = $(this).data('id');
-            $('#attest-group-' + groupId).remove();
+            const button = $(this);
+            const type = button.data('type'); // Tipo do registro (existing ou new)
+            const id = button.data('id'); // ID do registro existente no banco
+            const rowId = button.data('row-id'); // ID do grupo recém-adicionado
+
+            if (type === 'existing') {
+                // Excluir registro existente
+                if (confirm('Tem certeza de que deseja excluir este atestado?')) {
+                    // Remover o grupo do DOM
+                    $(`#attest-group-${id}`).remove();
+
+                    // Adicionar campo hidden para informar exclusão ao backend
+                    $('#attest_info_container').append(`
+                        <input type="hidden" name="delete_existing[]" value="${id}">
+                    `);
+                }
+            } else if (type === 'new') {
+                // Excluir grupo recém-adicionado
+                $(`#attest-group-${rowId}`).remove();
+            }
         });
     </script>
     <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>

@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta Tags e Títulos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Visualização - Atrasos</title>
-    <!-- Estilos -->
+    <title>Visualização - Atrasos/Saídas</title>
     <link href="https:
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet">
@@ -20,7 +18,7 @@
             <section class="welcome p-t-10 col-md-12">
                 <div>
                     <div class="text-center">
-                        <h1>Visualização de atrasos</h1>
+                        <h1>Visualização de atrasos e/ou saídas</h1>
                         <h4 class="mt-2">Registro: {{ $delay->employee->name }} </h4>
                     </div>
                     @if (session('error'))
@@ -45,7 +43,6 @@
                     <div class="card-body card-block">
                         <div class="d-flex justify-content-center">
                             <div class="col-lg-9">
-                                <!-- Informações de Identificação -->
                                 <h4>Informações de identificação</h4>
                                 <div class="row mt-3">
                                     <div class="form-group col-lg-4">
@@ -64,7 +61,7 @@
                                         <small class="form-text text-muted">Campo inalterável*</small>
                                     </div>
                                 </div>
-                                <h4>Informações dos atrasos</h4>
+                                <h4>Informações dos atrasos e/ou saídas</h4>
                                 <div id="delay_details_container">
                                     @foreach($delay->detail as $details)
                                         <div class="row mt-3 delay-group">
@@ -92,7 +89,6 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <!-- Botões -->
                                 <div class="text-center mt-3">
                                     <button type="button">
                                         <a href="{{ route('pdf.delay',  $delay->id) }}" method="GET" class="btn btn-info text-light mr-2">
@@ -114,7 +110,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="{{ url('assets/dashboard/vendor/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/popper.min.js') }}"></script>
     <script src="{{ url('assets/dashboard/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>

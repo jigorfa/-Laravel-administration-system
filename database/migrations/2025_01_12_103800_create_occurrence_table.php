@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('situation', function (Blueprint $table) {
-            $table->id(); // Isso criará uma coluna 'id' como chave primária
-            $table->string('name');
-            $table->string('color');
+        Schema::create('occurrence', function (Blueprint $table) {
+            $table->id(); 
+            $table->unsignedBigInteger('employee_code');
+            $table->foreign('employee_code')->references('code')->on('employee')->onDelete('cascade'); 
             $table->timestamps();
         });
+        
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations d.
      */
     public function down(): void
     {
-        Schema::dropIfExists('situation');
+        Schema::dropIfExists('occurrence');
     }
+    
 };

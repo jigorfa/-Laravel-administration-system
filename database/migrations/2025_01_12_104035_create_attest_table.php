@@ -11,22 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('occurrence', function (Blueprint $table) {
-            $table->id(); 
-            $table->unsignedBigInteger('employee_code'); // Chave estrangeira para a tabela 'employee'
+        Schema::create('attest', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('employee_code');
             $table->foreign('employee_code')->references('code')->on('employee')->onDelete('cascade'); 
             $table->timestamps();
         });
-        
     }
 
     /**
-     * Reverse the migrations d.
+     * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('occurrence');
+        Schema::dropIfExists('attest');
     }
-    
 };
- 

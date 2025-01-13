@@ -10,25 +10,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employee', function (Blueprint $table) {
-            $table->id('code');
+            $table->string('name');
+            $table->date('birth_date');
+            $table->string('nationality');
+            $table->string('naturalness');
+            $table->string('cpf_code');
             $table->string('ctps_code');
             $table->string('pis_code');
-            $table->string('personal_code');
             $table->string('vote_code');
-            $table->date('birth_date');
+            $table->string('cnh_code')->nullable();
             $table->string('telephone');
-            $table->string('name');
-            $table->string('adjuntancy');
-            $table->string('state');
-            $table->string('city');
-            $table->string('neighborhood');
-            $table->integer('number');
             $table->string('postal_code');
-            $table->string('street');
+            $table->string('address');
             $table->date('admission');
             $table->date('contract1');
             $table->date('contract2');
             $table->float('salary');
+            $table->id('code');
+            $table->string('adjuntancy');
             $table->date('demission')->nullable();
             $table->timestamps();
         });

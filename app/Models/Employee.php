@@ -19,34 +19,41 @@ class Employee extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code',
+        'name',
+        'birth_date',
+        'nationality',
+        'naturalness',
+        'color_id',
+        'gender_id',  
+        'cpf_code',
         'ctps_code',
         'pis_code',
-        'personal_code',
         'vote_code',
-        'birth_date',
+        'cnh_code',
         'telephone',
-        'name',
-        'adjuntancy',
-        'state',
-        'city',
-        'neighborhood',
-        'number',
+        'instruction_id',
+        'civil_state_id',
         'postal_code',
-        'street',
+        'address',
+        'enterprise_id',
+        'situation_id',
+        'code',
+        'adjuntancy',
         'admission',
         'contract1',
         'contract2',
         'salary',
-        'instruction_id',
-        'situation_id',
-        'enterprise_id',
-        'demission'
+        'demission',
     ];
 
-    public function situation()
+    public function color()
     {
-        return $this->belongsTo(Situation::class);
+        return $this->belongsTo(Color::class);
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
     }
 
     public function instruction()
@@ -54,8 +61,18 @@ class Employee extends Model
         return $this->belongsTo(Instruction::class);
     }
 
+    public function civilState()
+    {
+        return $this->belongsTo(CivilState::class);
+    }
+
     public function enterprise()
     {
         return $this->belongsTo(Enterprise::class);
+    }
+
+    public function situation()
+    {
+        return $this->belongsTo(Situation::class);
     }
 }

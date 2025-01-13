@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('employee', function (Blueprint $table) {
-            $table->foreignId('enterprise_id') // Nome da coluna local (chave estrangeira)
+            $table->foreignId('enterprise_id')
                 ->default(4)
-                ->after('instruction_id')
-                ->constrained('enterprise'); // Nome da tabela referenciada
+                ->after('civil_state_id')
+                ->constrained('enterprise');
         });
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha de atrasos: {{ $delay->employee->name }}</title>
+    <title>Ficha de atrasos/saídas: {{ $delay->employee->code }}</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <h1>Ficha de atrasos: {{ $delay->employee->name }}</h1>
+    <h1>Ficha de atrasos/saídas: {{ $delay->employee->name }}</h1>
     <div class="section">
         <h2>Informações de identificação</h2>
         <div class="info-grid">
@@ -52,12 +52,12 @@
     </div>
 
     <div class="section">
-        <h2>Informações de atrasos</h2>
+        <h2>Informações de atrasos/saídas</h2>
         <div class="row">
             @foreach($delay->detail as $details)
                 <div class="col-md-6">
                     <div class="info-grid">
-                        <div><span class="label">Data do atraso:</span> {{ $details->delay_date }}</div>
+                        <div><span class="label">Data do atraso/saída:</span> {{ $details->delay_date }}</div>
                         <div><span class="label">Chegada:</span> {{ $details->arrival }}</div>
                         <div><span class="label">Saída:</span> {{ $details->leave }}</div>
                         <div><span class="label">Motivo:</span> {{ $details->description }}</div>

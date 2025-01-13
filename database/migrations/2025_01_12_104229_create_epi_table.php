@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attest', function (Blueprint $table) {
+        Schema::create('epi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_code'); // Chave estrangeira para a tabela 'employee'
+            $table->unsignedBigInteger('employee_code');
             $table->foreign('employee_code')->references('code')->on('employee')->onDelete('cascade'); 
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attest');
+        Schema::dropIfExists('epi');
     }
 };

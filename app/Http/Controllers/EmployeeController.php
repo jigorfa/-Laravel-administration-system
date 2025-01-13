@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\Situation;
+use App\Models\Color;
+use App\Models\Gender;
 use App\Models\Instruction;
+use App\Models\CivilState;
 use App\Models\Enterprise;
+use App\Models\Situation;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmployeeRequest;
 use Illuminate\Support\Facades\Log;
@@ -53,14 +56,20 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+        $color = Color::orderBy('name', 'asc')->get();
+        $gender = Gender::orderBy('name', 'asc')->get();
         $instruction = Instruction::orderBy('id', 'asc')->get();
+        $civilState = CivilState::orderBy('name', 'asc')->get();
+        $enterprise = Enterprise::orderBy('name', 'asc')->get();
         $situation = Situation::orderBy('name', 'asc')->get();
-        $enterprise = Enterprise::orderBy('id', 'asc')->get();
 
         return view('employee.create', [
-            'situation' => $situation,
+            'color' => $color,
+            'gender' => $gender,
             'instruction' => $instruction,
+            'civilState' => $civilState,
             'enterprise' => $enterprise,
+            'situation' => $situation,          
         ]);
     }
     /**
@@ -72,41 +81,43 @@ class EmployeeController extends Controller
 
         try {
             $employee = Employee::create([
-                'code' => $request->code,
+                'name' => $request->name,
+                'birth_date' => $request->birth_date,
+                'nationality' => $request->nationality,
+                'naturalness' => $request->naturalness,
+                'color_id' => $request->color_id,
+                'gender_id' => $request->gender_id,
+                'cpf_code' => $request->cpf_code,
                 'ctps_code' => $request->ctps_code,
                 'pis_code' => $request->pis_code,
-                'personal_code' => $request->personal_code,
                 'vote_code' => $request->vote_code,
-                'birth_date' => $request->birth_date,
+                'cnh_code' => $request->filled('cnh_code') ? $request->cnh_code : null,
                 'telephone' => $request->telephone,
-                'state' => $request->state,
-                'city' => $request->city,
-                'neighborhood' => $request->neighborhood,
-                'number' => $request->number,
+                'instruction_id' => $request->instruction_id,
+                'civil_state_id' => $request->civil_state_id,
                 'postal_code' => $request->postal_code,
-                'street' => $request->street,
-                'name' => $request->name,
+                'address' => $request->address,
+                'enterprise_id' => $request->enterprise_id,
+                'situation_id' => $request->situation_id,
+                'code' => $request->code,
                 'adjuntancy' => $request->adjuntancy,
                 'admission' => $request->admission,
+                'demission' => null,
                 'contract1' => $request->contract1,
                 'contract2' => $request->contract2,
                 'salary' => str_replace(',', '.', str_replace('.', '', $request->salary)),
-                'instruction_id' => $request->instruction_id,
-                'situation_id' => $request->situation_id,
-                'enterprise_id' => $request->enterprise_id,
-                'demission' => null,
             ]);
 
             return redirect()->route('employee.index')->with('success', 'Registro de funcionário cadastrado com sucesso!');
         } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->errorInfo[1] == 1062) { // Código de erro para duplicação
+            if ($e->errorInfo[1] == 1062) {
                 return redirect()->back()->withInput()->with('error', 'Erro de duplicação: já existe um funcionário com este código.');
             }
 
             Log::warning('Erro no banco de dados ao cadastrar funcionário.', ['error' => $e->getMessage()]);
             return redirect()->back()->withInput()->with('error', 'Erro no banco de dados. Verifique os campos e tente novamente.');
         } catch (\Exception $e) {
-            // Log para erros gerais
+  
             Log::error('Erro inesperado ao cadastrar funcionário.', ['error' => $e->getMessage()]);
             return redirect()->back()->withInput()->with('error', 'Erro inesperado. Por favor, tente novamente.');
         }
@@ -116,16 +127,22 @@ class EmployeeController extends Controller
      */
     public function show($code)
     {
-        $instruction = Instruction::orderBy('name', 'asc')->get();
-        $situation = Situation::orderBy('name', 'asc')->get();
+        $color = Color::orderBy('name', 'asc')->get();
+        $gender = Gender::orderBy('name', 'asc')->get();
+        $instruction = Instruction::orderBy('id', 'asc')->get();
+        $civilState = CivilState::orderBy('name', 'asc')->get();
         $enterprise = Enterprise::orderBy('name', 'asc')->get();
+        $situation = Situation::orderBy('name', 'asc')->get();
         $employee = Employee::findOrFail($code);
 
         return view('employee.show', [
-            'employee' => $employee,
+            'color' => $color,
+            'gender' => $gender,
             'instruction' => $instruction,
-            'situation' => $situation,
-            'enterprise' => $enterprise
+            'civilState' => $civilState,
+            'enterprise' => $enterprise,
+            'situation' => $situation, 
+            'employee' => $employee,
         ]);
     }
     /**
@@ -133,17 +150,23 @@ class EmployeeController extends Controller
      */
     public function edit($code)
     { 
-        $instruction = Instruction::orderBy('name', 'asc')->get();
-        $situation = Situation::orderBy('name', 'asc')->get();
+        $color = Color::orderBy('name', 'asc')->get();
+        $gender = Gender::orderBy('name', 'asc')->get();
+        $instruction = Instruction::orderBy('id', 'asc')->get();
+        $civilState = CivilState::orderBy('name', 'asc')->get();
         $enterprise = Enterprise::orderBy('name', 'asc')->get();
+        $situation = Situation::orderBy('name', 'asc')->get();
         $employee = Employee::findOrFail($code);
        
 
         return view('employee.edit', [
-            'employee' => $employee,
+            'color' => $color,
+            'gender' => $gender,
             'instruction' => $instruction,
-            'situation' => $situation,
+            'civilState' => $civilState,
             'enterprise' => $enterprise,
+            'situation' => $situation, 
+            'employee' => $employee,
         ]);
     }
     /**
@@ -156,29 +179,31 @@ class EmployeeController extends Controller
 
         try {
             $employee->update([
-                'code' => $request->code,
+                'name' => $request->name,
+                'birth_date' => $request->birth_date,
+                'nationality' =>$request->nationality,
+                'naturalness' =>$request->naturalness,
+                'color_id' => $request->color_id,
+                'gender_id' => $request->gender_id,
+                'cpf_code' => $request->cpf_code,
                 'ctps_code' => $request->ctps_code,
                 'pis_code' => $request->pis_code,
-                'personal_code' => $request->personal_code,
                 'vote_code' => $request->vote_code,
-                'birth_date' => $request->birth_date,
-                'telephone' =>  $request->telephone,
-                'state' => $request->state,
-                'city' => $request->city,
-                'neighborhood' => $request->neighborhood,
-                'number' => $request->number,
+                'cnh_code' => $request->cnh_code,
+                'telephone' => $request->telephone,
+                'instruction_id' => $request->instruction_id,
+                'civil_state_id' => $request->civil_state_id,
                 'postal_code' => $request->postal_code,
-                'street' => $request->street,
-                'name' => $request->name,
+                'address' => $request->address,
+                'enterprise_id' => $request->enterprise_id,
+                'situation_id' => $request->situation_id,
+                'code' => $request->code,
                 'adjuntancy' => $request->adjuntancy,
                 'admission' => $request->admission,
+                'demission' => $request->filled('demission') ? $request->demission : null,
                 'contract1' => $request->contract1,
                 'contract2' => $request->contract2,
                 'salary' => str_replace(',', '.', str_replace('.', '', $request->salary)),
-                'instruction_id' => $request->instruction_id,
-                'situation_id' => $request->situation_id,
-                'enterprise_id' => $request->enterprise_id,
-                'demission' => $request->filled('demission') ? $request->demission : null
             ]);
 
             Log::info('Cadastro editado com sucesso', ['code' => $employee->code]);

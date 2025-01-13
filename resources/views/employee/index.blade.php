@@ -7,7 +7,6 @@
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
     <title>Funcionários</title>
-    <!-- Links -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{ url('assets/dashboard/css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/font-awesome-5/css/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
@@ -20,23 +19,18 @@
     <link href="{{ url('assets/dashboard/vendor/slick/slick.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ url('assets/dashboard/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
-    <!-- CSS Principal -->
     <link href="{{ url('assets/dashboard/css/theme.css') }}" rel="stylesheet" media="all">
-    <!-- Fim dos links -->
 </head>
 
 <body class="animsition page-wrapper">
-    <!-- Navbar -->
-    @include('layouts.navigation')
-    <!-- Fim da Navbar -->
 
-    <!-- Início do Conteúdo -->
+    @include('layouts.navigation')
+
     <div class="page-content">
         <section class="welcome p-t-10">
             <h1 class="text-center">Funcionários</h1>
             <div class="col-md-12 mt-3">
                 <hr>
-                <!-- Tabela -->
                 <div class="card mt-4 mb-4 border-light shadow">
                     <div class="card-header d-flex justify-content-between">
                         <h3>
@@ -53,7 +47,6 @@
                         </span>
                     </div>
 
-                    {{-- Verificar se existe a sessão success e imprimir o valor --}}
                     @if (session('success'))
                         <div class="alert alert-success m-3" role="alert">
                             <i class="fa-solid fa-check"></i>
@@ -85,11 +78,11 @@
                                             <div class="form-group">
                                                 <label for="enterprise_id" class="control-label mb-1">Empresa</label>
                                                 <select name="search_enterprise" id="search_enterprise" class="form-control">
-                                                    <option value="">Selecione a empresa:</option>
+                                                    <option value="" class="text-center">Busque pela empresa:</option>
                                                     @forelse ($enterprises as $enterprise)
-                                                        <option value="{{ $enterprise->id }}" 
+                                                        <option value="{{ $enterprise->id }}" class="text-center" 
                                                             {{ request('enterprise_id') == $enterprise->id ? 'selected' : '' }}>
-                                                            {{ $enterprise->name }}
+                                                            {{ $enterprise->name }} 
                                                         </option>
                                                     @empty
                                                         <option value="">Nenhuma empresa encontrada</option>
@@ -133,7 +126,7 @@
                             </div>
                         </div>
 
-                        <table class="table">
+                        <table class="table text-center">
                             <thead>
                                 <tr>
                                     <th scope="col">Código</th>

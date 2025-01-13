@@ -75,7 +75,7 @@
                             <ul class="header3-sub-list list-unstyled">
                                 <li>
                                     <a href="{{ route('binder.delay.index') }}">
-                                        <i class="fas fa-user-clock"></i>Atrasos
+                                        <i class="fas fa-user-clock"></i>Atrasos/Saídas
                                         <span class="bot-line"></span>
                                     </a>
                                 </li>

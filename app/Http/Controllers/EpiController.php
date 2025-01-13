@@ -165,28 +165,6 @@ class EpiController extends Controller
         }
     }
     /**
-     * Remove the specified resource from storage.
-     */
-    public function deleteDetail($id)
-    {
-        try {
-            $detail = EpiDetail::find($id);
-
-            if (!$detail) {
-                return back()->with('error', 'Detalhe não encontrado.');
-            }
-
-            $epiId = $detail->epi_id;
-
-            $detail->delete();
-
-            return redirect()->route('sst.epi.edit', $epiId)->with('danger', 'Detalhe excluído com sucesso!');
-        } catch (\Exception $e) {
-            Log::error('Erro ao excluir o detalhe do EPI', ['error' => $e->getMessage()]);
-            return back()->with('error', 'Erro ao excluir o detalhe: ' . $e->getMessage());
-        }
-    }
-    /**
      * Remove all resources from storage.
      */
     public function destroy($id)

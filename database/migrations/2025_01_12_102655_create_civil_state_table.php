@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instruction', function (Blueprint $table) {
-            $table->id(); // Isso criará uma coluna 'id' como chave primária
+        Schema::create('civil_state', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
             $table->timestamps();
         });
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('instruction');
+        Schema::dropIfExists('civil_state');
     }
 };

@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('delay_detail', function (Blueprint $table) {
-            $table->id(); // Coluna padrão de chave primária
+            $table->id();
             $table->unsignedBigInteger('delay_id');
             $table->foreign('delay_id')->references('id')->on('delay')->onDelete('cascade');
-            $table->date('delay_date'); // Data do atraso
-            $table->time('arrival')->nullable(); // Hora de chegada
-            $table->time('leave')->nullable(); // Hora de saída
-            $table->string('description')->nullable(); // Motivo
-            $table->timestamps(); // Datas de criação/atualização
+            $table->date('delay_date');
+            $table->time('arrival')->nullable();
+            $table->time('leave')->nullable();
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
     }
 

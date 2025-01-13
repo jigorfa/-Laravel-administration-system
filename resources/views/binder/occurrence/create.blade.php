@@ -96,7 +96,7 @@
                                             </div>
                                             <div class="form-group col-lg-4">
                                                 <label>Anexo</label>
-                                                <input type="file" name="detail[0][annex]" class="form-control" required>
+                                                <input type="file" name="detail[0][annex]" class="form-control">
                                                 <small class="form-text text-muted">Campo obrigatório *</small>
                                             </div>
                                         </div>

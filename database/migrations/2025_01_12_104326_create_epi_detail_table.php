@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('epi_detail', function (Blueprint $table) {
-            $table->id(); // Coluna padrão de chave primária
+            $table->id();
             $table->unsignedBigInteger('epi_id');
             $table->foreign('epi_id')->references('id')->on('epi')->onDelete('cascade');
-            $table->date('expedition_date'); // Data do atraso
-            $table->text('name')->nullable(); // Hora de chegada
-            $table->integer('quantity')->nullable(); // Hora de saída
-            $table->string('description')->nullable(); // Motivo
-            $table->timestamps(); // Datas de criação/atualização
+            $table->date('expedition_date');
+            $table->text('name')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
     }
 

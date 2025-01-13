@@ -121,76 +121,66 @@ class AttestController extends Controller
             return redirect()->route('sst.attest.index')->with('error', 'Atestado não encontrado.');
         }
     
-        return view('sst.attest.edit', compact('attest')); // Passa a variável attest para a view
+        return view('sst.attest.edit', compact('attest'));
     }
     /**
      * Update the specified resource in storage.
      */
-    public function update(AttestRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $attest = Attest::with('detail')->findOrFail($id);
-            
-            $attest->update([
-                'employee_code' => $request['employee_code'],
-            ]);
+        $attest = Attest::findOrFail($id);
     
-            // Atualize ou crie os detalhes do atestado
-            foreach ($request['detail'] as $detail) {
-                // Se o ID do detalhe existe, é uma atualização, caso contrário, uma criação
-                if (isset($detail['id']) && $detail['id']) {
-                    // Encontre o detalhe correspondente e atualize
-                    $attestDetail = AttestDetail::find($detail['id']);
-                    $attestDetail->update([
-                        'start_attest' => $detail['start_attest'],
-                        'end_attest' => $detail['end_attest'],
-                        'cause' => $detail['cause'],
-                        'annex' => isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
-                            ? $detail['annex']->store('attest_annexes', 'public')
-                            : $attestDetail->annex,  // Mantém o anexo atual se nenhum novo for enviado
-                    ]);
-                } else {
-                    // Se o ID não existe, cria um novo detalhe de atestado
-                    $annexPath = isset($detail['annex']) && $detail['annex'] instanceof \Illuminate\Http\UploadedFile
-                        ? $detail['annex']->store('attest_annexes', 'public')
-                        : null;
-    
-                    $attest->detail()->create([
-                        'start_attest' => $detail['start_attest'],
-                        'end_attest' => $detail['end_attest'],
-                        'cause' => $detail['cause'],
-                        'annex' => $annexPath,
-                    ]);
+        if ($request->has('delete_existing')) {
+            foreach ($request->delete_existing as $detailId) {
+                $detail = AttestDetail::find($detailId);
+                if ($detail) {
+                    $detail->delete();
                 }
             }
-    
-            return redirect()->route('sst.attest.index')->with('success', 'Atestado atualizado com sucesso!');
-        } catch (\Exception $e) {
-            return back()->withErrors('Erro ao atualizar o atestado: ' . $e->getMessage());
         }
-    }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function deleteDetail($id)
-    {
-        try {
-            $detail = AttestDetail::find($id);
     
-            if (!$detail) {
-                return back()->with('error', 'Detalhe não encontrado.');
+        if ($request->has('detail')) {
+            foreach ($request->detail as $key => $detailData) {
+                if (strpos($key, 'new-') === 0) {
+                    // Novo registro
+                    $annexPath = null;
+    
+                    // Verificar se anexou um arquivo
+                    if (isset($detailData['annex']) && $detailData['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                        $annexPath = $detailData['annex']->store('attest_annexes', 'public');
+                    }
+    
+                    AttestDetail::create([
+                        'attest_id' => $attest->id,
+                        'start_attest' => $detailData['start_attest'],
+                        'end_attest' => $detailData['end_attest'],
+                        'cause' => $detailData['cause'],
+                        'annex' => $annexPath,
+                    ]);
+                } else {
+                    // Atualizar registro existente
+                    $detail = AttestDetail::find($key);
+                    if ($detail) {
+                        // Verificar se o campo 'annex' existe em 'detailData' antes de acessá-lo
+                        $annexPath = $detail->annex; // Se não for um arquivo novo, mantém o valor original
+    
+                        if (isset($detailData['annex']) && $detailData['annex'] instanceof \Illuminate\Http\UploadedFile) {
+                            // Se anexou um arquivo novo, faz o upload
+                            $annexPath = $detailData['annex']->store('attest_annexes', 'public');
+                        }
+    
+                        $detail->update([
+                            'start_attest' => $detailData['start_attest'],
+                            'end_attest' => $detailData['end_attest'],
+                            'cause' => $detailData['cause'],
+                            'annex' => $annexPath,
+                        ]);
+                    }
+                }
             }
-    
-            $attestId = $detail->attest_id;
-    
-            $detail->delete();
-    
-            return redirect()->route('sst.attest.edit', $attestId)->with('danger', 'Detalhe excluído com sucesso!');
-        } catch (\Exception $e) {
-            Log::error('Erro ao excluir o detalhe do atestado', ['error' => $e->getMessage()]);
-            
-            return back()->with('error', 'Erro ao excluir o detalhe: ' . $e->getMessage());
         }
+    
+        return redirect()->route('sst.attest.index')->with('warning', 'Registro de atestado editado com sucesso!');
     }
     /**
      * Remove all resources from storage.
@@ -203,10 +193,10 @@ class AttestController extends Controller
             $attest->detail()->delete(); // Excluir os detalhes associados
             $attest->delete(); // Excluir o registro principal
 
-            return redirect()->route('sst.index')->with('danger', 'Registro de atestado deletado com sucesso!');
+            return redirect()->route('sst.attest.index')->with('danger', 'Registro de atestado deletado com sucesso!');
         } catch (\Exception $e) {
             Log::warning('Erro ao deletar atestado', ['error' => $e->getMessage()]);
-            return back()->with('error', 'Erro ao deletar atestado: ' . $e->getMessage());
+            return back()->with('error', 'Erro ao deletar atraso: ' . $e->getMessage());
         }
     }
     /**
